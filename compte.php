@@ -1,5 +1,29 @@
 <?php
+	// Variables fonctionnelles
+	$refPage="my_account";
 	
+	// Variables d'affichage
+	/* Ce qui sert de h1 et/ou de nom dans le titre de la page */
+	$strTitle="Mon compte";
+	
+	// Inclusion du fichier model et entity
+	require_once("models/user_model.php");
+	require_once("entities/user_entity.php");
+	
+	// Instanciation
+	$objUser	= new UserModel();
+	
+	// Utilisation
+	$arrUser	= $objUser->findUser();
+	
+	foreach($arrUser as $arrDetUser){
+		$objUser = new UserEntity();
+		$objUser->hydrate($arrDetUser);
+	}
+	
+	var_dump($arrUser);
+	var_dump($objUser);
+
 
 	include_once("head.php");
 ?>
@@ -12,7 +36,7 @@
                 <form action="" class="col-8">
                     <div>
                         <label for="pseudo">Pseudo</label>
-                        <input type="text" name="pseudo" id="pseudo">
+                        <input type="text" name="pseudo" id="pseudo" value="">
                     </div>
         
                     <div>

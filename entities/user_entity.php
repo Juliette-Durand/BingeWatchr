@@ -13,12 +13,17 @@
 		*/
 		private string $_last_name;
 		private string $_first_name;
-		private string $_email;
+		private string $_mail;
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
 		private string $_bio;
 		private string $_role;
+		
+		public function __construct(){
+			parent::__construct();
+			$this->_prefixe = 'user';
+		}
 		
 		/**
 		* Mise à jour de l'id
@@ -41,7 +46,7 @@
 		* Mise à jour du nom
 		*/
 		public function setLast_name(string $strName){
-			$this->_name = $strName;
+			$this->_last_name = $strName;
 		}
 		
 		/**
@@ -55,7 +60,7 @@
 		* Mise à jour du prénom
 		*/
 		public function setFirst_name(string $strFirstName){
-			$this->_fName = $strFirstName;
+			$this->_first_name = $strFirstName;
 		}
 		
 		public function getFull_name():string{
@@ -73,8 +78,8 @@
 		/**
 		* Mise à jour de l'email
 		*/
-		public function setEmail(string $strEmail){
-			$this->_email = $strEmail;
+		public function setMail(string $strMail){
+			$this->_mail = $strMail;
 		}
 		
 		/**
@@ -88,6 +93,62 @@
 		* Mise à jour du mot de passe
 		*/
 		public function setPassword(string $strPwd){
-			$this->_pwd = $strPwd;
+			$this->_password = $strPwd;
+		}
+		
+		/**
+		* Récupération de la date de création
+		* @return string _create_date
+		*/
+		public function getCreate_date():string{
+			return $this->_create_date;
+		}
+		/**
+		* Mise à jour de la date de création
+		*/
+		public function setCreate_date(string $strDate){
+			$this->_create_date = $strDate;
+		}
+		
+		/**
+		* Récupération de l'avatar
+		* @return string _avatar
+		*/
+		public function getAvatar():string{
+			return $this->_avatar;
+		}
+		/**
+		* Mise à jour de l'avatar
+		*/
+		public function setAvatar(string $strAvatar){
+			$this->_avatar = $strAvatar;
+		}
+		
+		/**
+		* Récupération de la biographie
+		* @return string _bio
+		*/
+		public function getBio():string{
+			return $this->_bio;
+		}
+		/**
+		* Mise à jour de l'avatar
+		*/
+		public function setBio(string $strBio){
+			$this->_bio = $strBio;
+		}
+		
+		/**
+		* Récupération du rôle
+		* @return string _role
+		*/
+		public function getRole():string{
+			return $this->_role;
+		}
+		/**
+		* Mise à jour du role
+		*/
+		public function setRole(string $strRole){
+			$this->_role = $strRole;
 		}
 	}

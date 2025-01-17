@@ -1,0 +1,49 @@
+/* GLOBAL */
+html{
+    /*font-size: 62.5%;*/
+}
+pre{
+    font-size: 12px;
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+ol, ul, li{
+    list-style: none;
+    padding:0;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+a,p, label, input{
+    font-size: 1.4rem;
+}
+
+/* SPECIFIC */
+/* Navigation Bar */
+nav{
+    margin-bottom: 50px;
+}
+nav .pic_container img{
+    height:7rem;
+}
+
+form div {
+    margin: 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+form input:not(input[type="button"]), form textarea {
+    width:30rem;
+}
+
+form input[type="button"]{
+    width:10rem;
+}
