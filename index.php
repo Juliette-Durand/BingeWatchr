@@ -8,45 +8,48 @@
         </head>
         <body>
             <?php
-            class MotherModel{
-		
-                protected object $_db;
-                
-                public function __construct(){
-                    try{
-                        // Connexion à la base de données
-                        $this->_db = new PDO(
-                                        "mysql:host=localhost;dbname=BWR_home",  // Serveur et BDD
-                                        "root",  		//Nom d'utilisateur de la base de données
-                                        "",	 	// Mot de passe de la base de données
-                                        array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC) // Mode de renvoi 
-                                        ); 
-                        // Pour résoudre les problèmes d’encodage
-                        $this->_db->exec("SET CHARACTER SET utf8"); 	
-                        // Configuration des exceptions
-                        $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-                    } catch(PDOException $e) { 
-                        echo "Échec : " . $e->getMessage(); 
-                    }
-                }
-            }
+            require("entities/movie_entity.php"); 
+            $strQuery		=   "SELECT movie_name, movie_poster  
+                                FROM movie
+                                ORDER BY movie_release DESC
+                                LIMIT 6 OFFSET 0;";
 
+	        $arrMovies	= $db->query($strQuery)->fetchAll();
+            var_dump(strQuerry)
             
             ?>
-            <div class="container">
+            <div class="container pt-5">
                 <div class="row">
+                    <?php 
+                        foreach($arrMovies as $arrDetMovie) {
+                            $objMovie = new Movie();
+                            $objMovie->setName($arrDetMovie['movie_name']
+                            $objMovie->setPoster())
+                        }
+                    ?>
                     <div class="col-2">
-                        <a href="#">
-                            <h2><?php  ?></h2>
-                            <img src="" alt="">
-                        </a>
+                        <div class="card" style="width: 18rem;">
+                            <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <a href="#"> 
+                                <h5 class="card-title text-center">Film Test</h5>
+                            </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div class="container pt-5">
                 <div class="row">
                     <div class="col-2">
-                    
+                        <div class="card" style="width: 18rem;">
+                            <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <a href="#"> 
+                                <h5 class="card-title text-center">Film Test</h5>
+                            </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
