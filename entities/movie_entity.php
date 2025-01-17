@@ -4,14 +4,16 @@
 	* @author Arlind Halimi
 	*/
     require_once('mother_entity.php');
-    
-    class Movie extends MotherEntity{
 
-        public function __construct() {
-            parent::__construct();
-        }
+    class MovieEntity extends MotherEntity{
+
+        /**
+		* Constructeur de la classe
+		*/
+		public function __construct(){
+			parent::__construct();
+		}
         
-        private $_id;
         private $_name;
         private $_desc;
         private $_release;
@@ -22,20 +24,23 @@
         private $_duration;
 
        
-
         /**
-		* Récupération du First Name
-		* @return string First Name
+         * Class have the name on Category_entity and on Movie_entity
+         * Can we use like this or to add in Mother_Entity
+         */
+        /**
+		* Récupération du Name
+		* @return string Name
 		*/
-        public function getFirstname(){
-            return $this->_first_name;
+        public function getName(){
+            return $this->_name;
         }
         /**
-		* Mise à jour du First Name
-		* @param string First Name
+		* Mise à jour du Name
+		* @param string Name
 		*/
-        public function setFirstname(string $strFirstname){
-            $this->_first_name = $strFirstname;
+        public function setName(string $strName){
+            $this->_name = $strName;
         }
 
         /**
@@ -65,7 +70,7 @@
 		* @param string date de Realise
 		*/
         public function setRealise(string $strRelease){
-            $this->_release = $strDesc;
+            $this->_release = $strRelease;
         }
 
         /**
@@ -112,6 +117,21 @@
 		*/
         public function setPegi(string $strPegi){
             $this->_pegi = $strPegi;
+        }
+
+         /**
+		* Récupération du film duration
+		* @return string film duration
+		*/
+        public function getDuration(){
+            return $this->_duration;
+        }
+        /**
+		* Mise à jour du film duration
+		* @param string film duration
+		*/
+        public function setDurationi(string $strDuration){
+            $this->_duration = $strPegi;
         }
 
 

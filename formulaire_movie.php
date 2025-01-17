@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Christel Ehrhart">
+    <meta name="author" content="Arlind Halimi">
 	<meta charset=UTF-8>
     <title>Lien HTML - PHP</title>
 
@@ -30,8 +30,13 @@
   </head>
   <body>
   <?php
+	
+	require_once('entities/acteur_entity.php');
+
+	
+
 	//var_dump($_GET);
-	var_dump($_POST);
+	//var_dump($_POST);
 	//var_dump($_FILES);
 	
 	// Version if
@@ -48,7 +53,6 @@
 	// ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
 	$strSimple 		= $_POST['simple']??"";
 	$strActeur 		= $_POST['acteur']??"";
-	var_dump($strActeur);
 	$strDate 		= $_POST['date']??"";
 	$strLignes		= $_POST['lignes']??"";
 	$strNotes		= $_POST['notes']??"";
@@ -87,32 +91,13 @@
 		if ($strLignes == ""){
 			$arrErrors['notes'] = "La zone de texte sur plusieurs lignes est obligatoire";
 		}
-		// Vérifier le contenu de $intNumber
-		if ($intNumber == ""){
-			$arrErrors['nombre'] = "La zone de nombre est obligatoire";
-		}
-		// Vérifier le contenu de $intSelect
-		if ($intSelect == ""){
-			$arrErrors['select'] = "Le select est obligatoire";
-		}
-		// Vérifier si choix_unique est présent dans $_POST
-		if (!isset($_POST['choix_unique'])){
-			$arrErrors['unique'] = "Le choix unique est obligatoire";
-		}
-		// Vérifier si choix_multiple est présent dans $_POST
-		/*if (!isset($_POST['choix_multiple'])){
-			$arrErrors[] = "Le choix multiple est obligatoire";
-		}*/
-		if (count($arrMultiple) == 0){
-			$arrErrors['multiple'] = "Le choix multiple est obligatoire";
-		}elseif (count($arrMultiple) < 2){ // si besoin
-			$arrErrors['multiple'] = "Vous devez choisir 2 cases";
-		}	
-
+		
+		
+	
 		// Vérifier le fichier uploadé (error = 0 + type de fichier  + copie qui a fonctionné)
 		$arrFichier	= $_FILES['fichier']; // on utilise une variable pour éviter de rappeler le name de l'input
 		if ($arrFichier['error'] == 4){
-			$arrErrors['fichier'] = "Le fichier est obligatoire";
+			$arrErrors['fichier'] = "Le image est obligatoire";
 		}else{
 			if ($arrFichier['error'] != 0){
 				$arrErrors['fichier'] = "Le fichier a rencontré un pb";
@@ -128,7 +113,7 @@
 			// fichier temporaire = source
 			$strSource	= $_FILES['fichier']['tmp_name'];
 			// destination du fichier
-			$strDest	= "assets/img/uploads/".$_FILES['fichier']['name'];
+			$strDest	= "assets\img\movies\movie_pictures\ ".$_FILES['fichier']['name'];
 			// On déplace le fichier
 			if (!move_uploaded_file($strSource, $strDest)){
 				$arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
@@ -163,7 +148,7 @@
 					<h2>Ajoute un film</h2>
 					<div class="alert alert-info">
 						<p>Les éléments obligatoire sont suivis d'un *</p>
-						<p> Les fichiers autorisés sont en PDF</p>
+						<p> Les fichiers autorisés sont en JPG ou JPEG </p>
 					</div>
 					<?php if (count($arrErrors) > 0){ ?>
 					<div class="alert alert-danger">
@@ -216,30 +201,76 @@
 							
 							
 							
-							<p>
+							<!-- <p>
 								<label>Zone de nombre*:</label>
 								<input name="number" class="form-control <?php echo (isset($arrErrors['nombre']))?'is-invalid':'';  ?>" type="number" value="<?php echo($intNumber); ?>" >
-							</p>
-							<p>
+							</p> -->
+				<p>A-----------------*----------------------------------- </p>
 								<label>Select*:</label>
 								<select name="choix_select" class="form-control <?php echo (isset($arrErrors['select']))?'is-invalid':'';  ?>">
+								<option value="0" <?php echo(($objArticleModel->intCreator == 0)?"selected":"");?> > -- </option>		
 									<?php
 										
-										foreach($arrActors as $arrActor){?>
+										foreach($arrActors as $arrDetActor){
+											// instancier
+											$objActorEntity = new  ActorEntity();
+
+											// Récupération des données du formulaire
+																					
+
+											$objActorEntity->setId($arrDetActor)['actor_id'];
+											$objActorEntity->setFirstname($arrDetActor['actor_first_name']);
+											$objActorEntity->setLastname($arrDetActor['actor_last_name']);
+											$objActorEntity->setPicture($arrDetActor['actor_picture']);
+										?>
+										
+										<option value="<?php echo($objActorEntity->getId()); ?>" 
+												<?php echo(($objArticleModel->intCreator == $objActorEntity->getId())?"selected":"");?> >
+											<?php echo($objActorEntity->getLastname()); ?> <?php echo($objActorEntity->getFirstname()); ?>
+										</option>
+										
 											<option <?php if($intSelect == $objActeur->getId()) { echo "selected"; } ?> value="4">Tortue</option>
 										<?php } 
+									var_dump($_POST);
+									var_dump($objActeur);
 									?>
-				
+									<p> TEST </p>
 								
-									<option value="">--</option>
+									<!-- <option value="">--</option>
 									<option <?php if($intSelect == 4) { echo "selected"; } ?> value="4">Tortue</option>
 									<option <?php if($intSelect == 1) { echo "selected"; } ?> value="1">Chat</option>
 									<option <?php if($intSelect == 2) { echo "selected"; } ?> value="2">Chien</option>
 									<option <?php if($intSelect == 3) { echo "selected"; } ?> value="3">Elephant</option>
 									<option <?php if($intSelect == 5) { echo "selected"; } ?> value="5">Requin</option>
-								</select>
+									<option <?php if($intSelect == 5) { echo "selected"; } ?> value="6">TTT</option> -->
+								</select> 
+				<p> A--------------------------------------------------- </p>
+				<select id="author" name="creator">
+						<option value="0" <?php echo(($objArticleModel->intCreator == 0)?"selected":"");?> > -- </option>		
+							
+						<?php 
+						
+						foreach ($arrUsers as $arrDetUser) { 
+							
+							$objActor = new ActorEntity();
+
+							$objActor->setId($arrDetActor)['actor_id'];
+							$objActor->setFirstname($arrDetActor['actor_first_name']);
+							$objActor->setLastname($arrDetActor['actor_last_name']);
+							$objActor->setPicture($arrDetActor['actor_picture']);
+							
+							//$objUser->setMail($arrDetUser['user_mail']);
+							//$objUser->setPwd($arrDetUser['user_pwd']);
+						?>
+						
+						<option value="<?php echo($objActor->getId()); ?>" 
+								<?php echo(($objArticleModel->intCreator == $objActor->getId())?"selected":"");?> >
+							<?php echo($objActor->setLastname()); ?> <?php echo($objActor->setFirstname()); ?>
+						</option>
+						<?php }	?>
+					</select>
 							</p>
-							<p>
+							<!-- <p>
 								<label>Choix unique*:</label>
 								<input name="choix_unique" <?php if($intUnique == 1) { echo "checked"; } ?> value="1" type="radio" class="form-check-input"> Chat
 								<input name="choix_unique" <?php if($intUnique == 2) { echo "checked"; } ?> value="2"  type="radio" class="form-check-input"> Chien
@@ -250,9 +281,10 @@
 								<input type="checkbox" name="choix_multiple[]" <?php if(in_array(1, $arrMultiple)){ echo "checked"; } ?> value="1" class="form-check-input <?php echo (isset($arrErrors['multiple']))?'is-invalid':'';  ?>"> Choix 1
 								<input type="checkbox" name="choix_multiple[]" <?php if(in_array(2, $arrMultiple)){ echo "checked"; } ?> value="2" class="form-check-input <?php echo (isset($arrErrors['multiple']))?'is-invalid':'';  ?>"> Choix 2
 								<input type="checkbox" name="choix_multiple[]" <?php if(in_array(3, $arrMultiple)){ echo "checked"; } ?> value="3" class="form-check-input <?php echo (isset($arrErrors['multiple']))?'is-invalid':'';  ?>"> Choix 3
-							</p>
+							</p> -->
+							
 							<p>
-								<label>Fichier*:</label>
+								<label>Image *: <small class="secondPlan">(5Mo max)</small></label>
 								<input class="form-control  <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" name="fichier" type="file">
 							</p>
 							<p>
