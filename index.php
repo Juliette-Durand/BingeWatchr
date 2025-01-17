@@ -23,8 +23,8 @@
                     <?php 
                         foreach($arrMovies as $arrDetMovie) {
                             $objMovie = new Movie();
-                            $objMovie->setName($arrDetMovie['movie_name']
-                            $objMovie->setPoster())
+                            $objMovie->setName($arrDetMovie['movie_name']);
+                            $objMovie->setPoster($arrDetMovie['movie_poster']);
                         }
                     ?>
                     <div class="col-2">
