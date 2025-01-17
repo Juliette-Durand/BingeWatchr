@@ -3,6 +3,8 @@
 	* Classe d'un Movie
 	* @author Arlind Halimi
 	*/
+    require_once('mother_entity.php');
+    
     class Movie extends MotherEntity{
 
         public function __construct() {
