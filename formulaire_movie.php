@@ -35,9 +35,9 @@
 
 	
 
-	//var_dump($_GET);
-	//var_dump($_POST);
-	//var_dump($_FILES);
+	var_dump($_GET);
+	var_dump($_POST);
+	var_dump($_FILES);
 	
 	// Version if
 	/*if (isset($_POST['simple'])){
@@ -131,14 +131,14 @@
 		<main class="container">
 			<header class="blog-header lh-1 py-3">
 				<div class="row flex-nowrap justify-content-between align-items-center">
-				  <div class="col-1 pt-1">
-					<a class="" href="index.php" title="logo">
-						<img class="img-fluid" src="assets/images/logo.jpg" alt="logo"/>
-					</a>
-				  </div>
-				  <div class="col-11 text-center">
+					<div class="col-1 pt-1">
+						<a class="" href="index.php" title="logo">
+							<img class="img-fluid" src="assets/images/logo.jpg" alt="logo"/>
+						</a>
+					</div>
+					<div class="col-11 text-center">
 						<p class="blog-header-logo text-dark" href="#">Faire le lien entre les formulaires HTML et PHP</p>
-				  </div>
+					</div>
 				</div>
 			</header>
 
@@ -216,8 +216,6 @@
 											$objActorEntity = new  ActorEntity();
 
 											// Récupération des données du formulaire
-																					
-
 											$objActorEntity->setId($arrDetActor)['actor_id'];
 											$objActorEntity->setFirstname($arrDetActor['actor_first_name']);
 											$objActorEntity->setLastname($arrDetActor['actor_last_name']);
@@ -298,7 +296,7 @@
 
 		</main>
 		<footer class="blog-footer">
-		  <p>Site créé par <a target="_blank" href="https://ce-formation.com/">CE FORMATION</a></p>
+			<p>Site créé par <a target="_blank" href="https://ce-formation.com/">CE FORMATION</a></p>
 		</footer>
 		
 		<!-- Place the following <script> and <textarea> tags your HTML's <body> -->
