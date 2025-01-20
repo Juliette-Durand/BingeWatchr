@@ -8,51 +8,47 @@
         </head>
         <body>
             <?php
-            require("entities/movie_entity.php"); 
-            $strQuery		=   "SELECT movie_name, movie_poster  
-                                FROM movie
-                                ORDER BY movie_release DESC
-                                LIMIT 6 OFFSET 0;";
+            require_once("entities/movie_entity.php");
+			require_once("models/movie_model.php");
 
-	        $arrMovies	= $db->query($strQuery)->fetchAll();
-            var_dump(strQuerry)
+			
+			
+			// object pour Movie Model
+			$objMovieModel = new MovieModel(); 
+
+            //Utilisation (création d'un tableau contenant les infos de la requête)
+            $arrMovie = $objMovieModel->movieDisplay();
+            $arrRecentMovie = $objMovieModel->movieRecentAdd();
+            //var_dump($arrMovie);
             
             ?>
             <div class="container pt-5">
+                <h1>Bienvenue sur BingeWatchr</h1>
                 <div class="row">
+                    <h2>Films à l'affiche</h2>
                     <?php 
-                        foreach($arrMovies as $arrDetMovie) {
-                            $objMovie = new Movie();
-                            $objMovie->setName($arrDetMovie['movie_name']);
-                            $objMovie->setPoster($arrDetMovie['movie_poster']);
+                        foreach($arrMovie as $arrDetMovie) {
+                            $objMovie = new MovieEntity();
+                            $objMovie->hydrate($arrDetMovie);
+                            include('movie_card.php');
                         }
+
                     ?>
-                    <div class="col-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <a href="#"> 
-                                <h5 class="card-title text-center">Film Test</h5>
-                            </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <div class="container pt-5">
+
                 <div class="row">
-                    <div class="col-2">
-                        <div class="card" style="width: 18rem;">
-                            <img src="https://picsum.photos/200/300" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <a href="#"> 
-                                <h5 class="card-title text-center">Film Test</h5>
-                            </a>
-                            </div>
-                        </div>
-                    </div>
+                    <h2>Films récemment ajoutés</h2>
+                    <?php 
+                        foreach($arrRecentMovie as $arrDetMovie) {
+                            $objMovie = new MovieEntity();
+                            $objMovie->hydrate($arrDetMovie);
+                            include('movie_card.php');
+                        }
+
+                    ?>
                 </div>
             </div>
+            
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         </body>
