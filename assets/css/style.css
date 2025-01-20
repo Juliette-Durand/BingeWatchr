@@ -1,0 +1,88 @@
+/* VARIABLES */
+:root{
+    --main-color: rgb(168, 0, 190);
+    --secund-color: rgb(96, 0, 109);
+}
+
+/* OVERWRITE BOOTSTRAP */
+.btn.btn-primary{
+    background-color: var(--main-color);
+    border:none;
+}
+.row {
+    padding:2.5rem 0;
+    background-color: #F8F9FA;
+}
+
+/* GLOBAL */
+/*html{
+    font-size: 62.5%;
+}*/
+pre{
+    font-size: 12px;
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+ol, ul, li{
+    list-style: none;
+    padding:0;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*a,p, label, input, textarea{
+    font-size: 1.2rem;
+}*/
+
+/* SPECIFIC */
+/* Navigation Bar */
+nav{
+    margin-bottom: 50px;
+}
+nav .pic_container img{
+    height:3rem;
+    border-radius: 50%;
+    border:0.2rem solid var(--main-color);
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+}
+form div button{
+    width: fit-content;
+}
+form div:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+form input:not(input[type="button"]), form textarea {
+    width:30rem;
+    padding:0.2rem 0.4rem;
+}
+
+form button{
+    margin-top:0.5rem;
+}
+
+
+/* PROFILE */
+.picture_container .profile_pic{
+    border-radius: 50%;
+    width: 10rem;
+}
+
+ul.pwd_conditions li{
+    list-style-type: disc;
+    list-style-position: inside;
+}
+ul.pwd_conditions li::marker{
+    color:var(--main-color);
+}

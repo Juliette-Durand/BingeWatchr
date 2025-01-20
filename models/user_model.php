@@ -43,12 +43,23 @@
 			/* J'écris ma requête */
 			$strQueryOneUser 	= "	SELECT *
 									FROM user
-									WHERE user_id = 'CaptainBaguette'
+									WHERE user_id = 'SuperPoulet'
 									ORDER BY user_last_name ASC, user_first_name ASC;";
 	
 			/* Je récupère le résultat de ma requête d'utilisateurs */
 			$arrOneUser	= $this->_db->query($strQueryOneUser)->fetchAll();
 			
 			return $arrOneUser;
+		}
+		
+		/**
+		*
+		*/
+		public function newUser(){
+			
+			/* Écriture de la requête */
+			$strQueryNewUser	= "	INSERT INTO user (	user_id, user_first_name, user_last_name, user_mail, user_password,
+														user_create_date, user_avatar, user_bio, user_role)
+									VALUES ('', '', '', '', '', NOW(), '', '','user'); ";
 		}
 	}

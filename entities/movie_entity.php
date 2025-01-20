@@ -12,8 +12,9 @@
 		*/
 		public function __construct(){
 			parent::__construct();
+			$this->_prefixe = 'movie';
 		}
-        
+
         private $_name;
         private $_desc;
         private $_release;
@@ -77,7 +78,7 @@
 		* Récupération du date de Realise
 		* @return string date de Realise
 		*/
-        public function getCreatedaten(){
+        public function getCreatedate(){
             return $this->_create_date;
         }
         /**
@@ -93,7 +94,7 @@
 		* Récupération du film image
 		* @return string film image
 		*/
-        public function getPostern(){
+        public function getPoster(){
             return $this->_poster;
         }
         /**
@@ -108,7 +109,7 @@
 		* Récupération du film image
 		* @return string film image
 		*/
-        public function getDesctiption(){
+        public function getPegi(){
             return $this->_pegi;
         }
         /**
@@ -118,8 +119,23 @@
         public function setPegi(string $strPegi){
             $this->_pegi = $strPegi;
         }
+        /**
+        * Récupération du display
+        * @return string display
+        */
+        public function getDisplay(){
+            return $this->_display;
+        }
 
-         /**
+        /**
+        * Mise à jour du display
+        * @param string display
+        */
+        public function setDisplay(string $strDisplay){
+            $this->_display = $strDisplay;
+        }
+
+        /**
 		* Récupération du film duration
 		* @return string film duration
 		*/
@@ -130,8 +146,8 @@
 		* Mise à jour du film duration
 		* @param string film duration
 		*/
-        public function setDurationi(string $strDuration){
-            $this->_duration = $strPegi;
+        public function setDuration(string $strDuration){
+            $this->_duration = $strDuration;
         }
 
 
