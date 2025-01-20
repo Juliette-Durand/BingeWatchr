@@ -7,6 +7,9 @@ $strPassword = $_POST['password'] ?? "";
 $strBio = $_POST['bio'] ?? "";
 $strAvatar = $_FILES['avatar'] ?? "";
 
+var_dump($_POST);
+var_dump($strAvatar);
+
 // Initialisation du tableau des erreurs
 $arrErrors = array();
 
