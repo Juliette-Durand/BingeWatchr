@@ -71,7 +71,7 @@
 		}
 		
 		public function getFull_name():string{
-			$fullName = $this->getName()." ".$this->getFirstName();
+			$fullName = $this->getLast_name()." ".$this->getFirst_name();
 			return $fullName;
 		}
 		
