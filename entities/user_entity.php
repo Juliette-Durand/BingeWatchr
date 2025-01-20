@@ -13,7 +13,7 @@
 		*/
 		private string $_last_name;
 		private string $_first_name;
-		private string $_mail;
+		private string $_email;
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
@@ -25,6 +25,13 @@
 			$this->_prefixe = 'user';
 		}
 		
+		/**
+		* Récupération de l'id
+		* @return string _id
+		*/
+		public function getId(){
+			return $this->_id;
+		}
 		/**
 		* Mise à jour de l'id
 		*/
@@ -79,7 +86,7 @@
 		* Mise à jour de l'email
 		*/
 		public function setMail(string $strMail){
-			$this->_mail = $strMail;
+			$this->_email = $strMail;
 		}
 		
 		/**
