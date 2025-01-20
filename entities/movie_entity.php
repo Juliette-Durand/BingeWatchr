@@ -1,0 +1,139 @@
+<?php 
+    /**
+	* Classe d'un Movie
+	* @author Arlind Halimi
+	*/
+    require_once('mother_entity.php');
+
+    class MovieEntity extends MotherEntity{
+
+        /**
+		* Constructeur de la classe
+		*/
+		public function __construct(){
+			parent::__construct();
+			$this->_prefixe = 'movie';
+		}
+
+        private $_name;
+        private $_desc;
+        private $_release;
+        private $_create_date;
+        private $_poster;
+        private $_pegi;
+        private $_display;
+        private $_duration;
+
+       
+        /**
+         * Class have the name on Category_entity and on Movie_entity
+         * Can we use like this or to add in Mother_Entity
+         */
+        /**
+		* Récupération du Name
+		* @return string Name
+		*/
+        public function getName(){
+            return $this->_name;
+        }
+        /**
+		* Mise à jour du Name
+		* @param string Name
+		*/
+        public function setName(string $strName){
+            $this->_name = $strName;
+        }
+
+        /**
+		* Récupération du Desctiption
+		* @return string Desctiption
+		*/
+        public function getDesc(){
+            return $this->_desc;
+        }
+        /**
+		* Mise à jour du Desctiption
+		* @param string Desctiption
+		*/
+        public function setDesc(string $strDesc){
+            $this->_desc = $strDesc;
+        }
+
+         /**
+		* Récupération du date de Realise
+		* @return string date de Realise
+		*/
+        public function getRealise(){
+            return $this->_release;
+        }
+        /**
+		* Mise à jour du date de Realise
+		* @param string date de Realise
+		*/
+        public function setRealise(string $strRelease){
+            $this->_release = $strRelease;
+        }
+
+        /**
+		* Récupération du date de Realise
+		* @return string date de Realise
+		*/
+        public function getCreatedaten(){
+            return $this->_create_date;
+        }
+        /**
+		* Mise à jour du date de Realise
+		* @param string date de Realise
+		*/
+        public function setCreatedate(string $strCreateDate){
+            $this->_create_date = $strCreateDate;
+        }
+
+
+        /**
+		* Récupération du film image
+		* @return string film image
+		*/
+        public function getPoster(){
+            return $this->_poster;
+        }
+        /**
+		* Mise à jour du film image
+		* @param string film image
+		*/
+        public function setPoster(string $strPoster){
+            $this->_poster = $strPoster;
+        }
+
+        /**
+		* Récupération du film image
+		* @return string film image
+		*/
+        public function getDesctiption(){
+            return $this->_pegi;
+        }
+        /**
+		* Mise à jour du film image
+		* @param string film image
+		*/
+        public function setPegi(string $strPegi){
+            $this->_pegi = $strPegi;
+        }
+
+         /**
+		* Récupération du film duration
+		* @return string film duration
+		*/
+        public function getDuration(){
+            return $this->_duration;
+        }
+        /**
+		* Mise à jour du film duration
+		* @param string film duration
+		*/
+        public function setDurationi(string $strDuration){
+            $this->_duration = $strPegi;
+        }
+
+
+    }

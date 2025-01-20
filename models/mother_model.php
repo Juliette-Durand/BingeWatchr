@@ -1,4 +1,8 @@
 <?php
+ 	/**
+	* Entité mère
+	* @author Arlind Halimi
+	*/	
 	class MotherModel{
 		
 		protected object $_db;
