@@ -73,7 +73,7 @@ form button{
 }
 
 
-/* PROFILE */
+/* Page mon compte - PROFILE */
 .picture_container .profile_pic{
     border-radius: 50%;
     width: 10rem;
@@ -85,4 +85,28 @@ ul.pwd_conditions li{
 }
 ul.pwd_conditions li::marker{
     color:var(--main-color);
+}
+
+
+/* Page liste utilisateurs (rôles) */
+.user_item{
+    border-radius:0.5rem;
+    background-color: white;
+    padding:1rem;
+}
+.user_item:not(:last-child){
+    margin-bottom: 1rem;
+}
+.user_item .user_item_left img{
+    border-radius: 50%;
+    height:3rem;
+}
+.user_item .user_item_left .user_title{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.user_item .user_item_left .user_pseudo{
+    font-style: italic;
+    font-size: 1rem;
+    opacity:0.5;
 }
