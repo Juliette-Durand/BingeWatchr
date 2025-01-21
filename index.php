@@ -15,8 +15,15 @@ include_once('head.php');
             //var_dump($arrMovie);
             
             ?>
+
+            
+
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Trouver un film" aria-label="Search">
+                    <button type="button" class="btn btn-primary btn-sm mb-2">Rechercher</button>
+                </form>
                 <div class="row">
                     <h2>Films à l'affiche</h2>
                     <?php 
@@ -39,6 +46,11 @@ include_once('head.php');
                         }
 
                     ?>
+                </div>
+
+                <div class="row">
+                    <span>Vous ne trouvez pas le film que vous cherchez ?</span>
+                    <a href="form_movie.php"><button type="button" class="btn btn-primary btn-sm">Ajoutez le ici</button></a>
                 </div>
             </div>
 
