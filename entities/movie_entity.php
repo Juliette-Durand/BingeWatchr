@@ -63,14 +63,14 @@
 		* Récupération du date de Realise
 		* @return string date de Realise
 		*/
-        public function getRealise(){
+        public function getRelease(){
             return $this->_release;
         }
         /**
 		* Mise à jour du date de Realise
 		* @param string date de Realise
 		*/
-        public function setRealise(string $strRelease){
+        public function setRelease(string $strRelease){
             $this->_release = $strRelease;
         }
 
@@ -116,7 +116,7 @@
 		* Mise à jour du film image
 		* @param string film image
 		*/
-        public function setPegi(string $strPegi){
+        public function setPegi(string|null $strPegi = NULL){
             $this->_pegi = $strPegi;
         }
         /**
@@ -131,7 +131,7 @@
         * Mise à jour du display
         * @param string display
         */
-        public function setDisplay(string $strDisplay){
+        public function setDisplay(string|null $strDisplay = NULL){
             $this->_display = $strDisplay;
         }
 
