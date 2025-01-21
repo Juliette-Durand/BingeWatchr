@@ -36,7 +36,7 @@
 			<h1><?php echo($strTitle); ?></h1>
 		</div>
 		
-        <div class="container">
+        <section class="container" id="users_list_role">
             <div class="row">
 				<?php
 					foreach($arrUser as $arrDetUser){
@@ -50,15 +50,28 @@
 								<span class="user_pseudo ms-2"><?php echo($objUser->getId()); ?></span>
 							</div>
 							<div class="user_item_right">
-								<span class="user_role"><?php echo($objUser->getRole()); ?></span>
-								<button class="btn btn-primary">Changer le rôle</button>
+								<span class="user_role">
+									<?php
+										switch($objUser->getRole()){
+											case "user":
+												echo("Watchr");
+												break;
+											case "modo":
+												echo("Modérateur");
+												break;
+											case "admin":
+												echo("Administrateur");
+												break;
+										}?>
+									</span>
+								<button class="btn btn-primary ms-2">Changer le rôle</button>
 							</div>
 						</div>
 						
 					<?php }?>
 				
 			</div>
-        </div>
+        </section>
 
 
     </main>

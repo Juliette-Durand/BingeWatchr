@@ -16,10 +16,8 @@
 	// Utilisation
 	$arrUser	= $objUser->findUser();
 	
-	foreach($arrUser as $arrDetUser){
-		$objUser = new UserEntity();
-		$objUser->hydrate($arrDetUser);
-	}
+	$objUser = new UserEntity();
+	$objUser->hydrate($arrUser);
 	
 	/*var_dump($arrUser);
 	var_dump($objUser);*/

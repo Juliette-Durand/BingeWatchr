@@ -89,23 +89,28 @@ ul.pwd_conditions li::marker{
 
 
 /* Page liste utilisateurs (rôles) */
-.user_item{
+#users_list_role .row{
+    padding:0;
+    margin:0;
+    background: none;
+}
+#users_list_role .user_item{
     border-radius:0.5rem;
-    background-color: white;
+    background-color: #F8F9FA;
     padding:1rem;
 }
-.user_item:not(:last-child){
+#users_list_role .user_item:not(:last-child){
     margin-bottom: 1rem;
 }
-.user_item .user_item_left img{
+#users_list_role .user_item .user_item_left img{
     border-radius: 50%;
     height:3rem;
 }
-.user_item .user_item_left .user_title{
+#users_list_role .user_item .user_item_left .user_title{
     font-weight: bold;
     font-size: 1.2rem;
 }
-.user_item .user_item_left .user_pseudo{
+#users_list_role .user_item .user_item_left .user_pseudo{
     font-style: italic;
     font-size: 1rem;
     opacity:0.5;

@@ -47,7 +47,7 @@
 									ORDER BY user_last_name ASC, user_first_name ASC;";
 	
 			/* Je récupère le résultat de ma requête d'utilisateurs */
-			$arrOneUser	= $this->_db->query($strQueryOneUser)->fetchAll();
+			$arrOneUser	= $this->_db->query($strQueryOneUser)->fetch();
 			
 			return $arrOneUser;
 		}
