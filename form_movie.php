@@ -39,84 +39,138 @@
 
 	//var_dump($objMovie);
 	//var_dump($arrMovie);
-	
+	var_dump($_FILES);
+	var_dump($_POST);
+
+
 	// Initialisation du tableau vide
 	$arrErrors = array();
 
-	if(count($_POST)>0){
+	if(count($_POST) > 0){
 		// Vérification du formulaire
-		if($strPhoto == ""){
-			$arrErrors['fichier'] = "Image est obligatoire";
+		// if($strPhoto == ""){
+		// 	$arrErrors['fichier'] = "Image est obligatoire";
+		// }
+		if($strTitle == ""){
+			$arrErrors['txt_title'] = "Title est obligatoire";
+		}
+		if($strActor_ob == ""){
+			$arrErrors['actor_ob'] = "Le nom de l'acteur est obligatoire";
+		}
+		if($strDate == ""){
+			$arrErrors['date'] = "Le date est obligatoire";
+		}
+		if ($strSymepris == ""){
+			$arrErrors['symepris'] = "La zone de texte symepris est obligatoire";
+		}
+		if ($strNotes == ""){
+			$arrErrors['notes'] = "La zone de texte notes est obligatoire";
+		}
+		
+		
+		// Vérification du fichier
+			$arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
+			if($arrFichier['error'] != 0){
+				$arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
+			}elseif($arrFichier['type'] != 'image/jpeg'){
+				$arrErrors['fichier'] = "Le fichier doit être au format jpg";}	
+			elseif ($arrFichier['size'] > 5 * 1024 * 1024) {
+				$arrErrors['fichier'] = "Le fichier ne doit pas dépasser 5Mo";
+			}
+			
+			
+		if (!isset($arrErrors['fichier'])){
+			// Fichier temporaire = source
+			$strSource = $_FILES['fichier']['tmp_name'];
+			// destination de fichier
+			$strDest	= "assets\img\movies\movie_pictures\ ".$_FILES['fichier']['name'];
+			// On déplace le fichier
+			if (!move_uploaded_file($strSource, $strDest)){
+				$arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
+			}
+			// $strNomFichier = $arrFichier['name'];
+			// $strNomTemporaire = $arrFichier['tmp_name'];
+			// $strChemin = "uploads/".$strNomFichier;
+			// move_uploaded_file($strNomTemporaire, $strChemin);
+		}
+		
+
+		// Si aucune erreur, traitement 	
+		if (count($arrErrors) == 0){
+			// => Formulaire OK
+			// => exemple Insertion en BDD
 		}
 	}
 
 
-	include_once("head.php")
+	include_once("head.php");
 	?>
 
-	<div class="container">
+
+	<div class="container"  id="form_movie">
 	
-		<form action="" method="post">
-
+		<form action="" method="post" id="movie_form">
 			<div class="row g-5 py-3">
-			
-
-				<?php
-				if(count($arrErrors) > 0){
-					if (isset($arrErrors['fichier'])) { ?>
-					<div class="alert alert-danger" role="alert">
-						<?php echo $arrErrors['fichier']; ?>
+				<?php if (count($arrErrors) > 0){ ?>
+					<div class="alert alert-danger">
+						<?php foreach($arrErrors as $strError){ ?>
+							<p><?php echo $strError; ?></p>
+						<?php } ?>
 					</div>
-				<?php }} ?>
-				<div class="row"> </div>
-				<div class="col-3">
-					<label>Image * : <small class="secondPlan"> (5Mo max)</small></label>
-					<input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" name="fichier" type="file">
-				</div>
-				<div class="col-9">
-					<div>
-						<label for="txt_title">Titre *</label>
-						<input type="text" name="txt_title" id="txt_title" class="form-control <?php echo (isset($arrErrors['txt_title']))?'is-invalid':'' ?>" >
+				<?php } ?>
+				<div class="row pt-5"> 
+					<div class="col-4">
+						<label>Image * : <small class="secondPlan"> (5Mo max)</small></label>
+						<input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php echo($strPhoto) ?>" name="fichier" type="file">
 					</div>
-					<div>
-						<label for="date">Date realise *</label>
-						<input type="date" name="date" id="date" class="form-control">
-					</div>
-					<div class="row d-flex flex-row">
-						<div class="col-6"><div>
-							<label for="actor">Acteur 1*</label>
-							<input type="text" name="actor" id="actor" class="form-control">
+					<div class="col-8">
+						<div>
+							<label for="txt_title">Titre *</label>
+							<input type="text" name="txt_title" id="txt_title" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['txt_title']))?'is-invalid':''; ?>" >
 						</div>
 						<div>
-							<label for="actor">Acteur 2</label>
-							<input type="text" name="actor" id="actor" class="form-control">
+							<label for="date">Date realise *</label>
+							<input type="date" name="date" id="date" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<div>
+								<label for="actor">Acteur 1*</label>
+								<input type="text" name="actor_ob" id="actor" class="form-control <?php echo (isset($arrErrors['actor_ob']))?'is-invalid':''; ?>" value="<?php echo($strActor_ob); ?>">
+							</div>
+							<div>
+								<label for="actor">Acteur 2</label>
+								<input type="text" name="actor_2" id="actor" class="form-control" value="<?php echo($strActor_2); ?>">
+							</div>
 						</div>
 						<div class="col-6">
 							<div>
 								<label for="actor">Acteur 3</label>
-								<input type="text" name="actor" id="actor" class="form-control">
+								<input type="text" name="actor_3" id="actor" class="form-control" value="<?php echo($strActor_3); ?>">
 							</div>
 							<div>
 								<label for="actor">Acteur 4</label>
-								<input type="text" name="actor" id="actor" class="form-control">
+								<input type="text" name="actor_4" id="actor" class="form-control" value="<?php echo($strActor_4); ?>">
 							</div>
 						</div>
-						
 					</div>
 				</div>
-				</div>
+				
 				<div class="row">
 					<div class="col-md-6">
 						<label>Zone de texte Symepris*:</label>
-						<textarea name="symepris" class="form-control" id=""></textarea>
+						<textarea name="symepris" class="form-control <?php echo (isset($arrErrors['symepris']))?'is-invalid':''; ?>" id="" value="<?php echo($strSymepris) ?>"></textarea>
 					</div>
 					<div class="col-md-6">
 						<label>Zone de texte Notes*:</label>
-						<textarea name="notes" class="form-control" id=""></textarea>
+						<textarea name="notes" class="form-control <?php echo (isset($arrErrors['notes']))?'is-invalid':''; ?>" id="" value="<?php echo($strNotes) ?>"></textarea>
 					</div>
 				</div>
-				<div>
-					<input class="form-control btn btn-primary" type="submit"  value="Soumettre ce film">
+				<div class="row mt-3">
+					<div class="col-3">
+						<input class="form-control btn btn-primary" type="submit"  value="Soumettre ce film">
+					</div>
 				</div>
 		</form>
 	</div>

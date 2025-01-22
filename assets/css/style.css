@@ -2,6 +2,7 @@
 :root{
     --main-color: rgb(168, 0, 190);
     --secund-color: rgb(96, 0, 109);
+    --backgroung-color: #F8F9FA;
 }
 
 /* OVERWRITE BOOTSTRAP */
@@ -11,7 +12,7 @@
 }
 .row {
     padding:2.5rem 0;
-    background-color: #F8F9FA;
+    background-color: var(--backgroung-color);
 }
 
 /* GLOBAL */
@@ -51,7 +52,7 @@ nav .pic_container img{
     border-radius: 50%;
     border:0.2rem solid var(--main-color);
 }
-
+/* 
 form div {
     display: flex;
     flex-direction: column;
@@ -63,14 +64,15 @@ form div:not(:last-child) {
     margin-bottom: 1.5rem;
 }
 
-form input:not(input[type="button"]), form textarea {
+form input:not(input[type="button"]), 
+form textarea {
     width:30rem;
     padding:0.2rem 0.4rem;
 }
 
 form button{
     margin-top:0.5rem;
-}
+} */
 
 
 /* PROFILE */
@@ -85,4 +87,29 @@ ul.pwd_conditions li{
 }
 ul.pwd_conditions li::marker{
     color:var(--main-color);
+}
+
+/* Form Movie */
+ 
+#movie_form form div:not(:last-child) {
+    margin-bottom: 0rem !important;
+}
+form div {
+    display: flex;
+    flex-direction: column;
+}
+form div button{
+    width: fit-content;
+}
+form div:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+form input:not(input[type="button"]), form textarea {
+    width:100%;
+    padding:0.2rem 0.4rem;
+}
+
+form button{
+    margin-top:0.5rem;
 }
