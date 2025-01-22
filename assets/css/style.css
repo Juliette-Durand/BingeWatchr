@@ -52,39 +52,40 @@ nav .pic_container img{
     border:0.2rem solid var(--main-color);
 }
 
-form div {
-    display: flex;
-    flex-direction: column;
-}
-form div button{
-    width: fit-content;
-}
-form div:not(:last-child) {
-    margin-bottom: 1.5rem;
-}
-
-form input:not(input[type="button"]), form textarea {
-    width:30rem;
-    padding:0.2rem 0.4rem;
-}
-
-form button{
-    margin-top:0.5rem;
-}
 
 
 /* Page mon compte - PROFILE */
-.picture_container .profile_pic{
+#my_account .picture_container .profile_pic{
     border-radius: 50%;
     width: 10rem;
 }
 
-ul.pwd_conditions li{
+#my_account ul.pwd_conditions li{
     list-style-type: disc;
     list-style-position: inside;
 }
-ul.pwd_conditions li::marker{
+#my_account ul.pwd_conditions li::marker{
     color:var(--main-color);
+}
+
+#my_account form div {
+    display: flex;
+    flex-direction: column;
+}
+#my_account form div button{
+    width: fit-content;
+}
+#my_account form div:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+#my_account form input:not(input[type="button"]), form textarea {
+    width:30rem;
+    padding:0.2rem 0.4rem;
+}
+
+#my_account form button{
+    margin-top:0.5rem;
 }
 
 
