@@ -69,7 +69,10 @@
 		
 		
 		// Vérification du fichier
-			$arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
+		// check if file is exist
+		// juju
+		if ($_FILES>0) {
+		$arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
 			if($arrFichier['error'] != 0){
 				$arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
 			}elseif($arrFichier['type'] != 'image/jpeg'){
@@ -77,6 +80,7 @@
 			elseif ($arrFichier['size'] > 5 * 1024 * 1024) {
 				$arrErrors['fichier'] = "Le fichier ne doit pas dépasser 5Mo";
 			}
+		}
 			
 			
 		if (!isset($arrErrors['fichier'])){
@@ -109,7 +113,7 @@
 
 	<div class="container"  id="form_movie">
 	
-		<form action="" method="post" id="movie_form">
+		<form action="" method="post" id="movie_form" enctype="multipart/form-data">
 			<div class="row g-5 py-3">
 				<?php if (count($arrErrors) > 0){ ?>
 					<div class="alert alert-danger">

@@ -39,10 +39,10 @@
         public function findMovie() : array {
             $strQueryOneMovie = "SELECT *  /* Këtu kërkojmë të gjitha kolonat */
                                 FROM movie
-                                WHERE movie_name = 'Les tuches'
+                                WHERE movie_name = 'Sinister'
                                 ORDER BY movie_name ASC";
                                 
-            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetchAll();
+            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $arrOneMovie;
         }
 
