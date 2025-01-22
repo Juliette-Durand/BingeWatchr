@@ -38,18 +38,31 @@
 		* Récupération des données d'un utilisateur
 		* @return array Tableau des utilisateurs de la bdd
 		*/
-		public function findUser():array{
+		public function findUser($strId):array{
 			
 			/* J'écris ma requête */
 			$strQueryOneUser 	= "	SELECT *
 									FROM user
-									WHERE user_id = 'SuperPoulet'
+									WHERE user_id = '".$strId."'
 									ORDER BY user_last_name ASC, user_first_name ASC;";
 	
 			/* Je récupère le résultat de ma requête d'utilisateurs */
 			$arrOneUser	= $this->_db->query($strQueryOneUser)->fetch();
 			
 			return $arrOneUser;
+		}
+
+		public function loginUser($strMail, $strPassword):array|bool{
+			$strQueryLoginUser	= "	SELECT *
+									FROM user
+									WHERE user_mail = '".$strMail."';";
+			$arrUser	=	$this->_db->query($strQueryLoginUser)->fetch();
+
+			if(($arrUser != false) && ($strPassword === $arrUser['user_password'])){
+				unset($arrUser['user_password'], $arrUser['user_mail'], $arrUser['user_create_date']);
+				return $arrUser;
+			}
+			return false;
 		}
 		
 		/**
