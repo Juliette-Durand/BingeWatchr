@@ -53,7 +53,8 @@
             public function movieDisplay():array {
                 $strQuery		=   "SELECT movie_name, movie_poster  
                                 FROM movie
-                                ORDER BY movie_release DESC
+                                WHERE movie_display IS NOT NULL
+                                ORDER BY movie_display DESC
                                 LIMIT 6 OFFSET 0;";
                                 
             $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();

@@ -4,8 +4,6 @@ include_once('head.php');
             require_once("entities/movie_entity.php");
 			require_once("models/movie_model.php");
 
-			
-			
 			// object pour Movie Model
 			$objMovieModel = new MovieModel(); 
 
@@ -20,9 +18,9 @@ include_once('head.php');
 
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Trouver un film" aria-label="Search">
-                    <button type="button" class="btn btn-primary btn-sm mb-2">Rechercher</button>
+                <form class="d-flex mb-2" role="search">
+                    <input class="form-control me-2" type="search" aria-label="Search">
+                    <button type="button" class="btn btn-primary btn-sm">Rechercher</button>
                 </form>
                 <div class="row">
                     <h2>Films à l'affiche</h2>
