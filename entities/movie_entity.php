@@ -150,5 +150,14 @@
             $this->_duration = $strDuration;
         }
 
+        /**
+         * Récupération de la date de sortie en format français
+         * @return string Date / Mois / Année
+         */
+        public function getDateFr(){
+            $strDate = $this->getRelease();
+            $strDateFr = date('d / M / Y', strtotime($strDate));
+            return $strDateFr;
+        } 
 
     }

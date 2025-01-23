@@ -1,18 +1,34 @@
 /* VARIABLES */
 :root{
-    --main-color: rgb(168, 0, 190);
-    --secund-color: rgb(96, 0, 109);
-    --backgroung-color: #F8F9FA;
+    --main-color: rgb(143, 0, 151);
+    --main-color-dark: rgb(109, 0, 115);
+    --secund-color: rgb(248, 249, 250);
+    --white: rgb(255, 255, 255);
 }
 
 /* OVERWRITE BOOTSTRAP */
+.btn{
+    border:solid var(--main-color) 0.1rem;
+    transition: 0.2s;
+    padding:0.4rem 0.8rem;
+}
+.btn:hover{
+    border:solid var(--main-color-dark) 0.1rem;
+    padding:0.4rem 1.2rem;
+}
 .btn.btn-primary{
     background-color: var(--main-color);
-    border:none;
+}
+.btn.btn-primary:hover{
+    background-color: var(--main-color-dark);
+}
+.btn.btn-secondary{
+    background-color: var(--white);
+    color:var(--main-color);
 }
 .row {
     padding:2.5rem 0;
-    background-color: var(--backgroung-color);
+    background-color: var(--secund-color);
 }
 
 /* GLOBAL */
@@ -35,6 +51,12 @@ ol, ul, li{
 }
 
 a{
+    color:var(--main-color);
+    text-decoration: none;
+    transition-duration: 0.2s;
+}
+a:hover{
+    color:var(--main-color-dark);
     text-decoration: none;
 }
 
@@ -52,64 +74,76 @@ nav .pic_container img{
     border-radius: 50%;
     border:0.2rem solid var(--main-color);
 }
-/* 
-form div {
-    display: flex;
-    flex-direction: column;
-}
-form div button{
-    width: fit-content;
-}
-form div:not(:last-child) {
-    margin-bottom: 1.5rem;
+nav .btn{
+    margin-left:1rem;
 }
 
-form input:not(input[type="button"]), 
-form textarea {
-    width:30rem;
-    padding:0.2rem 0.4rem;
-}
-
-form button{
-    margin-top:0.5rem;
-} */
 
 
-/* PROFILE */
-.picture_container .profile_pic{
+/* Page mon compte - PROFILE */
+#my_account .picture_container .profile_pic{
     border-radius: 50%;
     width: 10rem;
 }
 
-ul.pwd_conditions li{
+#my_account ul.pwd_conditions li{
     list-style-type: disc;
     list-style-position: inside;
 }
-ul.pwd_conditions li::marker{
+#my_account ul.pwd_conditions li::marker{
     color:var(--main-color);
 }
 
-/* Form Movie */
- 
-#movie_form form div:not(:last-child) {
-    margin-bottom: 0rem !important;
-}
-form div {
+#my_account form div {
     display: flex;
     flex-direction: column;
 }
-form div button{
+#my_account form div button{
     width: fit-content;
 }
-form div:not(:last-child) {
+#my_account form div:not(:last-child) {
     margin-bottom: 1.5rem;
 }
 
-form input:not(input[type="button"]), form textarea {
-    width:100%;
+#my_account form input:not(input[type="button"]), form textarea {
+    width:30rem;
     padding:0.2rem 0.4rem;
 }
 
-form button{
+#my_account form button{
     margin-top:0.5rem;
+}
+
+
+/* Page liste utilisateurs (rôles) */
+#users_list_role .row{
+    padding:0;
+    margin:0;
+    background: none;
+}
+#users_list_role .user_item{
+    border-radius:0.5rem;
+    background-color: var(--secund-color);
+    padding:1rem;
+}
+#users_list_role .user_item:not(:last-child){
+    margin-bottom: 1rem;
+}
+#users_list_role .user_item .user_item_left img{
+    border-radius: 50%;
+    height:3rem;
+}
+#users_list_role .user_item .user_item_left .user_title{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+#users_list_role .user_item .user_item_left .user_pseudo{
+    font-style: italic;
+    font-size: 1rem;
+    opacity:0.5;
+}
+
+/* Page de connexion (login) */
+#login input{
+    margin-bottom: 1rem;
 }

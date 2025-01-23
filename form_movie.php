@@ -34,7 +34,7 @@
 	$strActor_2		= $_POST['actor_2']??"";
 	$strActor_3		= $_POST['actor_3']??"";
 	$strActor_4		= $_POST['actor_4']??"";
-	$strSymepris	= $_POST['symepris']??"";
+	$strSynopsis	= $_POST['synopsis']??"";
 	$strNotes 		= $_POST['notes']??"";
 
 	//var_dump($objMovie);
@@ -60,8 +60,8 @@
 		if($strDate == ""){
 			$arrErrors['date'] = "Le date est obligatoire";
 		}
-		if ($strSymepris == ""){
-			$arrErrors['symepris'] = "La zone de texte symepris est obligatoire";
+		if ($strSynopsis == ""){
+			$arrErrors['synopsis'] = "La zone de texte synopsis est obligatoire";
 		}
 		if ($strNotes == ""){
 			$arrErrors['notes'] = "La zone de texte notes est obligatoire";
@@ -71,8 +71,12 @@
 		// Vérification du fichier
 		// check if file is exist
 		// juju
-		if ($_FILES>0) {
+		
+		
 		$arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
+		if ($arrFichier['error'] == 4){
+			$arrErrors['fichier'] = "Le image est obligatoire";
+		}else{
 			if($arrFichier['error'] != 0){
 				$arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
 			}elseif($arrFichier['type'] != 'image/jpeg'){
@@ -87,6 +91,7 @@
 			// Fichier temporaire = source
 			$strSource = $_FILES['fichier']['tmp_name'];
 			// destination de fichier
+			
 			$strDest	= "assets\img\movies\movie_pictures\ ".$_FILES['fichier']['name'];
 			// On déplace le fichier
 			if (!move_uploaded_file($strSource, $strDest)){
@@ -163,8 +168,8 @@
 				
 				<div class="row">
 					<div class="col-md-6">
-						<label>Zone de texte Symepris*:</label>
-						<textarea name="symepris" class="form-control <?php echo (isset($arrErrors['symepris']))?'is-invalid':''; ?>" id="" value="<?php echo($strSymepris) ?>"></textarea>
+						<label>Zone de texte synopsis*:</label>
+						<textarea name="synopsis" class="form-control <?php echo (isset($arrErrors['synopsis']))?'is-invalid':''; ?>" id="" value="<?php echo($strSynopsis) ?>"></textarea>
 					</div>
 					<div class="col-md-6">
 						<label>Zone de texte Notes*:</label>

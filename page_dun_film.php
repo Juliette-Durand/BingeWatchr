@@ -8,6 +8,7 @@
 
     require_once("entities/movie_entity.php");
     require_once("models/movie_model.php");
+    //require_once("models/actor_model.php");
 
     // object pour Movie Model
     $objMovieModel = new MovieModel(); 
@@ -26,9 +27,6 @@
             <?php
                     $objMovie = new MovieEntity();
                     $objMovie->hydrate($arrMovieEntity);
-                    // foreach($arrMovieModel as $arrDetMovie){
-                    //     $objMovie = new MovieEntity();
-                    //     $objMovie->hydrate($arrDetMovie); 
                 ?> 
                 <img src="assets/img/movies/movie_posters/<?php echo($objMovie->getPoster()); ?>" alt="photo de film">
                                                         
@@ -36,14 +34,21 @@
             <div class="col-md-8">
             
 
-                    <h2><?php echo($objMovie->getName()); ?> Titre </h2>
-                    <p><?php echo($objMovie->getDesc()); ?> Description</p>
-                    <p><?php echo($objMovie->getRelease()); ?> Release</p>
-                    <p><?php echo($objMovie->getCreatedate()); ?> creation date</p>
-                    <?php // if exist ajoute si non not ajoute ?>
-                    <p><?php echo($objMovie->getPegi()); ?> movie pegi 10 / 12 / 16 / 18</p>
-                    <p><?php echo($objMovie->getDuration()); ?> movie Duration</p>
+                    <h2><?php echo($objMovie->getName()); ?>  </h2>
+                    <p><?php echo($objMovie->getDesc()); ?> </p>
+                    <p><?php echo($objMovie->getDateFr()); ?> </p>
+                    <p><?php echo($objMovie->getCreatedate()); ?>  </p>
+                    <?php if($objMovie->getPegi() != null){ ?>
+                        <p><?php echo($objMovie->getPegi()); ?> </p>
+                    <?php } ?>
+                    <p><?php echo($objMovie->getDuration()); ?> </p>
 
+                    <?php 
+                        $objActors = new ActorModel(); 
+                        $arrActors = $objActors->findActorsByMovie($objMovie->getId());
+                        var_dump($arrActors);
+                    ?>
+                    
                 
             </div>
         </div>

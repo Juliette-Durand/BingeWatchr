@@ -3,17 +3,17 @@
 	* Classe d'un acteur
 	* @author Arlind Halimi
 	*/
-    require_once('mother')
+    require_once('mother_entity.php');
     class Actor extends MotherEntity {
 
         public function __construct() {
             parent::__construct();
         }
 
-        private _id;
-        private _first_name;
-        private _last_name;
-        private _picture;
+        private $_id;
+        private $_first_name;
+        private $_last_name;
+        private $_picture;
 
 
         /**
@@ -31,7 +31,7 @@
             $this->_first_name = $strFirstname;
         }
 
-              /**
+        /**
 		* Récupération du Last Name
 		* @return string Last Name
 		*/
