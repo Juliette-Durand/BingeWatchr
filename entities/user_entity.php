@@ -23,23 +23,7 @@
 		public function __construct(){
 			parent::__construct();
 			$this->_prefixe = 'user';
-		}
-		
-		/**
-		* Récupération de l'id
-		* @return string _id
-		*/
-		public function getId(){
-			return $this->_id;
-		}
-		/**
-		* Mise à jour de l'id
-		*/
-		public function setId(mixed $mixId) {
-			if (!is_string($mixId)) {
-				throw new TypeError("La classe Mother requiert un Id de type string");
-			}
-			$this->_id = $mixId;
+			$this->_id = '';
 		}
 		
 		/**

@@ -11,12 +11,11 @@
 	
 	
 	
-		include_once("head.php");
+	include_once("head.php");
 	// Instanciation
-
 	$objUser	= new UserModel();
 	
-	// Utilisation
+	// Récupération des données en sessions de user
 	$arrUser	= $objUser->findUser($_SESSION['user']->getId());
 	
 	$objUser = new UserEntity();

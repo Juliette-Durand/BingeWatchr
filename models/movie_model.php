@@ -51,7 +51,7 @@
             * @return tableau des films 
             */
             public function movieDisplay():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id
                                 FROM movie
                                 ORDER BY movie_release DESC
                                 LIMIT 6 OFFSET 0;";
