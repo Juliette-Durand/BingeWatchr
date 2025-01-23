@@ -36,10 +36,10 @@
         /* Requête pour trouve un film specifique */
 
 
-        public function findMovie() : array {
+        public function findMovie(int $intId) : array {
             $strQueryOneMovie = "SELECT *  /* Këtu kërkojmë të gjitha kolonat */
                                 FROM movie
-                                WHERE movie_name = 'Sinister'
+                                WHERE movie_id = ".$intId."
                                 ORDER BY movie_name ASC";
                                 
             $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
@@ -57,7 +57,7 @@
             * @return tableau des films 
             */
             public function movieDisplay():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                                 FROM movie
                                 ORDER BY movie_release DESC
                                 LIMIT 6 OFFSET 0;";
@@ -71,7 +71,7 @@
             * @return tableau des films 
             */
             public function movieRecentAdd():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                                 FROM movie
                                 ORDER BY movie_creation_date DESC
                                 LIMIT 6 OFFSET 0;";

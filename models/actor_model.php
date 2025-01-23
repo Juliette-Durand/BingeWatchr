@@ -5,9 +5,9 @@
     */
 
 
-    require_once('mother_entity.php');
+    require_once('mother_model.php');
 
-    class Actor extends MotherEntity {
+    class ActorModel extends MotherModel {
 
         /**
          * Constructeur de la classe
@@ -32,19 +32,18 @@
 
         /**
          * Récupération d'un acteur spécifique
-         * @return array Tableau de l'acteur
+         * @return string Tableau de l'acteur
          */
         
-        public function findActor($id){
-            $strQueryOneActor       = "SELECT * 
-                                FROM actor
-                                WHERE actor_id = :id";
+        public function findActor(int $intId) : array{
+            $strQueryOneActor       = "SELECT * FROM actor 
+                                        INNER JOIN play ON play_actor_id = actor_id
+                                        WHERE play_movie_id = ".$intId."
+                                        ORDER BY actor_first_name ASC";
 
-            $arrParams = array("id" => $id);
+            $arrOneActor = $this->_db->query($strQueryOneActor)->fetchAll();
+            return $arrOneActor;
 
-            $arrActor = $this->_db->query($strQueryOneActor, $arrParams)->fetch();
-
-            return $arrActor;
         }
 
     }

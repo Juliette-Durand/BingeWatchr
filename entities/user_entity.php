@@ -11,6 +11,7 @@
 		/**
 		* Initialisation des attributs
 		*/
+		protected string $_id = '';
 		private string $_last_name;
 		private string $_first_name;
 		private string $_email;
@@ -23,6 +24,7 @@
 		public function __construct(){
 			parent::__construct();
 			$this->_prefixe = 'user';
+			$this->_id='';
 		}
 		
 		/**

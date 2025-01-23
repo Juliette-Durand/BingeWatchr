@@ -156,7 +156,7 @@
          */
         public function getDateFr(){
             $strDate = $this->getRelease();
-            $strDateFr = date('d / M / Y', strtotime($strDate));
+            $strDateFr = date('d/m/Y', strtotime($strDate));
             return $strDateFr;
         } 
 

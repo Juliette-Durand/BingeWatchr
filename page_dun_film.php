@@ -7,18 +7,21 @@
     include('head.php');
 
     require_once("entities/movie_entity.php");
+    require_once("entities/acteur_entity.php");
     require_once("models/movie_model.php");
-    //require_once("models/actor_model.php");
+    require_once("models/actor_model.php");
 
     // object pour Movie Model
     $objMovieModel = new MovieModel(); 
 
 
     $objMovie = new MovieEntity(); 
-    $arrMovieEntity = $objMovieModel->findMovie();
+    $objMovie->setId($_GET["id"]);
+    //var_dump($objMovie->getId());
+    $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
     
 
-    var_dump($arrMovieEntity);
+    //var_dump($arrMovieEntity);
     
 ?>
     <div class="container pt-5">
@@ -44,9 +47,18 @@
                     <p><?php echo($objMovie->getDuration()); ?> </p>
 
                     <?php 
-                        $objActors = new ActorModel(); 
-                        $arrActors = $objActors->findActorsByMovie($objMovie->getId());
-                        var_dump($arrActors);
+                         $objActors = new ActorModel();
+                         $arrActors = $objActors->findActor($objMovie->getId()); // e gjen id e filmit
+
+                        foreach($arrActors as $actor){
+                            $objOneActor = new ActorEntity();
+                            $objOneActor->hydrate($actor);
+                            //var_dump($objOneActor);
+                            
+                            ?> 
+                            <p> <?php echo($objOneActor->getLast_name()." ". $objOneActor->getFirst_name()); ?> </p>
+                        <?php }
+                        //var_dump($arrActors);
                     ?>
                     
                 
