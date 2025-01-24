@@ -23,10 +23,10 @@
         public function findAll():array{
 
             /* Requête pour trouve tout les films */
-            $strQueryMovi 	= "	SELECT *
+            $strQueryMovie  	= "	SELECT *
                                 FROM movie
-                                ORDER BY movie_namee ASC;";
-            var_dump($strQueryMovi);
+                                ORDER BY movie_name ASC;";
+            var_dump($strQueryMovie);
 
 			/* Je récupère le résultat de ma requête d'utilisateurs */
             $arrMovie  = $this->_db->query($strQueryMovie)->fetchAll();
@@ -34,15 +34,13 @@
             return $arrMovie;
         }
         /* Requête pour trouve un film specifique */
-        public function findMovie() : array{
-            $strQueryOneMovie ="SELECT * 
-                                FROM movie 
-                                WHERE movie_name = 'Les tuches' 
-                                ORDER BY movie_name ASC, movie_release ASC"; 
-
-            /** Le variable $arrOneMovie récupère le résultat de requête $strQueryOneMovie */
-            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetchAll();
-
+        public function findMovie(int $intId) : array {
+            $strQueryOneMovie = "SELECT * 
+                                FROM movie
+                                WHERE movie_id = ".$intId."
+                                ORDER BY movie_name ASC";
+                                
+            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $arrOneMovie;
         }
 
@@ -51,7 +49,7 @@
             * @return tableau des films 
             */
             public function movieDisplay():array {
-                $strQuery		=   "SELECT movie_name, movie_poster, movie_id
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                                 FROM movie
                                 ORDER BY movie_release DESC
                                 LIMIT 6 OFFSET 0;";
@@ -65,7 +63,8 @@
             * @return tableau des films 
             */
             public function movieRecentAdd():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
+
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                                 FROM movie
                                 ORDER BY movie_creation_date DESC
                                 LIMIT 6 OFFSET 0;";

@@ -32,9 +32,7 @@
 		* Mise à jour de l'id
 		* @param int l'identifiant
 		*/
-		
-		public function setId(int|string $mixId) {
-			
+		public function setId(int|string $mixId) {	
 			$this->_id = $mixId;
 		}
 		

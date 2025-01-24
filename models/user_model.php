@@ -38,8 +38,8 @@
 		* Récupération des données d'un utilisateur
 		* @return array Tableau des utilisateurs de la bdd
 		*/
-		public function findUser($strId):array{
-			
+
+		public function findUser($strId):array{		
 			/* J'écris ma requête */
 			$strQueryOneUser 	= "	SELECT *
 									FROM user

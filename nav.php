@@ -40,7 +40,6 @@
 									<a href="login.php" class="btn btn-primary">Se connecter</a>
 								<?php }
 							?>
-
 						</ul>
 					</div>
 				</div>
