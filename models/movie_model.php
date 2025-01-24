@@ -9,6 +9,9 @@
 
     class MovieModel extends MotherModel{
 
+        // Attributs pour la recherche
+        public string $strKeyword = "";
+
         /**
         * Constructeur de la classe
         */
@@ -73,6 +76,18 @@
                                 
             $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
             return $arrMovieRecentAdd;
+            }
+            
+            /*
+             * Récupération du mot-clé dans la barre de recherche pour trouver un movie_name
+             * @return liste des films avec le mot-clé
+             */
+            public function findKeyword(){
+                $strQuery = "SELECT *
+                            FROM movie
+                            WHERE movie_name LIKE '%".$this->strKeyword."%'";
+                $arrMovie = $this->_db->query($strQuery)->fetchAll();
+                return $arrMovie;
             }
 
     }

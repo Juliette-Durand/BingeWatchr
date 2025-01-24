@@ -10,7 +10,11 @@ include_once('head.php');
             //Utilisation (création d'un tableau contenant les infos de la requête)
             $arrMovie = $objMovieModel->movieDisplay();
             $arrRecentMovie = $objMovieModel->movieRecentAdd();
+            $arrKeyword = $objMovieModel->findKeyword();
             //var_dump($arrMovie);
+
+            // Récupération des données du formulaire
+	        $objMovieModel->strKeyword = $_POST['keywords']??"";
             
             ?>
 
@@ -18,8 +22,8 @@ include_once('head.php');
 
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
-                <form class="d-flex mb-2" role="search">
-                    <input class="form-control me-2" type="search" aria-label="Search">
+                <form class="d-flex mb-2" role="search" method="post">
+                    <input class="form-control me-2" type="search" aria-label="Search" name="keywords" value="<?php echo($objMovieModel->strKeyword); ?>">
                     <button type="button" class="btn btn-primary btn-sm">Rechercher</button>
                 </form>
                 <div class="row">
