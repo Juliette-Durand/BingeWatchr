@@ -18,12 +18,12 @@
 	$objMovie	= new MovieModel();
 
 	// Movie
-	$arrMovie 	= $objMovie->findMovie();
+	//$arrMovie 	= $objMovie->findMovie();
 	
-	foreach ($arrMovie as $arrDetMovie){
-		$objMovie = new MovieEntity();
+	//foreach ($arrMovie as $arrDetMovie){
+		//$objMovie = new MovieEntity();
 		//$objMovie->hydrate($arrDetMovie);
-	}
+	//}
 
 	// Récupérer les informations du $_POST
 	// ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
@@ -34,8 +34,9 @@
 	$strActor_2		= $_POST['actor_2']??"";
 	$strActor_3		= $_POST['actor_3']??"";
 	$strActor_4		= $_POST['actor_4']??"";
-	$strSynopsis	= $_POST['synopsis']??"";
+	$strTitle		= $_POST['synopsis']??"";
 	$strNotes 		= $_POST['notes']??"";
+	$strDuration	= $_POST['duration']??"";
 
 	//var_dump($objMovie);
 	//var_dump($arrMovie);
@@ -140,6 +141,10 @@
 						<div>
 							<label for="date">Date realise *</label>
 							<input type="date" name="date" id="date" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+						</div>
+						<div>
+							<label for="duration">Duration</label>
+							<input type="text" name="duration" id="duration" class="form-control <?php echo (isset($arrErrors['duration']))?'is-invalid':''; ?>" value="<?php echo($strDuration); ?>">
 						</div>
 					</div>
 					<div class="row">
