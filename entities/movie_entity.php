@@ -159,5 +159,4 @@
             $strDateFr = date('d/m/Y', strtotime($strDate));
             return $strDateFr;
         } 
-
     }

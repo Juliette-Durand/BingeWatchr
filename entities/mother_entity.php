@@ -25,16 +25,14 @@
 		* Récupération de l'id
 		* @return int l'identifiant
 		*/
-		public function getId(){
+		public function getId():int|string{
 			return $this->_id;
 		}
 		/**
 		* Mise à jour de l'id
 		* @param int l'identifiant
 		*/
-		
-		public function setId(int | string  $mixId) {
-			
+		public function setId(int|string $mixId) {	
 			$this->_id = $mixId;
 		}
 		

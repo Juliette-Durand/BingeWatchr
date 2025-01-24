@@ -34,10 +34,8 @@
             return $arrMovie;
         }
         /* Requête pour trouve un film specifique */
-
-
         public function findMovie(int $intId) : array {
-            $strQueryOneMovie = "SELECT *  /* Këtu kërkojmë të gjitha kolonat */
+            $strQueryOneMovie = "SELECT * 
                                 FROM movie
                                 WHERE movie_id = ".$intId."
                                 ORDER BY movie_name ASC";
@@ -46,12 +44,6 @@
             return $arrOneMovie;
         }
 
-
-
-
-
-
-        
             /*
             * Récupération des 6 derniers films sortis 
             * @return tableau des films 
@@ -71,6 +63,7 @@
             * @return tableau des films 
             */
             public function movieRecentAdd():array {
+
                 $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                                 FROM movie
                                 ORDER BY movie_creation_date DESC

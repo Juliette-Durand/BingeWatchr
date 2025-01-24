@@ -25,6 +25,7 @@ include_once('head.php');
                             $objMovie->hydrate($arrDetMovie);
                             include('movie_card.php');
                         }
+
                     ?>
                 </div>
 

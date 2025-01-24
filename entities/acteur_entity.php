@@ -15,12 +15,10 @@
         private $_last_name;
         private $_picture;
 
-
         /**
 		* Récupération du First Name
 		* @return string First Name
 		*/
-
         public function getFirst_name(){
             return $this->_first_name;
         }
@@ -37,6 +35,7 @@
 		* @return string Last Name
 		*/
         public function getLast_name(){
+
             return $this->_last_name;
         }
         /**

@@ -6,13 +6,13 @@
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
-					<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
 						<ul class="navbar-nav d-flex align-items-center">
 							<li class="nav-item">
-								<a class="nav-link" aria-current="page" href="index.php">Accueil</a>
+								<a class="nav-link" href="index.php">Accueil</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Ma collection</a>
+								<a class="nav-link" href="collection.php">Ma collection</a>
 							</li>
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,18 +21,25 @@
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
 									<li><a class="dropdown-item" href="#">Gestion des commentaires</a></li>
-									<li><a class="dropdown-item" href="#">Rôles des utilisateurs</a></li>
+									<li><a class="dropdown-item" href="user_role_manage.php">Rôles des utilisateurs</a></li>
 								</ul>
 							</li>
-							<li class="nav-item dropdown profile_picture">
-								<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<div class="pic_container"><img src="https://picsum.photos/200" alt=""></div>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
-									<li><a class="dropdown-item" href="#">Déconnexion</a></li>
-								</ul>
-							</li>
+							<?php
+								if(isset($_SESSION['user'])){ ?>
+									<li class="nav-item dropdown profile_picture">
+										<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+											<div class="pic_container"><img src="assets/img/users/profile_pictures/<?php echo($_SESSION['user']->getAvatar()); ?>" alt=""></div>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
+											<li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
+										</ul>
+									</li>
+								<?php } else { ?>
+									<a href="create_accout.php" class="btn btn-secondary">S'inscrire</a>
+									<a href="login.php" class="btn btn-primary">Se connecter</a>
+								<?php }
+							?>
 						</ul>
 					</div>
 				</div>

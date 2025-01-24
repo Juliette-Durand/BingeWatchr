@@ -8,25 +8,23 @@
 	
 	// Inclusion du fichier model et entity
 	require_once("models/user_model.php");
-	require_once("entities/user_entity.php");
-	
+
+	include_once("head.php");
 	// Instanciation
 	$objUser	= new UserModel();
 	
-	// Utilisation
-	$arrUser	= $objUser->findUser();
+	// Récupération des données en sessions de user
+	$arrUser	= $objUser->findUser($_SESSION['user']->getId());
 	
-	foreach($arrUser as $arrDetUser){
-		$objUser = new UserEntity();
-		$objUser->hydrate($arrDetUser);
-	}
+	$objUser = new UserEntity();
+	$objUser->hydrate($arrUser);
 	
 	/*var_dump($arrUser);
 	var_dump($objUser);*/
 
-
-	include_once("head.php");
 ?>
+
+	<section id="my_account">
 		<div class="container mb-5">
 			<h1><?php echo($strTitle); ?></h1>
 		</div>
@@ -98,9 +96,9 @@
                 </form>
             </div>
         </div>
-
-
-    </main>
+    
+	</section>
+  </main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
