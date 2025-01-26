@@ -164,7 +164,7 @@
 							<div>
 								<label for="actor">Actor</label>
 								<select id="actor" name="actor"  class="form-control">
-								
+									<option value="0" ></option>
 									
 								</select>
 							</div>
