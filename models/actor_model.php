@@ -45,5 +45,14 @@
             return $arrOneActor;
 
         }
+        public function NameSurnameActors(){
+            $strQuery      = "SELECT CONCAT (actor_first_name, ' ', actor_last_name) as Actor 
+            FROM actor as Actor
+            ORDER BY actor_last_name ASC;";
+
+            $arrActors = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrActors;
+        }
 
     }

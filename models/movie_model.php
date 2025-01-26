@@ -77,27 +77,44 @@
              * Public function addMovie (string $strTitle, string $strTitle, string $strDate, string $strPhoto, string $strDuration)
              */
             public function addMovie($objMovieEntity){
-                $strQuery = "INSERT INTO movie 
-                    (movie_name, movie_desc, movie_release, movie_poster, movie_duration)
-                    VALUE (:name, :desc, :release, :poster, :duration)";
+                try{
+                    $strQuery = "INSERT INTO movie 
+                        (movie_name, movie_desc, movie_release, movie_poster, movie_duration)
+                        VALUE (:name, :desc, :release, :poster, :duration)";
 
-                $prep = $pdo->prepare($strQuery);
-                $prep->bindValue(:name, $objMovieEntity->getName(), PDO::PARAM_STR);
-                $prep->bindValue(:desc, $objMovieEntity->getDesc(), PDO::PARAM_STR);
-                $prep->bindValue(:release, $objMovieEntity->getRelease(), PDO::PARAM_STR);
-                $prep->bindValue(:poster, $objMovieEntity->getPoster(), PDO::PARAM_STR);
-                $prep->bindValue(:duration, $objMovieEntity->getDuration(), PDO::PARAM_STR);
+                    $prep = $pdo->prepare($strQuery);
+                    $prep->bindValue(":name",       $objMovieEntity->getName(), PDO::PARAM_STR);
+                    $prep->bindValue(":desc",       $objMovieEntity->getDesc(), PDO::PARAM_STR);
+                    $prep->bindValue(":release",    $objMovieEntity->getRelease(), PDO::PARAM_STR);
+                    $prep->bindValue(":poster",     $objMovieEntity->getPoster(), PDO::PARAM_STR);
+                    $prep->bindValue(":duration",   $objMovieEntity->getDuration(), PDO::PARAM_STR);
 
-                $arrAddMovie = $this->_db->query($strQuery)->execute();
-                return $arrAddMovie;
+                    $arrAddMovie = $this->_db->query($strQuery)->execute();
+                }catch(PDOExeption $e){
+                    return false;
+                }
+                return true;
             } 
 
-            public function addActor($objMovieEntity){
-                $strQuery = " INSERT INTO actor
-                    (actor_first_name, actor_last_name, actor_picture)
-                    VALUE (:firstName, :lastName, :picture)";
+            public function addActor($objActorEntity){
+                try{
+                    $strQuery = " INSERT INTO actor
+                        (actor_first_name, actor_last_name, actor_picture)
+                        VALUE (:actortName, :actorLast, :actorPicture);";
 
-                $arrAddActor = $this->_db->query($strQuery)->execute();
-                return $arrAddActor;
+                        $rqPrep = $this->_db->prepare($strQuery);
+                        $rqPrep->bindValue(":actortName",     $objActorEntity->getFirst_name(), PDO::PARAM_STR);
+                        $rqPrep->bindValue(":actorLast",      $objActorEntity->getLast_name(), PDO::PARAM_STR);
+                        $rqPrep->bindValue(":actorPicture",   $objActorEntity->getPicture(), PDO::PARAM_STR);
+
+
+                    $rqPrep->execute();
+                }catch(PDOExeption $e){
+                    return false;
+                }
+                return true;
             }
+        
+    
     }
+

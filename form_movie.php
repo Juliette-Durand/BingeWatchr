@@ -12,10 +12,12 @@
 	// Inclusion du ficher model et entity
 	require_once("entities/movie_entity.php");
 	require_once("models/movie_model.php");
+	require_once("entities/acteur_entity.php");
 				
 	
 	// Instanciation
-	$objMovie	= new MovieModel();
+	$objMovie		= new MovieModel();
+	$objActorEntity = new ActorEntity();
 
 	// Movie
 	//$arrMovie 	= $objMovie->findMovie();
@@ -34,9 +36,10 @@
 	$strActor_2		= $_POST['actor_2']??"";
 	$strActor_3		= $_POST['actor_3']??"";
 	$strActor_4		= $_POST['actor_4']??"";
-	$strTitle		= $_POST['synopsis']??"";
+	$strSynopsis	= $_POST['synopsis']??"";
 	$strNotes 		= $_POST['notes']??"";
 	$strDuration	= $_POST['duration']??"";
+
 
 	//var_dump($objMovie);
 	//var_dump($arrMovie);
@@ -106,8 +109,17 @@
 		
 
 		// Si aucune erreur, traitement 	
-		if (count($arrErrors) == 0){
+		if (count($arrErrors) === 0){
 			// => Formulaire OK
+			// Appel une métgid dans le modéle, avec en paramétre l'objet
+			$boolOK = $objMovie->addActor($objActorEntity);
+			//Informer l'utilisateur si einsertion ok/pas ok
+			if($boolOK){
+				var_dump('ok');
+			}else{
+				$arrErrors[]="l'insertion s'est mal passée";
+			}
+			
 			// => exemple Insertion en BDD
 		}
 	}
@@ -149,6 +161,13 @@
 					</div>
 					<div class="row">
 						<div class="col-6">
+							<div>
+								<label for="actor">Actor</label>
+								<select id="actor" name="actor"  class="form-control">
+								
+									
+								</select>
+							</div>
 							<div>
 								<label for="actor">Acteur 1*</label>
 								<input type="text" name="actor_ob" id="actor" class="form-control <?php echo (isset($arrErrors['actor_ob']))?'is-invalid':''; ?>" value="<?php echo($strActor_ob); ?>">

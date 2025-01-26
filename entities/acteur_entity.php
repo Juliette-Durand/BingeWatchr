@@ -45,5 +45,19 @@
         public function setLast_name(string $strLastname){
             $this->_last_name = $strLastname;
         }
+        /**
+		* Récupération du Picture d'acteur
+		* @return string Picture d'acteur
+		*/
+        public function getPicture(){
+            return $this->_picture;
+        }
+        /**
+		* Mise à jour du Picture d'acteur
+		* @param string Picture d'acteur
+		*/
+        public function setPicture(string $strPicture){
+            $this->_picture = $strPicture;
+        }
 
     }
