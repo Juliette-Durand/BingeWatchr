@@ -11,14 +11,15 @@ include_once('head.php');
             $arrMovie = $objMovieModel->movieDisplay();
             $arrRecentMovie = $objMovieModel->movieRecentAdd();
             $arrKeyword = $objMovieModel->findKeyword();
-            //var_dump($arrMovie);
 
             // Récupération des données du formulaire
 	        $objMovieModel->strKeyword = $_POST['keywords']??"";
             
+            // Utiliser
+			$arrMovie		= $objMovieModel->findKeyword();
+            //var_dump($arrMovie);
+            //var_dump($objMovieModel);
             ?>
-
-            
 
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
