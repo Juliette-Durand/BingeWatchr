@@ -43,7 +43,7 @@
                     <h2><?php echo($objMovie->getName()); ?>  </h2>
                     <p><?php echo($objMovie->getDesc()); ?> </p>
                     <p><?php echo($objMovie->getDateFr()); ?> </p>
-                    <p><?php echo($objMovie->getCreatedate()); ?>  </p>
+                    <p><?php echo($objMovie->getCreation_date()); ?>  </p>
                     <?php if($objMovie->getPegi() != null){ ?>
                         <p><?php echo($objMovie->getPegi()); ?> </p>
                     <?php } ?>

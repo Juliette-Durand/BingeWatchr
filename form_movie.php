@@ -17,7 +17,10 @@
 	
 	// Instanciation
 	$objMovie		= new MovieModel();
-	$objActorEntity = new ActorEntity();
+	$objMovieEntity	= new MovieEntity();
+
+
+	//$objActorEntity = new ActorEntity();
 
 	// Movie
 	//$arrMovie 	= $objMovie->findMovie();
@@ -29,21 +32,24 @@
 
 	// Récupérer les informations du $_POST
 	// ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
-	$strPhoto 		= $_POST['fichier']??"";
-	$strTitle 		= $_POST['txt_title']??"";
-	$strDate 		= $_POST['date']??"";
-	$strActor_ob	= $_POST['actor_ob']??"";
-	$strActor_2		= $_POST['actor_2']??"";
-	$strActor_3		= $_POST['actor_3']??"";
-	$strActor_4		= $_POST['actor_4']??"";
-	$strSynopsis	= $_POST['synopsis']??"";
+	$strPhoto 		= $_FILES['fichier']["name"]??"";
+	$strPhoto		= strtolower($strPhoto);
+	$strTitle 		= $_POST['name']??"";
+	$strDate 		= $_POST['release']??"";
+	// $strActor_ob	= $_POST['actor_ob']??"";
+	// $strActor_2		= $_POST['actor_2']??"";
+	// $strActor_3		= $_POST['actor_3']??"";
+	// $strActor_4		= $_POST['actor_4']??"";
+	$strSynopsis	= $_POST['desc']??"";
 	$strNotes 		= $_POST['notes']??"";
 	$strDuration	= $_POST['duration']??"";
+	$strMovieDisplay = $_POST['display']??"";
 
+	
 
 	//var_dump($objMovie);
 	//var_dump($arrMovie);
-	var_dump($_FILES);
+	//var_dump($_FILES);
 	var_dump($_POST);
 
 
@@ -51,21 +57,23 @@
 	$arrErrors = array();
 
 	if(count($_POST) > 0){
+		$objMovieEntity->hydrate($_POST);
+		$objMovieEntity->setPoster($strPhoto);
 		// Vérification du formulaire
 		// if($strPhoto == ""){
 		// 	$arrErrors['fichier'] = "Image est obligatoire";
 		// }
 		if($strTitle == ""){
-			$arrErrors['txt_title'] = "Title est obligatoire";
+			$arrErrors['name'] = "Title est obligatoire";
 		}
-		if($strActor_ob == ""){
-			$arrErrors['actor_ob'] = "Le nom de l'acteur est obligatoire";
-		}
+		//if($strActor_ob == ""){
+		//	$arrErrors['actor_ob'] = "Le nom de l'acteur est obligatoire";
+		//}
 		if($strDate == ""){
-			$arrErrors['date'] = "Le date est obligatoire";
+			$arrErrors['release'] = "Le date est obligatoire";
 		}
 		if ($strSynopsis == ""){
-			$arrErrors['synopsis'] = "La zone de texte synopsis est obligatoire";
+			$arrErrors['desc'] = "La zone de texte synopsis est obligatoire";
 		}
 		if ($strNotes == ""){
 			$arrErrors['notes'] = "La zone de texte notes est obligatoire";
@@ -96,7 +104,7 @@
 			$strSource = $_FILES['fichier']['tmp_name'];
 			// destination de fichier
 			
-			$strDest	= "assets\img\movies\movie_pictures\ ".$_FILES['fichier']['name'];
+			$strDest	= "assets\img\movies\movie_posters\ ".$strPhoto;
 			// On déplace le fichier
 			if (!move_uploaded_file($strSource, $strDest)){
 				$arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
@@ -112,7 +120,9 @@
 		if (count($arrErrors) === 0){
 			// => Formulaire OK
 			// Appel une métgid dans le modéle, avec en paramétre l'objet
-			$boolOK = $objMovie->addActor($objActorEntity);
+			var_dump($objMovieEntity);
+			$boolOK = $objMovie->addMovie($objMovieEntity);
+
 			//Informer l'utilisateur si einsertion ok/pas ok
 			if($boolOK){
 				var_dump('ok');
@@ -147,19 +157,23 @@
 					</div>
 					<div class="col-8">
 						<div>
-							<label for="txt_title">Titre *</label>
-							<input type="text" name="txt_title" id="txt_title" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['txt_title']))?'is-invalid':''; ?>" >
+							<label for="name">Titre *</label>
+							<input type="text" name="name" id="name" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['txt_title']))?'is-invalid':''; ?>" >
 						</div>
 						<div>
-							<label for="date">Date realise *</label>
-							<input type="date" name="date" id="date" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+							<label for="release">Date realise *</label>
+							<input type="date" name="release" id="release" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+						</div>
+						<div>
+							<label for="display">Date mise a l'affiche</label>
+							<input type="date" name="display" id="display" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strMovieDisplay); ?>">
 						</div>
 						<div>
 							<label for="duration">Duration</label>
-							<input type="text" name="duration" id="duration" class="form-control <?php echo (isset($arrErrors['duration']))?'is-invalid':''; ?>" value="<?php echo($strDuration); ?>">
+							<input type="time" name="duration" id="duration" class="form-control <?php echo (isset($arrErrors['duration']))?'is-invalid':''; ?>" value="<?php echo($strDuration); ?>">
 						</div>
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-6">
 							<div>
 								<label for="actor">Actor</label>
@@ -187,13 +201,13 @@
 								<input type="text" name="actor_4" id="actor" class="form-control" value="<?php echo($strActor_4); ?>">
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 				
 				<div class="row">
 					<div class="col-md-6">
 						<label>Zone de texte synopsis*:</label>
-						<textarea name="synopsis" class="form-control <?php echo (isset($arrErrors['synopsis']))?'is-invalid':''; ?>" id="" value="<?php echo($strSynopsis) ?>"></textarea>
+						<textarea name="desc" class="form-control <?php echo (isset($arrErrors['desc']))?'is-invalid':''; ?>" id="" value="<?php echo($strSynopsis) ?>"></textarea>
 					</div>
 					<div class="col-md-6">
 						<label>Zone de texte Notes*:</label>

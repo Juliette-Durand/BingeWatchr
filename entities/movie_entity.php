@@ -18,7 +18,7 @@
         private $_name;
         private $_desc;
         private $_release;
-        private $_create_date;
+        private $_creation_date;
         private $_poster;
         private $_pegi;
         private $_display;
@@ -75,18 +75,18 @@
         }
 
         /**
-		* Récupération du date de Realise
-		* @return string date de Realise
+		* Récupération du date de entre de la BDD
+		* @return string date de entre de la BDD
 		*/
-        public function getCreatedate(){
-            return $this->_create_date;
+        public function getCreation_date(){
+            return $this->_creation_date;
         }
         /**
-		* Mise à jour du date de Realise
-		* @param string date de Realise
+		* Mise à jour du date de entre de la BDD
+		* @param string date de entre de la BDD
 		*/
-        public function setCreatedate(string $strCreateDate){
-            $this->_create_date = $strCreateDate;
+        public function setCreation_date(string $strCreateDate){
+            $this->_creation_date = $strCreateDate;
         }
 
 
@@ -132,6 +132,7 @@
         * @param string display
         */
         public function setDisplay(string|null $strDisplay = NULL){
+            //if(){}
             $this->_display = $strDisplay;
         }
 
