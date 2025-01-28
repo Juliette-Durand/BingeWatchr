@@ -12,15 +12,17 @@
 	// Inclusion du ficher model et entity
 	require_once("entities/movie_entity.php");
 	require_once("models/movie_model.php");
+	require_once("models/actor_model.php");
 	require_once("entities/acteur_entity.php");
-				
+	
 	
 	// Instanciation
 	$objMovie		= new MovieModel();
 	$objMovieEntity	= new MovieEntity();
-
-
-	//$objActorEntity = new ActorEntity();
+	$objActorEntity = new ActorEntity();
+	$objActorModel 	= new ActorModel();
+	// Merr të gjithë aktorët
+	$arrActor = $objActorModel->findAllActors();
 
 	// Movie
 	//$arrMovie 	= $objMovie->findMovie();
@@ -50,7 +52,8 @@
 	//var_dump($objMovie);
 	//var_dump($arrMovie);
 	//var_dump($_FILES);
-	var_dump($_POST);
+	//var_dump($_POST);
+	
 
 
 	// Initialisation du tableau vide
@@ -82,7 +85,6 @@
 		
 		// Vérification du fichier
 		// check if file is exist
-		// juju
 		
 		
 		$arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
@@ -158,11 +160,11 @@
 					<div class="col-8">
 						<div>
 							<label for="name">Titre *</label>
-							<input type="text" name="name" id="name" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['txt_title']))?'is-invalid':''; ?>" >
+							<input type="text" name="name" id="name" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['name']))?'is-invalid':''; ?>" >
 						</div>
 						<div>
 							<label for="release">Date realise *</label>
-							<input type="date" name="release" id="release" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+							<input type="date" name="release" id="release" class="form-control <?php echo (isset($arrErrors['release']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
 						</div>
 						<div>
 							<label for="display">Date mise a l'affiche</label>
@@ -173,35 +175,36 @@
 							<input type="time" name="duration" id="duration" class="form-control <?php echo (isset($arrErrors['duration']))?'is-invalid':''; ?>" value="<?php echo($strDuration); ?>">
 						</div>
 					</div>
-					<!-- <div class="row">
+					<div class="row">
 						<div class="col-6">
 							<div>
 								<label for="actor">Actor</label>
 								<select id="actor" name="actor"  class="form-control">
-									<option value="0" ></option>
+									<option value="0" <?php //echo(($objActorModel->intCreator == 0)?"selected":"");?> >--</option>
 									
+									<?php foreach ($arrActor as $arrDetActor) { 
+										$objActorEntity->hydrate($arrDetActor);
+										var_dump($objActorEntity);
+									?> 
+									
+									<option value="<?php echo($objActorEntity->getId()); //=> Utiliser le getter ?>" 
+											<?php echo(($objActorModel->intActor == $objActorEntity->getId())?"selected":"");?> >
+										<?php echo($objActorEntity->getFirst_name()." ". $objActorEntity->getLast_name()); ?> 
+									</option>
+									<?php }	?>
+
 								</select>
+								
+								
 							</div>
-							<div>
-								<label for="actor">Acteur 1*</label>
-								<input type="text" name="actor_ob" id="actor" class="form-control <?php echo (isset($arrErrors['actor_ob']))?'is-invalid':''; ?>" value="<?php echo($strActor_ob); ?>">
-							</div>
-							<div>
-								<label for="actor">Acteur 2</label>
-								<input type="text" name="actor_2" id="actor" class="form-control" value="<?php echo($strActor_2); ?>">
-							</div>
+						
 						</div>
 						<div class="col-6">
-							<div>
-								<label for="actor">Acteur 3</label>
-								<input type="text" name="actor_3" id="actor" class="form-control" value="<?php echo($strActor_3); ?>">
-							</div>
-							<div>
-								<label for="actor">Acteur 4</label>
-								<input type="text" name="actor_4" id="actor" class="form-control" value="<?php echo($strActor_4); ?>">
-							</div>
+							<label for="new actor">Ajoute un actor</label> 
+							<a href='#' class="form-control btn btn-primary"  value="Ajoute un actor">Ajoute un actor </a>
 						</div>
-					</div> -->
+						
+					</div> 
 				</div>
 				
 				<div class="row">
