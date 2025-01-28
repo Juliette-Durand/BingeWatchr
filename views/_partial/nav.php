@@ -36,8 +36,8 @@
 											<div class="pic_container"><img src="assets/img/users/profile_pictures/<?php echo($_SESSION['user']->getAvatar()); ?>" alt=""></div>
 										</a>
 										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
-											<li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
+											<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=my_account">Mon compte</a></li>
+											<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=logout">Déconnexion</a></li>
 										</ul>
 									</li>
 								<?php } else { ?>

@@ -3,30 +3,6 @@
 	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
 	* @author Juliette Durand
 	*/
-
-	// Variables fonctionnelles
-	$refPage="my_account";
-	
-	// Variables d'affichage
-	/* Ce qui sert de h1 et/ou de nom dans le titre de la page */
-	$strTitle="Mon compte";
-	
-	// Inclusion du fichier model et entity
-	require_once("models/user_model.php");
-
-	include_once("head.php");
-	// Instanciation
-	$objUser	= new UserModel();
-	
-	// Récupération des données en sessions de user
-	$arrUser	= $objUser->findUser($_SESSION['user']->getId());
-	
-	$objUser = new UserEntity();
-	$objUser->hydrate($arrUser);
-	
-	/*var_dump($arrUser);
-	var_dump($objUser);*/
-
 ?>
 
 	<section id="my_account">
@@ -103,8 +79,3 @@
         </div>
     
 	</section>
-  </main>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>
