@@ -7,38 +7,36 @@ include_once('head.php');
 			// object pour Movie Model
 			$objMovieModel = new MovieModel(); 
 
-            //Utilisation (création d'un tableau contenant les infos de la requête)
-            $arrMovie = $objMovieModel->movieDisplay();
-            $arrRecentMovie = $objMovieModel->movieRecentAdd();
-            $arrKeyword = $objMovieModel->findKeyword();
-
             // Récupération des données du formulaire
 	        $objMovieModel->strKeyword = $_POST['keywords']??"";
-            
-            // Utiliser
-			$arrMovie		= $objMovieModel->findKeyword();
-            //var_dump($arrMovie);
-            //var_dump($objMovieModel);
+            //var_dump($_POST);
+            //Utilisation (création d'un tableau contenant les infos de la requête)
+            $arrMovieDisplay = $objMovieModel->movieList();
+            $arrRecentMovie = $objMovieModel->movieList(false);
+ 
             ?>
 
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
                 <form class="d-flex mb-2" role="search" method="post">
                     <input class="form-control me-2" type="search" aria-label="Search" name="keywords" value="<?php echo($objMovieModel->strKeyword); ?>">
-                    <button type="button" class="btn btn-primary btn-sm">Rechercher</button>
+                    <input type="submit" class="btn btn-primary btn-sm" value="Rechercher">
                 </form>
+
+                <?php if(count($arrMovieDisplay) > 0) {  ?>
                 <div class="row">
                     <h2>Films à l'affiche</h2>
                     <?php 
-                        foreach($arrMovie as $arrDetMovie) {
+                        foreach($arrMovieDisplay as $arrDetMovie) {
                             $objMovie = new MovieEntity();
                             $objMovie->hydrate($arrDetMovie);
                             include('movie_card.php');
                         }
-
                     ?>
                 </div>
-
+                <?php } ?>
+                
+                <?php if(count($arrRecentMovie) > 0) {  ?>
                 <div class="row">
                     <h2>Films récemment ajoutés</h2>
                     <?php 
@@ -47,9 +45,9 @@ include_once('head.php');
                             $objMovie->hydrate($arrDetMovie);
                             include('movie_card.php');
                         }
-
                     ?>
                 </div>
+                <?php } ?>
 
                 <div class="row">
                     <span>Vous ne trouvez pas le film que vous cherchez ?</span>

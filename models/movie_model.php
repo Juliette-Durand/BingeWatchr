@@ -50,44 +50,22 @@
         }
 
             /*
-            * Récupération des 6 derniers films sortis 
+            * Récupération des 6 derniers films à afficher 
             * @return tableau des films 
             */
-            public function movieDisplay():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
+            public function movieList(bool $boolDisplay = true):array {
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id  
                                 FROM movie
-                                WHERE movie_display IS NOT NULL
-                                ORDER BY movie_display DESC
-                                LIMIT 6 OFFSET 0;";
-                                
-            $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
-            return $arrMovieDisplay;
-            }
+                                WHERE  movie_name LIKE '%".$this->strKeyword."%'";
+                if ($boolDisplay){
+                    $strQuery		.= " AND movie_display IS NOT NULL";
 
-            /*
-            * Récupération des 6 derniers films ajoutés 
-            * @return tableau des films 
-            */
-            public function movieRecentAdd():array {
-                $strQuery		=   "SELECT movie_name, movie_poster  
-                                FROM movie
-                                ORDER BY movie_creation_date DESC
-                                LIMIT 6 OFFSET 0;";
-                                
-            $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
-            return $arrMovieRecentAdd;
-            }
-            
-            /*
-             * Récupération du mot-clé dans la barre de recherche pour trouver un movie_name
-             * @return liste des films avec le mot-clé
-             */
-            public function findKeyword(){
-                $strQuery = "SELECT *
-                            FROM movie
-                            WHERE movie_name LIKE '%".$this->strKeyword."%'";
-                $arrMovie = $this->_db->query($strQuery)->fetchAll();
-                return $arrMovie;
-            }
+                }
 
+                $strQuery		.= " ORDER BY movie_display DESC
+                                LIMIT 6 OFFSET 0;";
+                                //var_dump($strQuery);
+                $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
+                return $arrMovieDisplay;
+            }
     }
