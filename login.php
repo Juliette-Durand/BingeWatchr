@@ -1,4 +1,9 @@
 <?php
+    /**
+    * Page permettant de se connecter grâce aux identifiants en base de donnée
+    * @author Juliette Durand
+    */
+
 	// Variables fonctionnelles
 	$refPage="login";
 	

@@ -1,5 +1,5 @@
 <?php
-	/*
+	/**
 	* Page de gestion des rôles des utilisateurs
 	* @author Juliette Durand
 	*/

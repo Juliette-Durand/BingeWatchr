@@ -1,4 +1,8 @@
 <?php
+    /**
+    * Head contenant les infos de la page, les liens, et l'inclusion de la barre de navigation
+    * @author Juliette Durand
+    */
     require_once("entities/user_entity.php");
     session_start();
     //var_dump($_SESSION);

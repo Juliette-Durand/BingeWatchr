@@ -1,4 +1,9 @@
 <?php
+	/**
+	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
+	* @author Juliette Durand
+	*/
+
 	// Variables fonctionnelles
 	$refPage="my_account";
 	
