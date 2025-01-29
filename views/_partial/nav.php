@@ -41,8 +41,8 @@
 										</ul>
 									</li>
 								<?php } else { ?>
-									<a href="create_account.php" class="btn btn-secondary">S'inscrire</a>
-									<a href="login.php" class="btn btn-primary">Se connecter</a>
+									<a href="future_index.php?ctrl=user&action=create_account" class="btn btn-secondary">S'inscrire</a>
+									<a href="future_index.php?ctrl=user&action=login" class="btn btn-primary">Se connecter</a>
 								<?php }
 							?>
 						</ul>

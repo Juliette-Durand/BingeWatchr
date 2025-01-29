@@ -105,6 +105,15 @@
             $objUser = new UserEntity();
             $objUser->hydrate($arrUser);
 
+			// Si des données sont envoyées -> les données ont potentiellement été modifiées
+			// Je réhydrate avec les nouvelles données
+			if($_POST>0){
+				$objUser->hydrate($_POST);
+				$objUser->setId($_SESSION['user']->getId());
+				var_dump($objUser);
+				$arrUser	= $this->_objUserModel->changeInfos($objUser);
+			}
+			
             $this->_arrData['objUser']  =  $objUser;
 
             // Appel de la méthode display (MotherCtrl)
