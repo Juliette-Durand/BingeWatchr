@@ -111,10 +111,11 @@
 				$objUser->hydrate($_POST);
 				$objUser->setId($_SESSION['user']->getId());
 				var_dump($objUser);
-				$arrUser	= $this->_objUserModel->changeInfos($objUser);
+				$boolChange	= $this->_objUserModel->changeInfos($objUser);
 			}
 			
-            $this->_arrData['objUser']  =  $objUser;
+			$this->_arrData['boolChange']	=	$boolChange;
+            $this->_arrData['objUser']		=  $objUser;
 
             // Appel de la méthode display (MotherCtrl)
             $this->display('my_account');

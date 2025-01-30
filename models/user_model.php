@@ -77,21 +77,26 @@
 		}
 		
 		public function changeInfos(object $objUser){
-			/* Écriture de la requête */
-			$strQuery	= "	UPDATE user
-							SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio
-							WHERE user_id=:id;";
-			
-			$prep	=	$this->_db->prepare($strQuery);
-			
-			$prep->bindValue(':id', $objUser->getId(), PDO::PARAM_STR);
-			$prep->bindValue(':fname', $objUser->getFirst_name(), PDO::PARAM_STR);
-			$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
-			$prep->bindValue(':mail', $objUser->getEmail(), PDO::PARAM_STR);
-			$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
-			
-			//var_dump($prep->execute());
-			$prep->execute();
-			var_dump($prep->debugDumpParams());
+			try{
+				/* Écriture de la requête */
+				$strQuery	= "	UPDATE user
+								SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio
+								WHERE user_id=:id;";
+				
+				$prep	=	$this->_db->prepare($strQuery);
+				
+				$prep->bindValue(':id', $objUser->getId(), PDO::PARAM_STR);
+				$prep->bindValue(':fname', $objUser->getFirst_name(), PDO::PARAM_STR);
+				$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
+				$prep->bindValue(':mail', $objUser->getEmail(), PDO::PARAM_STR);
+				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
+				
+				//var_dump($prep->execute());
+				$prep->execute();
+				//var_dump($prep->debugDumpParams());
+			}catch(PDOException $e) { 
+				return false;
+			} 
+			return true;
 		}
 	}
