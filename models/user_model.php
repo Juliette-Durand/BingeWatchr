@@ -35,10 +35,9 @@
 		}
 		
 		/**
-		* Récupération des données d'un utilisateur
-		* @return array Tableau des utilisateurs de la bdd
+		* Récupération des données d'un utilisateur via son id
+		* @return array Tableau des infos de l'utilisateur
 		*/
-
 		public function findUser($strId):array{		
 			/* J'écris ma requête */
 			$strQuery 	= "	SELECT *
@@ -46,12 +45,16 @@
 							WHERE user_id = '".$strId."'
 							ORDER BY user_last_name ASC, user_first_name ASC;";
 	
-			/* Je récupère le résultat de ma requête d'utilisateurs */
+			/* Je récupère le résultat de ma requête d'utilisateur */
 			$arrOneUser	= $this->_db->query($strQuery)->fetch();
 			
 			return $arrOneUser;
 		}
 
+		/**
+		* Récupération des données d'un utilisateur lors de la connexion et tests de correspondance de mot de passe
+		* @return array|bool Tableau des utilisateurs de la bdd ou false
+		*/
 		public function loginUser($strMail, $strPassword):array|bool{
 			$strQuery	= "	SELECT *
 							FROM user
@@ -66,9 +69,10 @@
 		}
 		
 		/**
-		*
+		* Insertion des données d'un nouvel utilisateur lors de la création d'un compte
+		* @return bool True si insertion réussie sinon False
 		*/
-		public function newUser(){
+		public function newUser():bool{
 			
 			/* Écriture de la requête */
 			$strQuery	= "	INSERT INTO user (	user_id, user_first_name, user_last_name, user_mail, user_password,
@@ -76,7 +80,11 @@
 							VALUES ('', '', '', '', '', NOW(), '', '','user'); ";
 		}
 		
-		public function changeInfos(object $objUser){
+		/**
+		* Modification des données d'un utilisateur via son id
+		* @return bool True si modification réussie sinon False
+		*/
+		public function changeInfos(object $objUser):bool{
 			try{
 				/* Écriture de la requête */
 				$strQuery	= "	UPDATE user

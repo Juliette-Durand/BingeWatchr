@@ -3,7 +3,7 @@
 	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
 	* @author Juliette Durand
 	*/
-	var_dump($_POST);
+	//var_dump($_POST);
 	
 	
 ?>
@@ -14,18 +14,35 @@
 		</div>
 		
         <div class="container">
-            <div class="row">
-                <div class="col-4 d-flex flex-column align-items-center">
-                    <div class="picture_container mb-2">
+			<?php if (isset($this->_arrData['boolChange'])){
+				// Vérifie la présence de la variable contenant le résultat de la requête PDO
+				if ($this->_arrData['boolChange'] === true){
+					// Si la requête s'est bien déroulée -> affichage d'une alerte de succès ?>
+					<div class="alert alert-success">
+						Les modifications ont bien été prises en compte
+					</div>
+				<?php } else {
+					// Si une erreur est retournée -> affichage d'une alerte d'erreur ?>
+					<div class="alert alert-danger">
+						Erreur lors de la prise en compte des modifications
+					</div>
+				<?php }
+			} ?>
+
+			<form method="POST" class="row" enctype="multipart/form-data">
+                <div class="col-5 d-flex flex-column align-items-center">
+                    <div class="picture_container mb-4">
                         <img class="profile_pic" src="assets/img/users/profile_pictures/<?php echo($objUser->getAvatar()); ?>" alt="">
                     </div>
-					<h2 class="mb-3"><?php echo($objUser->getId()); ?></h2>
-                    <div class="pic_btn">
-                        <a class="btn btn-primary" href="">Changer de photo</a>
-                    </div>
+					<h2 class="mb-4"><?php echo($objUser->getId()); ?></h2>
+
+					<div>
+						<input type="file" name="avatar" id="avatar" value="<?php echo($objUser->getAvatar()); ?>">
+					</div>
+					<a class="btn btn-primary" href="">Changer de photo</a>
                 </div>
                 
-                <form method="POST" class="col-8">        
+				<div class="col-7">        
                     <div>
                         <label for="first_name">Prénom</label>
                         <input type="text" name="first_name" id="first_name" value="<?php echo($objUser->getFirst_name()); ?>">
@@ -46,7 +63,7 @@
         
                     <div>
                         <label for="bio">Bio</label>
-                        <textarea name="bio" id="bio"><?php echo($objUser->getBio()); ?></textarea>
+                        <textarea name="bio" id="bio" rows="4"><?php echo($objUser->getBio()); ?></textarea>
 						<button class="btn btn-primary">Modifier</button>
                     </div>
 					
@@ -74,7 +91,7 @@
 						<button class="btn btn-primary">Réinitialiser le mot de passe</button>
 					</div>-->
 					<input type="submit" value="Enregistrer les modifications">
-                </form>
-            </div>
+				</div>
+			</form>
         </div>
 	</section>
