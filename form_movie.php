@@ -21,6 +21,7 @@
 	$objMovieEntity	= new MovieEntity();
 	$objActorEntity = new ActorEntity();
 	$objActorModel 	= new ActorModel();
+	
 	// Merr të gjithë aktorët
 	$arrActor = $objActorModel->findAllActors();
 
@@ -180,7 +181,7 @@
 							<div>
 								<label for="actor">Actor</label>
 								<select id="actor" name="actor"  class="form-control">
-									<option value="0" <?php //echo(($objActorModel->intCreator == 0)?"selected":"");?> >--</option>
+									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
 									
 									<?php foreach ($arrActor as $arrDetActor) { 
 										$objActorEntity->hydrate($arrDetActor);

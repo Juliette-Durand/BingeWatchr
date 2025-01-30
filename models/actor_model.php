@@ -9,6 +9,8 @@
 
     class ActorModel extends MotherModel {
 
+        public int 	$intActor = 0;
+
         /**
          * Constructeur de la classe
          */
@@ -54,5 +56,10 @@
 
             return $arrActors;
         }
-
+        public function addActor(){
+            
+            $strQuery = "INSERT INTO actor 
+            (actor_first_name, actor_last_name, actor_picture)
+            VALUES ('value1', 'value2', 'value3.jpg');"; 
+        }
     }
