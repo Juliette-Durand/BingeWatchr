@@ -1,13 +1,17 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Arlind Halimi
+	* @author Arlind Halimi et Hugo
+  * modifiée par Hugo le 31/01/2025
 	*/
 
 
     require_once("mother_model.php");
 
     class MovieModel extends MotherModel{
+
+        // Attributs pour la recherche
+        public string $strKeyword = "";
 
         /**
         * Constructeur de la classe
@@ -45,32 +49,22 @@
         }
 
             /*
-            * Récupération des 6 derniers films sortis 
+            * Récupération des 6 derniers films à afficher 
             * @return tableau des films 
             */
-            public function movieDisplay():array {
-                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
+            public function movieList(bool $boolDisplay = true):array {
+                $strQuery		=   "SELECT movie_name, movie_poster, movie_id  
                                 FROM movie
-                                ORDER BY movie_release DESC
-                                LIMIT 6 OFFSET 0;";
-                                
-            $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
-            return $arrMovieDisplay;
+                                WHERE  movie_name LIKE '%".$this->strKeyword."%'";
+                if ($boolDisplay){
+                    $strQuery		.= " AND movie_display IS NOT NULL
+                                         ORDER BY movie_display DESC";
+                } else {
+                $strQuery		.= " ORDER BY movie_creation_date DESC";
+                }
+                $strQuery		.= " LIMIT 6 OFFSET 0;";
+                                //var_dump($strQuery);
+                $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
+                return $arrMovieDisplay;
             }
-
-            /*
-            * Récupération des 6 derniers films ajoutés 
-            * @return tableau des films 
-            */
-            public function movieRecentAdd():array {
-
-                $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
-                                FROM movie
-                                ORDER BY movie_creation_date DESC
-                                LIMIT 6 OFFSET 0;";
-                                
-            $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
-            return $arrMovieRecentAdd;
-            }
-
     }
