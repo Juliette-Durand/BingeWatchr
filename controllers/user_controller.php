@@ -108,8 +108,41 @@
 			// Si des données sont envoyées -> les données ont potentiellement été modifiées
 			// Je réhydrate avec les nouvelles données
 			if(count($_POST)>0){
-				$objUser->hydrate($_POST);
-				$objUser->setId($_SESSION['user']->getId());
+
+                $boolFlag   =   false;
+                // Modification de l'avatar
+                if($_FILES['avatar']['error']!=4){
+                    $boolFlag   =   true;
+                    // Vérifie les caractéristiques du fichier importé
+                    if(($_FILES['avatar']['size']<1000000)&&($_FILES['avatar']['type']=='image/jpeg')){
+                        // Récupération de la source
+                        $strSource      =   $_FILES['avatar']['tmp_name'];
+                        // Définition de la destination
+                        $strDestination = 'assets/img/users/profile_pictures/'.$_FILES['avatar']['name'];
+                        // Déplacement du fichier dans le dossier prévu à cet effet
+                        move_uploaded_file($strSource, $strDestination);
+
+                    // Génération de l'erreur si l'image ne respecte pas les caractéristiques
+                    } else if ($_FILES['avatar']['type']!='image/jpeg'){
+                            $arrErrors['avatar']    =   "L'image importée doit être au format JPG";
+                            $this->_arrData['arrErrors']	=  $arrErrors;
+                    } else if ($_FILES['avatar']['size']>1000000){
+                        $arrErrors['avatar']    =   "L'image importée doit être inférieure à 1Mo";
+                        $this->_arrData['arrErrors']	=  $arrErrors;
+                    }
+                }
+                // Insérer condition pour :
+                // Si il y a quelque chose dans le mot de passe,
+                // Je vérifie qu'il n'y a pas d'erreur
+                // Et que tous les champs sont remplis
+
+                if(!isset($arrErrors)){
+                    $objUser->hydrate($_POST);
+                    $objUser->setId($_SESSION['user']->getId());
+                    if ($boolFlag){
+                        $objUser->setAvatar($_FILES['avatar']['name']);
+                    }
+                }
 				//var_dump($objUser);
 
                 // Exécution de la méthode de mise à jour des données

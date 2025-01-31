@@ -88,7 +88,7 @@
 			try{
 				/* Écriture de la requête */
 				$strQuery	= "	UPDATE user
-								SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio
+								SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio, user_avatar = :avatar
 								WHERE user_id=:id;";
 				
 				$prep	=	$this->_db->prepare($strQuery);
@@ -98,6 +98,7 @@
 				$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
 				$prep->bindValue(':mail', $objUser->getEmail(), PDO::PARAM_STR);
 				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
+				$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
 				
 				//var_dump($prep->execute());
 				$prep->execute();
