@@ -58,12 +58,13 @@
                                 FROM movie
                                 WHERE  movie_name LIKE '%".$this->strKeyword."%'";
                 if ($boolDisplay){
-                    $strQuery		.= " AND movie_display IS NOT NULL";
+                    $strQuery		.= " AND movie_display IS NOT NULL
+                                         ORDER BY movie_display DESC";
 
+                } else {
+                $strQuery		.= " ORDER BY movie_creation_date DESC";
                 }
-
-                $strQuery		.= " ORDER BY movie_display DESC
-                                LIMIT 6 OFFSET 0;";
+                $strQuery		.= " LIMIT 6 OFFSET 0;";
                                 //var_dump($strQuery);
                 $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
                 return $arrMovieDisplay;
