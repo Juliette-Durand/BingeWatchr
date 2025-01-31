@@ -63,14 +63,14 @@
 		* Récupération du date de Realise
 		* @return string date de Realise
 		*/
-        public function getRealise(){
+        public function getRelease(){
             return $this->_release;
         }
         /**
 		* Mise à jour du date de Realise
 		* @param string date de Realise
 		*/
-        public function setRealise(string $strRelease){
+        public function setRelease(string $strRelease){
             $this->_release = $strRelease;
         }
 
@@ -78,7 +78,7 @@
 		* Récupération du date de Realise
 		* @return string date de Realise
 		*/
-        public function getCreatedaten(){
+        public function getCreatedate(){
             return $this->_create_date;
         }
         /**
@@ -109,18 +109,33 @@
 		* Récupération du film image
 		* @return string film image
 		*/
-        public function getDesctiption(){
+        public function getPegi(){
             return $this->_pegi;
         }
         /**
 		* Mise à jour du film image
 		* @param string film image
 		*/
-        public function setPegi(string $strPegi){
+        public function setPegi(string|null $strPegi = NULL){
             $this->_pegi = $strPegi;
         }
+        /**
+        * Récupération du display
+        * @return string display
+        */
+        public function getDisplay(){
+            return $this->_display;
+        }
 
-         /**
+        /**
+        * Mise à jour du display
+        * @param string display
+        */
+        public function setDisplay(string|null $strDisplay = NULL){
+            $this->_display = $strDisplay;
+        }
+
+        /**
 		* Récupération du film duration
 		* @return string film duration
 		*/
@@ -131,9 +146,17 @@
 		* Mise à jour du film duration
 		* @param string film duration
 		*/
-        public function setDurationi(string $strDuration){
-            $this->_duration = $strPegi;
+        public function setDuration(string $strDuration){
+            $this->_duration = $strDuration;
         }
 
-
+        /**
+         * Récupération de la date de sortie en format français
+         * @return string Date / Mois / Année
+         */
+        public function getDateFr(){
+            $strDate = $this->getRelease();
+            $strDateFr = date('d/m/Y', strtotime($strDate));
+            return $strDateFr;
+        } 
     }

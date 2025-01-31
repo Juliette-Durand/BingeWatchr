@@ -1,7 +1,8 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Arlind Halimi
+	* @author Arlind Halimi et Hugo
+  * modifiée par Hugo le 31/01/2025
 	*/
 
 
@@ -26,10 +27,10 @@
         public function findAll():array{
 
             /* Requête pour trouve tout les films */
-            $strQueryMovi 	= "	SELECT *
+            $strQueryMovie  	= "	SELECT *
                                 FROM movie
-                                ORDER BY movie_namee ASC;";
-            var_dump($strQueryMovi);
+                                ORDER BY movie_name ASC;";
+            var_dump($strQueryMovie);
 
 			/* Je récupère le résultat de ma requête d'utilisateurs */
             $arrMovie  = $this->_db->query($strQueryMovie)->fetchAll();
@@ -37,15 +38,13 @@
             return $arrMovie;
         }
         /* Requête pour trouve un film specifique */
-        public function findMovie() : array{
-            $strQueryOneMovie ="SELECT * 
-                                FROM movie 
-                                WHERE movie_name = 'Les tuches' 
-                                ORDER BY movie_name ASC, movie_release ASC"; 
-
-            /** Le variable $arrOneMovie récupère le résultat de requête $strQueryOneMovie */
-            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetchAll();
-
+        public function findMovie(int $intId) : array {
+            $strQueryOneMovie = "SELECT * 
+                                FROM movie
+                                WHERE movie_id = ".$intId."
+                                ORDER BY movie_name ASC";
+                                
+            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $arrOneMovie;
         }
 
@@ -60,7 +59,6 @@
                 if ($boolDisplay){
                     $strQuery		.= " AND movie_display IS NOT NULL
                                          ORDER BY movie_display DESC";
-
                 } else {
                 $strQuery		.= " ORDER BY movie_creation_date DESC";
                 }
