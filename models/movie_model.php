@@ -101,25 +101,7 @@
 
             
 
-            public function addActor(object $objActorEntity):bool{
-                try{
-                    $strQuery = " INSERT INTO actor
-                        (actor_first_name, actor_last_name, actor_picture)
-                        VALUE (:actortName, :actorLast, :actorPicture);";
-
-                        $rqPrep = $this->_db->prepare($strQuery);
-                        $rqPrep->bindValue(":actortName",     $objActorEntity->getFirst_name(), PDO::PARAM_STR);
-                        $rqPrep->bindValue(":actorLast",      $objActorEntity->getLast_name(), PDO::PARAM_STR);
-                        $rqPrep->bindValue(":actorPicture",   $objActorEntity->getPicture(), PDO::PARAM_STR);
-
-
-                    $rqPrep->execute();
-                }catch(PDOExeption $e){
-                    return false;
-                }
-                return true;
-            }
-        
+      
     
     }
 
