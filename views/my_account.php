@@ -53,25 +53,25 @@
                     <div>
                         <label for="first_name">Prénom</label>
                         <input type="text" name="first_name" id="first_name" value="<?php echo($objUser->getFirst_name()); ?>">
-						<button class="btn btn-primary">Modifier</button>
+						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="last_name">Nom</label>
                         <input type="text" name="last_name" id="last_name" value="<?php echo($objUser->getLast_name()); ?>">
-						<button class="btn btn-primary">Modifier</button>
+						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" value="<?php echo($objUser->getEmail()); ?>">
-						<button class="btn btn-primary">Modifier</button>
+						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="bio">Bio</label>
                         <textarea name="bio" id="bio" rows="4"><?php echo($objUser->getBio()); ?></textarea>
-						<button class="btn btn-primary">Modifier</button>
+						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
 					
 					<div>
@@ -123,5 +123,8 @@
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
 				</div>
 			</form>
+			<div class="row">
+				<a href="future_index.php?ctrl=user&action=delete" class="btn btn-danger">Supprimer le compte</a>
+			</div>
         </div>
 	</section>

@@ -200,6 +200,9 @@
                     // Récupération du résultat de la requête PDO
                     $boolChange	= $this->_objUserModel->changeInfos($objUser, $boolPwd);
                     $this->_arrData['boolChange']	=	$boolChange;
+
+                    // Affectation des nouvelles informations en session
+                    $_SESSION['user']   =   $objUser;
                 }
 
 			}
@@ -228,5 +231,17 @@
             
             // Appel de la méthode display (MotherCtrl)
             $this->display('user_role_manage');
+        }
+
+        /**
+         * Suppression du compte utilisateur
+         */
+        public function delete(){
+            // Récupération des données en sessions de user
+            $boolQuery	= $this->_objUserModel->deleteAccount($_SESSION['user']->getId());
+            // Destruction de la session
+            session_destroy();
+            // Redirection
+            header("Location:future_index.php?ctrl=user&action=login");
         }
     }
