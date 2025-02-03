@@ -26,7 +26,7 @@
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
 									<li><a class="dropdown-item" href="#">Gestion des commentaires</a></li>
-									<li><a class="dropdown-item" href="user_role_manage.php">Rôles des utilisateurs</a></li>
+									<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=user_role_manage">Rôles des utilisateurs</a></li>
 								</ul>
 							</li>
 							<?php
@@ -36,13 +36,13 @@
 											<div class="pic_container"><img src="assets/img/users/profile_pictures/<?php echo($_SESSION['user']->getAvatar()); ?>" alt=""></div>
 										</a>
 										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="compte.php">Mon compte</a></li>
-											<li><a class="dropdown-item" href="logout.php">Déconnexion</a></li>
+											<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=my_account">Mon compte</a></li>
+											<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=logout">Déconnexion</a></li>
 										</ul>
 									</li>
 								<?php } else { ?>
-									<a href="create_account.php" class="btn btn-secondary">S'inscrire</a>
-									<a href="login.php" class="btn btn-primary">Se connecter</a>
+									<a href="future_index.php?ctrl=user&action=create_account" class="btn btn-secondary">S'inscrire</a>
+									<a href="future_index.php?ctrl=user&action=login" class="btn btn-primary">Se connecter</a>
 								<?php }
 							?>
 						</ul>
