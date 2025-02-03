@@ -3,7 +3,7 @@
 	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
 	* @author Juliette Durand
 	*/
-	var_dump($_POST);
+	//var_dump($_POST);
 	
 	
 ?>
@@ -75,16 +75,37 @@
                     </div>
 					
 					<div>
+						<?php if (isset($arrErrors['old_pwd'])){ ?>
+							<div class="alert alert-danger">
+								<?php echo($arrErrors['old_pwd']) ?>
+							</div>
+						<?php } ?>
+						<?php if (isset($arrErrors['new_pwd'])){ ?>
+							<div class="alert alert-danger">
+								<ul>
+								Le mot de passe renseigné ne répond pas aux critères suivants :
+								<?php foreach ($arrErrors['new_pwd'] as $strError){ ?>
+									<li><?php echo($strError); ?></li>
+								<?php } ?>
+								</ul>
+							</div>
+						<?php } ?>
+						<?php if (isset($arrErrors['conf_pwd'])){ ?>
+							<div class="alert alert-danger">
+								<?php echo($arrErrors['conf_pwd']) ?>
+							</div>
+						<?php } ?>
 						<div id="my_account_pwd">
 							<div>
 								<label for="old_pwd">Ancien mot de passe</label>
-								<input type="text" name="old_pwd" id="old_pwd">
+								<input type="password" name="old_pwd" id="old_pwd">
 							</div>
 							<div>
 								<label for="new_pwd">Nouveau mot de passe</label>
-								<input type="text" name="new_pwd" id="new_pwd">
+								<input type="password" name="new_pwd" id="new_pwd">
 								<p>Le mot de passe doit contenir :</p>
 								<ul class="pwd_conditions">
+									<li>au minimum 8 caractères</li>
 									<li>au moins une majuscule</li>
 									<li>au moins une minuscule</li>
 									<li>au moins un chiffre</li>
@@ -93,7 +114,7 @@
 							</div>
 							<div>
 								<label for="confirm_pwd">Confirmation mot de passe</label>
-								<input type="text" name="confirm_pwd" id="confirm_pwd">
+								<input type="password" name="confirm_pwd" id="confirm_pwd">
 							</div>
 						</div>
 						

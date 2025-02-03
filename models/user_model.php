@@ -84,12 +84,15 @@
 		* Modification des données d'un utilisateur via son id
 		* @return bool True si modification réussie sinon False
 		*/
-		public function changeInfos(object $objUser):bool{
+		public function changeInfos(object $objUser, bool $boolPwd):bool{
 			try{
 				/* Écriture de la requête */
 				$strQuery	= "	UPDATE user
-								SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio, user_avatar = :avatar
-								WHERE user_id=:id;";
+								SET user_first_name = :fname, user_last_name = :lname, user_mail = :mail, user_bio = :bio, user_avatar = :avatar";
+				if ($boolPwd === true){
+					$strQuery	.= ", user_password= :password";
+				}
+				$strQuery		.= " WHERE user_id=:id;";
 				
 				$prep	=	$this->_db->prepare($strQuery);
 				
@@ -99,10 +102,13 @@
 				$prep->bindValue(':mail', $objUser->getEmail(), PDO::PARAM_STR);
 				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
 				$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
+				if ($boolPwd === true){
+					$prep->bindValue(':password', $objUser->getPassword(), PDO::PARAM_STR);
+				}
 				
 				//var_dump($prep->execute());
-				$prep->execute();
 				//var_dump($prep->debugDumpParams());
+				$prep->execute();
 			}catch(PDOException $e) { 
 				return false;
 			} 

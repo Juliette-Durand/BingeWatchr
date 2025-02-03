@@ -105,14 +105,14 @@
             $objUser = new UserEntity();
             $objUser->hydrate($arrUser);
 
+            $arrErrors    = array();
 			// Si des données sont envoyées -> les données ont potentiellement été modifiées
 			// Je réhydrate avec les nouvelles données
 			if(count($_POST)>0){
-
-                $boolFlag   =   false;
+                $boolAvatar   =   false;
                 // Modification de l'avatar
                 if($_FILES['avatar']['error']!=4){
-                    $boolFlag   =   true;
+                    $boolAvatar   =   true;
                     // Vérifie les caractéristiques du fichier importé
                     if(($_FILES['avatar']['size']<1000000)&&($_FILES['avatar']['type']=='image/jpeg')){
                         // Récupération de la source
@@ -136,21 +136,75 @@
                 // Je vérifie qu'il n'y a pas d'erreur
                 // Et que tous les champs sont remplis
 
-                if(!isset($arrErrors)){
-                    $objUser->hydrate($_POST);
-                    $objUser->setId($_SESSION['user']->getId());
-                    if ($boolFlag){
-                        $objUser->setAvatar($_FILES['avatar']['name']);
+                //var_dump($_POST);
+                $strOldPwd  =   $_POST['old_pwd']??"";
+                $strNewPwd  =   $_POST['new_pwd']??"";
+                $strConfPwd  =   $_POST['confirm_pwd']??"";
+
+                $boolPwd = false;
+                if ($strOldPwd != ""){
+                    if ($strOldPwd != $objUser->getPassword()){
+                        // Vérifie que le mot de passe renseigné correspond à celui en bdd
+                        $arrErrors['old_pwd']  =   "Le mot de passe renseigné ne correspond pas au mot de passe actuel";
+                    } else {
+                        $boolPwd = true;
+                        if ($objUser->getPassword() != ""){
+                            // Vérifie que le mot de passe contient au moins 8 caractères
+                            if (strlen($strNewPwd)<8){
+                                $arrErrors['new_pwd'][]= "au minimum 8 caractères";
+                            }
+                            // Vérifie que le mot de passe contient un chiffre
+                            if (!preg_match("#[0-9]#", $strNewPwd)){
+                                $arrErrors['new_pwd'][]= "au moins un chiffre";
+                            }
+                            // Vérifie que le mot de passe contient une lettre majuscule
+                            if (!preg_match("#[A-Z]#", $strNewPwd)){
+                                $arrErrors['new_pwd'][]= "au moins une lettre majuscule";
+                            }
+                            // Vérifie que le mot de passe contient une lettre minuscule
+                            if (!preg_match("#[a-z]#", $strNewPwd)){
+                                $arrErrors['new_pwd'][]= "au moins une lettre minuscule";
+                            }
+                            // Vérifie que le mot de passe contient un caractère spécial
+                            if (!preg_match("#\W#", $strNewPwd)){
+                                $arrErrors['new_pwd'][]= "au moins un caractère spécial";
+                            }
+                            
+                            if (!isset($arrErrors['conf_pwd'])){
+                                // Si tout est ok pour le mot de passe, on s'occupe la confirmation
+                                if ($strConfPwd == ""){
+                                    // Vérifie que le champ confirmation de mot de passe est renseigné
+                                    $arrErrors['conf_pwd']	= "Le champ de la confirmation de mot de passe doit être renseigné";
+                                
+                                } else if ($strNewPwd != $strConfPwd) {
+                                    // Vérifie que les mots de passe correspondent
+                                    $arrErrors['conf_pwd']	= "La confirmation de mot de passe ne correspond pas à celui renseigné";
+                                }
+                            }
+                            
+                        }
                     }
                 }
-				//var_dump($objUser);
 
-                // Exécution de la méthode de mise à jour des données
-                // Récupération du résultat de la requête PDO
-				$boolChange	= $this->_objUserModel->changeInfos($objUser);
-                $this->_arrData['boolChange']	=	$boolChange;
+                if(count($arrErrors) == 0){
+                    $objUser->hydrate($_POST);
+                    $objUser->setId($_SESSION['user']->getId());
+                    if ($boolAvatar){
+                        $objUser->setAvatar($_FILES['avatar']['name']);
+                    }
+                    if ($boolPwd){
+                        $objUser->setPassword($_POST['new_pwd']);
+                    }
+                    $boolChange = false;
+                    // Exécution de la méthode de mise à jour des données
+                    // Récupération du résultat de la requête PDO
+                    $boolChange	= $this->_objUserModel->changeInfos($objUser, $boolPwd);
+                    $this->_arrData['boolChange']	=	$boolChange;
+                }
+
 			}
 			
+            $this->_arrData['arrErrors']	=  $arrErrors;
             $this->_arrData['objUser']		=  $objUser;
 
             // Appel de la méthode display (MotherCtrl)
