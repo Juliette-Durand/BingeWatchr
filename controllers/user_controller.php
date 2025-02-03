@@ -200,6 +200,8 @@
                     // Récupération du résultat de la requête PDO
                     $boolChange	= $this->_objUserModel->changeInfos($objUser, $boolPwd);
                     $this->_arrData['boolChange']	=	$boolChange;
+                    // Affectation des modifications dans la session
+                    $_SESSION['user']   =   $objUser;
                 }
 
 			}
