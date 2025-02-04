@@ -32,8 +32,8 @@
                                 <?php echo($arrErrors['email']); ?>
                             </div>
                         <?php } ?>
-                        <label for="email">Adresse-email :</label>
-                        <input type="email" name="email" id="email" value="<?php echo($strEmail); ?>">
+                        <label for="mail">Adresse-email :</label>
+                        <input type="email" name="mail" id="mail" value="<?php echo($strMail); ?>">
                     </div>
                     <div>
                         <?php if (isset($arrErrors['password'])){ ?>

@@ -99,7 +99,7 @@
 				$prep->bindValue(':id', $objUser->getId(), PDO::PARAM_STR);
 				$prep->bindValue(':fname', $objUser->getFirst_name(), PDO::PARAM_STR);
 				$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
-				$prep->bindValue(':mail', $objUser->getEmail(), PDO::PARAM_STR);
+				$prep->bindValue(':mail', $objUser->getMail(), PDO::PARAM_STR);
 				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
 				$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
 				if ($boolPwd === true){
@@ -136,5 +136,21 @@
 				return false;
 			} 
 			return true;
+		}
+
+		/**
+		* Vérification de la présence d'une adresse email en base de donnée
+		* @return bool True si une adresse existe sinon False
+		*/
+		public function verifMail(string $strEmail):bool{
+			$strQuery	= "	SELECT user_mail
+							FROM user
+							WHERE user_mail = '".$strEmail."';";
+			$arrUser	=	$this->_db->query($strQuery)->fetch();
+
+			if($arrUser > 0){
+				return true;
+			}
+			return false;
 		}
 	}

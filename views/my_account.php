@@ -69,8 +69,14 @@
                     </div>
         
                     <div>
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" value="<?php echo($objUser->getEmail()); ?>">
+						<!-- Affichage de l'erreur si l'adresse email ne respecte pas les critères -->
+						<?php if (isset($arrErrors['email'])) { ?>
+							<div class="alert alert-danger">
+								<?php echo($arrErrors['email']) ?>
+							</div>
+						<?php } ?>
+                        <label for="mail">Email</label>
+                        <input type="email" name="mail" id="mail" value="<?php echo($objUser->getMail()); ?>">
 						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
@@ -129,8 +135,8 @@
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
 				</div>
 			</form>
-			<div class="row">
-				<a href="future_index.php?ctrl=user&action=delete_account" class="btn btn-danger">Supprimer le compte</a>
+			<div>
+				<a href="future_index.php?ctrl=user&action=delete_account" class="btn btn-danger mt-5">Supprimer le compte</a>
 			</div>
         </div>
 	</section>

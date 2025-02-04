@@ -41,7 +41,7 @@
 
 
             // Récupération des données du formulaire dans le POST
-            $strEmail       =   $_POST['email']??"";
+            $strMail       =   $_POST['mail']??"";
             $strPassword    =   $_POST['password']??"";
 
             // Création d'un tableau d'erreurs
@@ -49,9 +49,9 @@
 
             if(count($_POST) > 0){
                 // Vérification de l'adresse email
-                if ($strEmail == "") {
+                if ($strMail == "") {
                     $arrErrors['email'] =   "L'adresse email est obligatoire";
-                } else if (!filter_var($strEmail, FILTER_VALIDATE_EMAIL)){
+                } else if (!filter_var($strMail, FILTER_VALIDATE_EMAIL)){
                     $arrErrors['email'] =   "L'adresse email renseignée n'est pas valide";
                 }
 
@@ -62,7 +62,7 @@
 
                 if(count($arrErrors) == 0){
                     // On utilise le modèle pour effectuer la requête dans la base de donnée
-                    $arrUser        =   $this->_objUserModel->loginUser($strEmail, $strPassword);
+                    $arrUser        =   $this->_objUserModel->loginUser($strMail, $strPassword);
 
                     // Si aucun utilisateur correspondant aux identifiants n'a été trouvé dans la base de donnée
                     if($arrUser === false){
@@ -78,7 +78,7 @@
                 }
             }
             $this->_arrData['arrErrors']    =   $arrErrors;
-            $this->_arrData['strEmail']    =   $strEmail;
+            $this->_arrData['strMail']    =   $strMail;
 
             
             $this->display('login');
@@ -111,10 +111,31 @@
             $objUser = new UserEntity();
             $objUser->hydrate($arrUser);
 
+            // Récupération de l'adresse email dans une variable pour comparaison
+            $strOldMail   =   $objUser->getMail();
+
             $arrErrors    = array();
 			// Si des données sont envoyées -> les données ont potentiellement été modifiées
 			// Je réhydrate avec les nouvelles données
 			if(count($_POST)>0){
+                // Récupération de l'adresse email envoyée dans le formulaire
+                $strNewMail    =   $_POST['mail'];
+
+
+                if($strNewMail != $strOldMail){
+                    // Vérification de l'adresse email
+                    if ($strNewMail == "") {
+                        $arrErrors['email'] =   "L'adresse email est obligatoire";
+                    } else if (!filter_var($strNewMail, FILTER_VALIDATE_EMAIL)){
+                        $arrErrors['email'] =   "L'adresse email renseignée n'est pas valide";
+                    } else {
+                        $boolMail   =   $this->_objUserModel->verifMail($strNewMail);
+                        if ($boolMail === true){
+                            $arrErrors['email'] =   "Cette adresse email est déjà utilisée";
+                        }
+                    }
+                }
+
                 $boolAvatar   =   false;
                 // Modification de l'avatar
                 if($_FILES['avatar']['error']!=4){
@@ -137,12 +158,7 @@
                         $this->_arrData['arrErrors']	=  $arrErrors;
                     }
                 }
-                // Insérer condition pour :
-                // Si il y a quelque chose dans le mot de passe,
-                // Je vérifie qu'il n'y a pas d'erreur
-                // Et que tous les champs sont remplis
-
-                //var_dump($_POST);
+                
                 $strOldPwd  =   $_POST['old_pwd']??"";
                 $strNewPwd  =   $_POST['new_pwd']??"";
                 $strConfPwd  =   $_POST['confirm_pwd']??"";
