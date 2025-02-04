@@ -78,7 +78,7 @@
                // ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
                $strPhoto 		= $_FILES['fichier']["name"]??"";
                $strPhoto		= strtolower($strPhoto);
-               $strTitle 		= $_POST['name']??"";
+               $strTitleForm 		= $_POST['name']??"";
                $strDate 		= $_POST['release']??"";
                // $strActor_ob	= $_POST['actor_ob']??"";
                // $strActor_2		= $_POST['actor_2']??"";
@@ -194,8 +194,8 @@
             $this->_arrData["arrActor"] = $arrActor ;
             $this->_arrData["strSynopsis"] = $strSynopsis ;
             $this->_arrData["strNotes"] = $strNotes ;
-
-
+            $this->_arrData["strTitleForm"] = $strTitleForm ;
+            
             
             
             $this->display("form_movie");

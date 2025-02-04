@@ -165,7 +165,7 @@
 					<div class="col-8">
 						<div>
 							<label for="name">Titre *</label>
-							<input type="text" name="name" id="name" value="<?php echo($strTitle); ?>"  class="form-control <?php echo (isset($arrErrors['name']))?'is-invalid':''; ?>" >
+							<input type="text" name="name" id="name" value="<?php echo($strTitleForm); ?>"  class="form-control <?php echo (isset($arrErrors['name']))?'is-invalid':''; ?>" >
 						</div>
 						<div>
 							<label for="release">Date realise *</label>
@@ -184,7 +184,7 @@
 						<div class="col-6">
 							<div>
 								<label for="actor">Actor</label>
-								<?php //var_dump($objActorModel->NameSurnameActors()) ;	?>
+								<?php var_dump($objActorModel->intActor) ;	?>
 								<select id="actor" name="actor"  class="form-control">
 									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
 									

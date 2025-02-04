@@ -104,15 +104,19 @@
                 return true;
             } 
 
-            public function playActor($intIdActor, $intIdMovie){
+            public function playActor($intIdMovie){
+                var_dump($intIdActor, $intIdMovie);
+                die;
                 try{
                     $strQuery = "INSERT INTO 
                         play (play_actor_id, play_movie_id) 
                         VALUES (:play_actor_id, :play_movie_id)"; 
 
+                    $actor_id = $this->_db->lastInsertId();
+
                     $prep = $this->_db->prepare($strQuery);
 
-                    $prep->bindValue(":play_actor_id",    $intIdActor, PDO::PARAM_STR);
+                    $prep->bindValue(":play_actor_id",    $actor_id, PDO::PARAM_STR);
                     $prep->bindValue(":play_movie_id",    $intIdMovie, PDO::PARAM_STR);
 
                     $prep->execute();
@@ -123,6 +127,54 @@
                 
             }
             
+
+            /********
+             * 
+             * DAO SHIMON
+             * ********** */
+            
+            /*try {
+                if ($objUser instanceof Particulier) {
+               $strQuery = "INSERT INTO client (cl_nom, cl_adress, cl_consent_mail, cl_mail, cl_tel, cl_date_crea, cl_mpd, cl_commentaire, cl_date_conn)
+                           VALUES (:nom, :adress, :consent_mail, :mail, :tel, NOW(), :mpd, :commentaire, NOW())";
+
+               $prep = $this->_db->prepare($strQuery);
+
+               // 'Bind' les valeurs
+               $prep->bindValue(':nom', $objUser->getNom(), PDO::PARAM_STR);
+               $prep->bindValue(':adress', $objUser->getAdress(), PDO::PARAM_STR);
+               $prep->bindValue(':consent_mail', $objUser->getConsent_mail(), PDO::PARAM_INT);
+               $prep->bindValue(':mail', $objUser->getMail(), PDO::PARAM_STR);
+               $prep->bindValue(':tel', $objUser->getTel(), PDO::PARAM_STR);
+               $prep->bindValue(':mpd', password_hash($objUser->getMpd(), PASSWORD_DEFAULT), PDO::PARAM_STR);
+               $prep->bindValue(':commentaire', $objUser->getCommentaire(), PDO::PARAM_STR);
+              
+
+               $prep->execute();
+               $client_id = $this->_db->lastInsertId(); // Obtenir l'ID client inséré
+
+               // Insérer dans une table particulière
+               $strQueryParticulier = "INSERT INTO particulier (part_num, part_prenom, part_civilite, part_naiss)
+                                       VALUES (:part_num, :prenom, :civilite, :part_naiss)";
+
+               $prepParticulier = $this->_db->prepare($strQueryParticulier);
+               $prepParticulier->bindValue(':part_num', $client_id, PDO::PARAM_INT);
+               $prepParticulier->bindValue(':prenom', $objUser->getPrenom(), PDO::PARAM_STR);
+               $prepParticulier->bindValue(':civilite', $objUser->getCivilite(), PDO::PARAM_STR);
+               $prepParticulier->bindValue(':part_naiss', $objUser->getNaiss(), PDO::PARAM_STR);
+
+               return $prepParticulier->execute();
+              
+               }
+*/
+
+                /****************** */
+
+
+
+
+
+
 
             // public function playActor($objActorEntity, $objMovieEntity){
             //     try{
