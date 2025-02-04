@@ -23,10 +23,11 @@
 
             // object pour Movie Model
             $objMovieModel = new MovieModel();
+            $objMovieModel->strKeyword = $_POST['keywords']??"";
 
             //Utilisation (création d'un tableau contenant les infos de la requête)
-            $arrMovie = $objMovieModel->movieList();
-            $arrRecentMovie = $objMovieModel->movieList(false);
+            $arrMovie         = $objMovieModel->movieList();
+            $arrRecentMovie   = $objMovieModel->movieList(false);
 
             $this->_arrData['arrMovie'] = $arrMovie;
             $this->_arrData['arrRecentMovie'] = $arrRecentMovie;

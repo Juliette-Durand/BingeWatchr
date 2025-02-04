@@ -4,84 +4,109 @@
     * @author Hugo Gomes
     */
 ?>
-
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                         Recherche par filtres avancés
                     </button>
                     </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-6">
-                                    <h3>Catégories</h3>
-                                    <div class="list-group">
-                                        <!--Catégorie Comédie-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Comédie</label>
-                                        </div>
-                                        <!--Catégorie Drame-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Drame</label>
-                                        </div>
-                                        <!--Catégorie Romance-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Romance</label>
-                                        </div>
-                                        <!--Catégorie Aventure-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Aventure</label>
-                                        </div>
-                                        <!--Catégorie Thriller-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Thriller</label>
-                                        </div>
-                                        <!--Catégorie Action-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Action</label>
-                                        </div>
-                                        <!--Catégorie Musique-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Musique</label>
-                                        </div>
-                                        <!--Catégorie Horreur-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Horreur</label>
-                                        </div>
-                                        <!--Catégorie Science-fiction-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Science-fiction</label>
-                                        </div>
-                                        <!--Catégorie Fantastique-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Fantastique</label>
-                                        </div>
-                                        <!--Catégorie Historique-->
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
-                                            <label class="form-check-label" for="flexSwitchCheckChecked">Historique</label>
+                        <form action="#" method="post">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h3>Catégories</h3>
+                                        <div class="list-group">
+                                            <!--Catégorie Comédie-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Comédie</label>
+                                            </div>
+                                            <!--Catégorie Drame-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Drame</label>
+                                            </div>
+                                            <!--Catégorie Romance-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Romance</label>
+                                            </div>
+                                            <!--Catégorie Aventure-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Aventure</label>
+                                            </div>
+                                            <!--Catégorie Thriller-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Thriller</label>
+                                            </div>
+                                            <!--Catégorie Action-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Action</label>
+                                            </div>
+                                            <!--Catégorie Musique-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Musique</label>
+                                            </div>
+                                            <!--Catégorie Horreur-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Horreur</label>
+                                            </div>
+                                            <!--Catégorie Science-fiction-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Science-fiction</label>
+                                            </div>
+                                            <!--Catégorie Fantastique-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Fantastique</label>
+                                            </div>
+                                            <!--Catégorie Historique-->
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Historique</label>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <h3>Date de Sortie</h3>
+                                        <div>
+                                            <p><label>Date de début</label></p> 
+                                            <p><input type="date"></p> 
+                                        </div>
+                                        <div>
+                                            <p><label>Date de fin</label></p> 
+                                            <p><input type="date"></p> 
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="customRange1" class="form-label">Durée du film</label>
+                                            <input type="range" class="form-range" id="customRange1">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <p><label>Min</label></p> 
+                                                <p><input type="number" class="w-30"></p> 
+                                            </div>
+                                            <div class="col-5">
+                                            <p><label>Max</label></p> 
+                                            <p><input type="number" class="w-30"></p> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                       <input type="submit" class="p-1" value="filtrer mes recherches">  
+                                    </div>
                                 </div>
-                                <div class="col-6">
-                                    <h3>Date de Sortie</h3>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                            </div>    
+                        </form>
                     </div>
                 </div>
             </div>
@@ -98,6 +123,7 @@
                     <h2>Films à l'affiche</h2>
                     <?php 
                         foreach($arrMovie as $arrDetMovie) {
+                            //var_dump($arrMovie);
                             $objMovie = new MovieEntity();
                             $objMovie->hydrate($arrDetMovie);
                             include('movie_card.php');
