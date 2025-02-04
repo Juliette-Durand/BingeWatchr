@@ -28,7 +28,7 @@
         }
         /**
 		* Mise à jour du Name
-		* @param string Name
+		* @param string $strName
 		*/
         public function setName(string $strName){
             $this->_name = $strName;
@@ -43,7 +43,7 @@
         }
         /**
 		* Mise à jour du Link
-		* @param string Link
+		* @param string $strLink
 		*/
         public function setLink(string $strLink){
             $this->_link = $strLink;
@@ -58,7 +58,7 @@
         }
         /**
 		* Mise à jour du Link
-		* @param string Link
+		* @param string $strLogo
 		*/
         public function setLogo(string $strLogo){
             $this->_logo = $strLogo;

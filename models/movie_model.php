@@ -4,7 +4,9 @@
 	* @author Arlind Halimi
 	*/
 
-
+    /**
+     * require pour mother model
+     */
     require_once("mother_model.php");
 
     class MovieModel extends MotherModel{
@@ -33,7 +35,10 @@
 
             return $arrMovie;
         }
-        /* Requête pour trouve un film specifique */
+        /**
+         *  Requête pour trouve un film specifique avec id
+         * 
+         */
         public function findMovie(int $intId) : array {
             $strQueryOneMovie = "SELECT * 
                                 FROM movie
@@ -46,7 +51,7 @@
 
             /*
             * Récupération des 6 derniers films sortis 
-            * @return tableau des films 
+            * @return array $arrMovieDisplay
             */
             public function movieDisplay():array {
                 $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
@@ -60,7 +65,7 @@
 
             /*
             * Récupération des 6 derniers films ajoutés 
-            * @return tableau des films 
+            * @return array $arrMovieRecentAdd
             */
             public function movieRecentAdd():array {
 
@@ -91,7 +96,7 @@
                     $prep->bindValue(":display",    $objMovieEntity->getDisplay(), PDO::PARAM_STR);
                     $prep->bindValue(":duration",   $objMovieEntity->getDuration(), PDO::PARAM_STR);
 
-                    var_dump($prep->debugDumpParams());
+                    //var_dump($prep->debugDumpParams());
                     $prep->execute();
                 }catch(PDOExeption $e){
                     return false;
@@ -99,9 +104,46 @@
                 return true;
             } 
 
+            public function playActor($intIdActor, $intIdMovie){
+                try{
+                    $strQuery = "INSERT INTO 
+                        play (play_actor_id, play_movie_id) 
+                        VALUES (:play_actor_id, :play_movie_id)"; 
+
+                    $prep = $this->_db->prepare($strQuery);
+
+                    $prep->bindValue(":play_actor_id",    $intIdActor, PDO::PARAM_STR);
+                    $prep->bindValue(":play_movie_id",    $intIdMovie, PDO::PARAM_STR);
+
+                    $prep->execute();
+                }catch(PDOExeption $e){
+                    return false;
+                }
+                return true;
+                
+            }
             
 
+            // public function playActor($objActorEntity, $objMovieEntity){
+            //     try{
+            //         $strQuery = "INSERT INTO 
+            //             play (play_actor_id, play_movie_id) 
+            //             VALUES (:play_actor_id, :play_movie_id)"; 
+
+            //         $prep = $this->_db->prepare($strQuery);
+
+            //         $prep->bindValue(":play_actor_id",    $objActorEntity->getId(), PDO::PARAM_STR);
+            //         $prep->bindValue(":play_movie_id",    $objMovieEntity->getId(), PDO::PARAM_STR);
+
+            //         $prep->execute();
+            //     }catch(PDOExeption $e){
+            //         return false;
+            //     }
+            //     return true;
+                
+            // }
+
       
-    
+            
     }
 

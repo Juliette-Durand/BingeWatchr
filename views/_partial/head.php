@@ -1,6 +1,6 @@
 <?php
     require_once("entities/user_entity.php");
-    session_start();
+    //session_start();
     //var_dump($_SESSION);
 ?>
 
