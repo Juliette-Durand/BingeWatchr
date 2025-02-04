@@ -21,6 +21,9 @@
 		private string $_bio;
 		private string $_role;
 		
+		/**
+		 * Constructeur de la classe
+		 */
 		public function __construct(){
 			parent::__construct();
 			$this->_prefixe = 'user';
@@ -69,6 +72,10 @@
 			$this->_first_name = $strFirstName;
 		}
 		
+		/**
+		 * Récupération du nom et prénom en une fois après concaténation
+		 * @return string
+		 */
 		public function getFull_name():string{
 			$fullName = $this->getLast_name()." ".$this->getFirst_name();
 			return $fullName;

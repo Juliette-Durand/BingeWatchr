@@ -6,7 +6,13 @@
 	//var_dump($_POST);
 	
 	
-?>
+?>	
+	<!-- Affichage de l'erreur de suppression de compte -->
+	<?php if(isset($_SESSION['account_deletion']['error'])){ ?>
+		<div class="alert alert-danger">
+			<?php echo($_SESSION['account_deletion']['error']); ?>
+		</div>
+	<?php } ?>
 
 	<section id="my_account">
 		<div class="container mb-5">
@@ -123,5 +129,8 @@
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
 				</div>
 			</form>
+			<div class="row">
+				<a href="future_index.php?ctrl=user&action=delete_account" class="btn btn-danger">Supprimer le compte</a>
+			</div>
         </div>
 	</section>
