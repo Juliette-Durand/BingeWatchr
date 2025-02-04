@@ -114,4 +114,27 @@
 			} 
 			return true;
 		}
+
+		/**
+		* Suppression d'un compte utilisateur via son id
+		* @return bool True si suppression réussie sinon False
+		*/
+		public function deleteAccount(string $strId):bool{
+			try{
+				/* Écriture de la requête */
+				$strQuery	= "	DELETE FROM user
+								WHERE user_id =:id;";
+				
+				$prep	=	$this->_db->prepare($strQuery);
+				
+				$prep->bindValue(':id', $strId, PDO::PARAM_STR);
+				
+				//var_dump($prep->execute());
+				//var_dump($prep->debugDumpParams());
+				$prep->execute();
+			}catch(PDOException $e) { 
+				return false;
+			} 
+			return true;
+		}
 	}

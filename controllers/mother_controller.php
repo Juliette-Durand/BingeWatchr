@@ -3,11 +3,13 @@
      * Controleur parent de tous les autres controleurs
      * @author Juliette Durand
      */
-
     class MotherCtrl{
         
-        protected array $_arrData = array();
+        protected array $_arrData = array(); /**< Tableau clé/valeur regroupant les données retournées par les controllers et utilisées dans les views */
 
+        /**
+         * Constructeur de la classe
+         */
         public function __construct(){
         }
 

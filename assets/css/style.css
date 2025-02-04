@@ -8,12 +8,16 @@
 
 /* OVERWRITE BOOTSTRAP */
 .btn{
-    border:solid var(--main-color) 0.1rem;
     transition: 0.2s;
     padding:0.4rem 0.8rem;
 }
-.btn:hover{
+.btn:not(.btn-danger){
+    border:solid var(--main-color) 0.1rem;
+}
+.btn:hover:not(.btn-danger){
     border:solid var(--main-color-dark) 0.1rem;
+}
+.btn:hover{
     padding:0.4rem 1.2rem;
 }
 .btn.btn-primary{
@@ -173,4 +177,19 @@ nav .btn{
 /* Page de connexion (login) */
 #login input{
     margin-bottom: 1rem;
+}
+
+/* Page de suppression du compte */
+#delete_account .picture_container .profile_pic{
+    border-radius: 50%;
+    width: 15rem;
+}
+#delete_account ul li{
+    line-height: 1.4rem;
+}
+#delete_account ul li:before{
+    content:'\2297';
+    color:var(--main-color);
+    font-size: 1.4rem;
+    margin:0 1rem 0 1rem;
 }
