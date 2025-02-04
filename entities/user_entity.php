@@ -14,7 +14,7 @@
 		protected mixed $_id = '';
 		private string $_last_name;
 		private string $_first_name;
-		private string $_email;
+		private string $_mail;
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
@@ -85,14 +85,14 @@
 		* Récupération de l'email
 		* @return string _email
 		*/
-		public function getEmail():string{
-			return $this->_email;
+		public function getMail():string{
+			return $this->_mail;
 		}
 		/**
 		* Mise à jour de l'email
 		*/
 		public function setMail(string $strMail){
-			$this->_email = $strMail;
+			$this->_mail = $strMail;
 		}
 		
 		/**
