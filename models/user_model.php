@@ -24,7 +24,7 @@
 		public function findAll():array{
 			
 			/* J'écris ma requête */
-			$strQuery 	= "	SELECT *
+			$strQuery 	= "	SELECT user_id, user_last_name, user_first_name, user_avatar, user_role
 							FROM user
 							ORDER BY user_last_name ASC, user_first_name ASC;";
 	
@@ -175,5 +175,14 @@
 				return false;
 			} 
 			return true;
+		}
+
+		public function displayAvatar(string $strId):array{
+			$strQuery	= "	SELECT user_avatar
+							FROM user
+							WHERE user_id = '".$strId."';";
+			$arrAvatar	=	$this->_db->query($strQuery)->fetch();
+
+			return $arrAvatar;
 		}
 	}

@@ -6,13 +6,6 @@
     
    
 ?>
-
-    <!-- Affichage de l'erreur de suppression de compte -->
-	<?php if(isset($_SESSION['account_deletion']['success'])){ ?>
-        <div class="alert alert-success">
-            <?php echo($_SESSION['account_deletion']['success']); ?>
-        </div>
-    <?php } ?>
     <section id="login">
 		<div class="container mb-5">
 			<h1><?php echo($strTitle); ?></h1>
