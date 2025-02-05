@@ -250,13 +250,18 @@
         public function user_role_manage(){
             // Variables d'affichage
             // Ce qui sert de h1 et/ou de nom dans le titre de la page
-            $this->_arrData['strTitle'] =   "Gérer les rôles des utilisateurs";
+            $this->_arrData['strTitle'] =   "Gestion des utilisateurs";
             // Variables fonctionnelles
             $this->_arrData['refPage']  =   "user_role_manage";
             
             // Utilisation
             $arrUser	= $this->_objUserModel->findAll();
             $this->_arrData['arrUser']  =   $arrUser;
+
+            // Modification d'un rôle utilisateur
+            if(count($_POST)>0){
+                $strRole    =   "";
+            }
             
             // Appel de la méthode display (MotherCtrl)
             $this->display('user_role_manage');

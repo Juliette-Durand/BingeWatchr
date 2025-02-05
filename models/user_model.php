@@ -153,4 +153,27 @@
 			}
 			return false;
 		}
+
+		/**
+		* Mise à jour du rôle d'un utilisateur
+		* @return bool True si modification prise en compte sinon False
+		*/
+		public function updateRole(string $strRole, string $strId):bool{
+			try{
+				/* Écriture de la requête */
+				$strQuery	= "	UPDATE user
+								SET user_role = :role
+								WHERE user_id = :id;";
+				
+				$prep->bindValue(':role', $strRole, PDO::PARAM_STR);
+				$prep->bindValue(':id', $strId, PDO::PARAM_STR);
+				
+				//var_dump($prep->execute());
+				//var_dump($prep->debugDumpParams());
+				$prep->execute();
+			}catch(PDOException $e) { 
+				return false;
+			} 
+			return true;
+		}
 	}

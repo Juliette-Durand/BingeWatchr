@@ -26,7 +26,7 @@
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
 									<li><a class="dropdown-item" href="#">Gestion des commentaires</a></li>
-									<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=user_role_manage">Rôles des utilisateurs</a></li>
+									<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=user_role_manage">Gestion des utilisateurs</a></li>
 								</ul>
 							</li>
 							<?php
