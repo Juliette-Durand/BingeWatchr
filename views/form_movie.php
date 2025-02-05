@@ -184,20 +184,17 @@
 						<div class="col-6">
 							<div>
 								<label for="actor">Actor</label>
-								<?php var_dump($objActorModel->intActor) ;	?>
-								<select id="actor" name="actor"  class="form-control">
+								<?php //var_dump($objActorModel->intActor) ;	?>
+								<select id="actor" name="actor" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
 									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
-									
 									<?php foreach ($arrActor as $arrDetActor) { 
 										$objActorEntity->hydrate($arrDetActor);
 									?> 
-									
 									<option value="<?php echo($objActorEntity->getId()); //=> Utiliser le getter ?>" 
-											<?php echo(($objActorModel->intActor == $objActorEntity->getId())?"selected":"");?> >
+											<?php echo (($objActorModel->intActor == $objActorEntity->getId())?"selected":"");?> >
 										<?php echo($objActorEntity->getFirst_name()." ". $objActorEntity->getLast_name()); ?> 
 									</option>
 									<?php }	?>
-
 								</select>
 								
 								
@@ -206,7 +203,7 @@
 						</div>
 						<div class="col-6">
 							<label for="new actor">Ajoute un actor</label> 
-							<a href='form_actor.php' class="form-control btn btn-primary"  value="Ajoute un actor">Ajoute un actor </a>
+							<a href='future_index.php?ctrl=actor&action=form_actor' class="form-control btn btn-primary"  value="Ajoute un actor">Ajoute un actor </a>
 						</div>
 						
 					</div> 

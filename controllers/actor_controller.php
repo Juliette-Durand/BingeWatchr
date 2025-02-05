@@ -97,11 +97,11 @@
 
                     //Informer l'utilisateur si einsertion ok/pas ok
                     if($boolOK){
-                        var_dump('ok');
+                        //var_dump('ok');
                     }else{
                         $arrErrors[]="l'insertion s'est mal passée";
                     }
-                    header( "Location:form_movie.php", true);
+                    header( "Location:future_index.php?ctrl=movie&action=form_movie", true);
                     // => exemple Insertion en BDD
                 }
             }
