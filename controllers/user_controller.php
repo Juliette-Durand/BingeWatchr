@@ -26,11 +26,8 @@
          * Page de connexion
          */
         public function login(){
-            // Suppression de l'erreur concernant la suppression du compte si elle existe
-            if(isset($_SESSION['account_deletion'])){
-                unset($_SESSION['account_deletion']);
-                unset($_SESSION['boolAccountDeletion']);
-            }
+            // session_destroy();
+            // var_dump($_SESSION);
             
             // Variables d'affichage
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
@@ -82,6 +79,12 @@
 
             
             $this->display('login');
+            
+            // Suppression de l'erreur concernant la suppression du compte si elle existe
+            if(isset($_SESSION['account_deletion'])){
+                unset($_SESSION['account_deletion']);
+                unset($_SESSION['boolAccountDeletion']);
+            }
         }
 
         /**
@@ -297,10 +300,12 @@
                     $_SESSION['account_deletion']['success']  =   "Le compte a bien été supprimé";
                     // Redirection
                     header("Location:future_index.php?ctrl=user&action=login");
+                    exit();
                 } else {
                     $_SESSION['account_deletion']['error']  =   "Erreur lors de la suppression du compte. Veuillez réessayer plus tard";
                     // Redirection
                     header("Location:future_index.php?ctrl=user&action=my_account");
+                    exit();
                 }
 
             } else {
@@ -309,6 +314,7 @@
                 $_SESSION['account_deletion']['error']  =   "Tentative de suppression échouée";
                 // Redirection
                 header("Location:future_index.php?ctrl=user&action=my_account");
+                exit();
             }
             
         }
