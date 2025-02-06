@@ -1,6 +1,6 @@
 <?php
 
-include_once("head.php");
+//include_once("head.php");
 // Récupérer les informations du $_POST et $_FILES
 $strFirst_name = $_POST['first_name'] ?? "";
 $strLast_name = $_POST['last_name'] ?? "";

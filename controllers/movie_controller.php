@@ -218,7 +218,6 @@
           * 05/02/2025 par Arlind Halimi
           */
          public function page_dun_film(){
-            
             /**
              *                   ** ATTENTION **
              * l'ID du film de GET['id'] est manquant, ce qui n'apparaît pas dans le lien
@@ -261,7 +260,37 @@
             //$this->_arrData[''] = $strDateFr
 
             $this->display('page_dun_film');
-
-         
          }
+      public function edit_movie(){
+
+         require_once("entities/movie_entity.php");
+         require_once("entities/acteur_entity.php");
+         require_once("models/movie_model.php");
+         require_once("models/actor_model.php");
+         
+         // object pour Movie Model
+         $objMovieModel = new MovieModel(); 
+         $objMovie = new MovieEntity(); 
+
+         $objMovie->setId($_GET["id"]);
+         $idMovie = $objMovie->getId();
+         $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
+         $objMovie->hydrate($arrMovieEntity);
+
+
+         /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
+         $this->_arrData['strTitle'] =  "Page de modifie film";
+
+         // Variables fonctionnelles
+         $this->_arrData['refPage']  =  "edit_movie";
+
+
+         $this->_arrData['objMovie']  =   $arrMovieEntity;
+         $this->_arrData['objMovie'] = $objMovie;
+         $this->_arrData['idMovie'] = $idMovie;
+         //$this->_arrData[''] = $strDateFr
+
+
+         $this->display('edit_movie');
+      }
    }
