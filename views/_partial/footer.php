@@ -25,7 +25,7 @@
                 <p class="mb-1"><i class="fas fa-phone me-2"></i>03 12 36 54 98</p>
                 <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>8 Rue de ma Neige Colmar</p>
             </div>
-        </div>
+        </div>-->
 
         <!-- Back to Top Button -->
         <div class="text-end mt-3">
@@ -33,7 +33,7 @@
                 <i class="fas fa-arrow-up me-1"></i>Back to Top
             </a>
         </div>
-    </div>-->
+    </div>
 </footer>
     <!-- Jquery Plugin 3.7.1 minify-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
