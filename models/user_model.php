@@ -165,11 +165,11 @@
 								SET user_role = :role
 								WHERE user_id = :id;";
 				
+				$prep	=	$this->_db->prepare($strQuery);
+
 				$prep->bindValue(':role', $strRole, PDO::PARAM_STR);
 				$prep->bindValue(':id', $strId, PDO::PARAM_STR);
 				
-				//var_dump($prep->execute());
-				//var_dump($prep->debugDumpParams());
 				$prep->execute();
 			}catch(PDOException $e) { 
 				return false;

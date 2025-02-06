@@ -48,24 +48,27 @@
 							</h2>
 							<div id="collapse<?php echo($objUser->getId())?>" class="accordion-collapse collapse" data-bs-parent="#accordionListUsers">
 								<div class="accordion-body mt-3">
-									<form method="POST" class="d-flex justify-content-between align-items-end">
+									<form method="POST" class="user_list_form d-flex justify-content-between align-items-end">
+										<?php if($_SESSION['user']->getRole() == 'admin'){ ?>
 										<div class="form_left">
+											<input type="hidden" name="user" value="<?php echo($objUser->getId())?>">
 											<select name="role">
 												<option value="user" <?php if($objUser->getRole() == "user"){ echo("selected"); } ?>>Watchr</option>
 												<option value="modo" <?php if($objUser->getRole() == "modo"){ echo("selected"); } ?>>Modérateur</option>
 												<option value="admin" <?php if($objUser->getRole() == "admin"){ echo("selected"); } ?>>Administrateur</option>
 											</select>
 	
-											<input type="submit" name="<?php echo($objUser->getId()); ?>" class="btn btn-secondary mt-2" value="Enregistrer les modifications">
+											<input type="submit" class="btn btn-secondary mt-2" value="Enregistrer les modifications">
 										</div>
+										<?php } ?>
 										<div class="form_right">
-										<a href="future_index.php?ctrl=user&action=delete_account&id=<?php echo($objUser->getId()); ?>" class="btn btn-danger mt-5">Supprimer l'utilisateur</a>
+										<a href="future_index.php?ctrl=user&action=delete_account&id=<?php echo($objUser->getId()); ?>" class="btn btn-danger">Supprimer l'utilisateur</a>
 										</div>
 									</form>
 								</div>
 							</div>
 						</div>
-					<?php }?>
+					<?php } ?>
 				</div>
 			</div>
         </section>

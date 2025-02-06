@@ -260,7 +260,15 @@
 
             // Modification d'un rôle utilisateur
             if(count($_POST)>0){
-                $strRole    =   "";
+                $strUserId    =   $_POST['user']??"";
+                $strRole    =   $_POST['role']??"";
+
+                // Vérifie que l'utilisateur en session a les droits de modifications
+                if($_SESSION['user']->getRole() != 'admin'){
+                    header("Location:future_index.php?ctrl=movie&action=home");
+                } else {
+                    $boolQuery = $this->_objUserModel->updateRole($strRole, $strUserId);
+                }
             }
             
             // Appel de la méthode display (MotherCtrl)
@@ -294,7 +302,7 @@
                     // L'id dans l'url est celui de l'utilisateur connecté
                     $this->_arrData['strTitle'] =   "Supprimer mon compte";
                 } else {
-                    if($_SESSION['user']->getRole() != "admin"){
+                    if($_SESSION['user']->getRole() == "user"){
                         // Le rôle de l'utilisateur n'est pas admin
                         header("Location:future_index.php?ctrl=user&action=my_account");
                     }
