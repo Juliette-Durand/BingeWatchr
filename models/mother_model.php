@@ -5,7 +5,7 @@
 	*/	
 	class MotherModel{
 		
-		protected object $_db;
+		protected object $_db; /**< Variable de connexion à la base de données */
 		
 		public function __construct(){
 			try{

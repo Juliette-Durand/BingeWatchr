@@ -14,13 +14,16 @@
 		protected mixed $_id = '';
 		private string $_last_name;
 		private string $_first_name;
-		private string $_email;
+		private string $_mail;
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
 		private string $_bio;
 		private string $_role;
 		
+		/**
+		 * Constructeur de la classe
+		 */
 		public function __construct(){
 			parent::__construct();
 			$this->_prefixe = 'user';
@@ -69,6 +72,10 @@
 			$this->_first_name = $strFirstName;
 		}
 		
+		/**
+		 * Récupération du nom et prénom en une fois après concaténation
+		 * @return string
+		 */
 		public function getFull_name():string{
 			$fullName = $this->getLast_name()." ".$this->getFirst_name();
 			return $fullName;
@@ -78,14 +85,14 @@
 		* Récupération de l'email
 		* @return string _email
 		*/
-		public function getEmail():string{
-			return $this->_email;
+		public function getMail():string{
+			return $this->_mail;
 		}
 		/**
 		* Mise à jour de l'email
 		*/
 		public function setMail(string $strMail){
-			$this->_email = $strMail;
+			$this->_mail = $strMail;
 		}
 		
 		/**
