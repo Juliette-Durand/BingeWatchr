@@ -18,7 +18,7 @@
         private $_name;
         private $_desc;
         private $_release;
-        private $_create_date;
+        private $_creation_date;
         private $_poster;
         private $_pegi;
         private $_display;
@@ -38,7 +38,7 @@
         }
         /**
 		* Mise à jour du Name
-		* @param string Name
+		* @param string $strName
 		*/
         public function setName(string $strName){
             $this->_name = $strName;
@@ -53,7 +53,7 @@
         }
         /**
 		* Mise à jour du Desctiption
-		* @param string Desctiption
+		* @param string $strDesc
 		*/
         public function setDesc(string $strDesc){
             $this->_desc = $strDesc;
@@ -68,25 +68,25 @@
         }
         /**
 		* Mise à jour du date de Realise
-		* @param string date de Realise
+		* @param string $strRelease
 		*/
         public function setRelease(string $strRelease){
             $this->_release = $strRelease;
         }
 
         /**
-		* Récupération du date de Realise
-		* @return string date de Realise
+		* Récupération du date de entre de la BDD
+		* @return string date de entre de la BDD
 		*/
-        public function getCreatedate(){
-            return $this->_create_date;
+        public function getCreation_date(){
+            return $this->_creation_date;
         }
         /**
-		* Mise à jour du date de Realise
-		* @param string date de Realise
+		* Mise à jour du date de entre de la BDD
+		* @param string $strCreateDate
 		*/
-        public function setCreatedate(string $strCreateDate){
-            $this->_create_date = $strCreateDate;
+        public function setCreation_date(string $strCreateDate){
+            $this->_creation_date = $strCreateDate;
         }
 
 
@@ -99,7 +99,7 @@
         }
         /**
 		* Mise à jour du film image
-		* @param string film image
+		* @param string $strPoster
 		*/
         public function setPoster(string $strPoster){
             $this->_poster = $strPoster;
@@ -129,9 +129,10 @@
 
         /**
         * Mise à jour du display
-        * @param string display
+        * @param string $strDisplay ou NULL
         */
         public function setDisplay(string|null $strDisplay = NULL){
+            //if(){}
             $this->_display = $strDisplay;
         }
 
@@ -144,7 +145,7 @@
         }
         /**
 		* Mise à jour du film duration
-		* @param string film duration
+		* @param string $strDuration
 		*/
         public function setDuration(string $strDuration){
             $this->_duration = $strDuration;

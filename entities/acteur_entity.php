@@ -24,7 +24,7 @@
         }
         /**
 		* Mise à jour du First Name
-		* @param string First Name
+		* @param string $strFirstname First Name
 		*/
         public function setFirst_name(string $strFirstname){
             $this->_first_name = $strFirstname;
@@ -40,10 +40,25 @@
         }
         /**
 		* Mise à jour du Last Name
-		* @param string Last Name
+		* @param string $strLastname Last Name
 		*/
         public function setLast_name(string $strLastname){
             $this->_last_name = $strLastname;
         }
+        /**
+		* Récupération du Picture d'acteur
+		* @return string Picture d'acteur
+		*/
+        public function getPicture(){
+            return $this->_picture;
+        }
+        /**
+		* Mise à jour du Picture d'acteur
+		* @param string $strPicture Picture d'acteur
+		*/
+        public function setPicture(string $strPicture){
+            $this->_picture = $strPicture;
+        }
+
 
     }

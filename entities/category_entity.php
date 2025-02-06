@@ -14,6 +14,9 @@
 			parent::__construct();
 		}
 
+        /**
+         * declare en prive variable name
+         */
         private $_name;
 
         /**
@@ -30,7 +33,7 @@
         }
         /**
 		* Mise à jour du Name
-		* @param string Name
+		* @param string  $strName
 		*/
         public function setName(string $strName){
             $this->_name = $strName;

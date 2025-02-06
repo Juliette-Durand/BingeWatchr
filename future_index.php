@@ -1,5 +1,4 @@
 <?php
-
     /**
      * Point d'entrée de toutes les pages du site
      * @author Juliette Durand
