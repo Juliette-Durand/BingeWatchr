@@ -73,15 +73,17 @@
             return $arrMovieDisplay;
         }
 
-        /*public function advSearchMovie():array {
-            $strQuery = "SELECT movie_name, movie_poster, movie_id
+        public function advSearchMovie():array {
+            $strQuery = "SELECT movie_name, movie_poster, movie_id, cat_name, bel_cat_id
                         FROM belong
                             INNER JOIN movie ON movie_id = bel_movie_id
-                            INNER JOIN category ON cat_id = bel_cat_id"
-            $strWhere = " WHERE"     
-            if($boolCategory == true) {
-                $strQuery .= " cat_name = ".$.";"
-            }     
+                            INNER JOIN category ON cat_id = bel_cat_id";
+            $strWhere = " WHERE";
+            $arrCat = $_POST['cat']??[];     
+            if(count($arrCat) > 0) {
+                $strQuery .= $strWhere." bel_cat_id IN (".implode(",", $arrCat).")";
+                var_dump($strQuery);
+            }    
             
-        }*/
+        } 
     }
