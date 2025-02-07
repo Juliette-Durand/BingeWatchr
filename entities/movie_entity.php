@@ -15,14 +15,15 @@
 			$this->_prefixe = 'movie';
 		}
 
-        private $_name;
-        private $_desc;
-        private $_release;
-        private $_creation_date;
-        private $_poster;
-        private $_pegi;
-        private $_display;
-        private $_duration;
+        //private int $_id; 
+        private string $_name;
+        private string $_desc;
+        private string $_release;
+        private string $_creation_date;
+        private string $_poster;
+        private $_pegi;     // N'avait pas de chaîne 'string' car être NULL
+        private $_display;  // N'avait pas de chaîne 'string' car être NULL
+        private string $_duration;
 
        
         /**

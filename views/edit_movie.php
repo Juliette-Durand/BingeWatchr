@@ -7,15 +7,15 @@
             </div>
             <div class="col-md-8">
             
-
-                    <h2><?php echo($objMovie->getName()); ?>  </h2>
-                    <p><?php echo($objMovie->getDesc()); ?> </p>
-                    <p><?php echo($objMovie->getDateFr()); ?> </p>
-                    <p><?php echo($objMovie->getCreation_date()); ?>  </p>
+                <form action="">
+                    <h2><input type="text" value="<?php echo($objMovie->getName()); ?>"> </h2>
+                    <p><input type="text" value="<?php echo($objMovie->getDesc()); ?>"> </p>
+                    <p><input type="date" value=""> <?php echo($objMovie->getDateFr()); ?></p>
+                    <!--<p><input type="date" value=""> <?php //echo($objMovie->getCreation_date()); ?> </p>-->
                     <?php if($objMovie->getPegi() != null){ ?>
-                        <p><?php echo($objMovie->getPegi()); ?> </p>
+                        <p><input type="text" value="<?php echo($objMovie->getPegi()); ?>"> </p>
                     <?php } ?>
-                    <p><?php echo($objMovie->getDuration()); ?> </p>
+                    <p><input type="text" value="<?php echo($objMovie->getDuration()); ?>"> </p>
 
                     <?php 
                         $objActorsModel = new ActorModel();
@@ -28,11 +28,12 @@
                             //var_dump($objOneActor);
                             
                             ?> 
-                            <p> <?php echo($objOneActor->getLast_name()." ". $objOneActor->getFirst_name()); ?> </p>
+                            <p> <input type="text" value="<?php echo($objOneActor->getLast_name()." ".$objOneActor->getFirst_name()); ?>">  </p>
                         <?php }
                         //var_dump($arrActors);
                     ?>
-                    
+                    <input class="btn" type="submit" name="edit" id="edit" value="Edit">
+                </form>   
                 
             </div>
         </div>
