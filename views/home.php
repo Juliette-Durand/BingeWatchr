@@ -3,6 +3,8 @@
     * Page d'accueil affichant 6 films à l'affiche (s'il y en a) et 6 films récemment ajoutés
     * @author Hugo Gomes
     */
+    var_dump($_POST);
+    var_dump($objMovieModel);
 ?>
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
@@ -20,10 +22,12 @@
                                         <h3>Catégories</h3>
                                         <div class="list-group">
                                             <!--Liste des catégories-->
-                                            <?php foreach($arrCat as $arrDetCat) { ?>
+                                            <?php foreach($arrCat as $arrDetCat) { 
+                                                $objCat = new CategoryEntity(); 
+                                                $objCat->setName($arrDetCat['cat_name']); ?>                   
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="cat[]" value="<?php $objCat->getName() ?>">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Comédie</label>
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="cat[]" value="<?php //$objCat->getId() ?>">
+                                                <label class="form-check-label" for="flexSwitchCheckDefault"><?php echo($objCat->getName()); ?></label>
                                             </div>
                                             <?php } ?>
                                         </div>
@@ -32,29 +36,26 @@
                                         <h3>Date de Sortie</h3>
                                         <div>
                                             <p><label>Date de début</label></p> 
-                                            <p><input type="date"></p> 
+                                            <p><input type="date" name="startdate" class="form-control w-50" value="<?php echo($objMovieModel->strStartDate) ?>"></p> 
                                         </div>
                                         <div>
                                             <p><label>Date de fin</label></p> 
-                                            <p><input type="date"></p> 
-                                        </div>
-                                        <div class="col-4">
-                                            <label for="customRange1" class="form-label">Durée du film</label>
-                                            <input type="range" class="form-range" id="customRange1">
+                                            <p><input type="date" name="enddate" class="form-control w-50" value="<?php echo($objMovieModel->strEndDate) ?>"></p> 
                                         </div>
                                         <div class="row">
+                                            <h4>Durée du film (en minutes)</h4>
                                             <div class="col-5">
                                                 <p><label>Min</label></p> 
-                                                <p><input type="number" class="w-30"></p> 
+                                                <p><input type="number" name="minduration" class="form-control w-30" value="<?php echo($objMovieModel->strStartTime) ?>"></p> 
                                             </div>
                                             <div class="col-5">
                                             <p><label>Max</label></p> 
-                                            <p><input type="number" class="w-30"></p> 
+                                            <p><input type="number" name="maxduration" class="form-control w-30" value="<?php echo($objMovieModel->strEndTime) ?>"></p> 
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                       <input type="submit" class="p-1" value="filtrer mes recherches">  
+                                       <input type="submit" class="btn btn-primary btn-sm" value="filtrer mes recherches">  
                                     </div>
                                 </div>
                             </div>    
@@ -66,7 +67,7 @@
             <div class="container pt-5">
                 <h1>Bienvenue sur BingeWatchr</h1>
                 <form class="d-flex mb-2" role="search" method="post">
-                    <input class="form-control me-2" type="search" aria-label="Search" name="keywords" value="<?php echo($objMovieModel->strKeyword); ?>">
+                    <input class="form-control w-50 me-2" type="search" aria-label="Search" name="keywords" value="<?php echo($objMovieModel->strKeyword); ?>">
                     <input type="submit" class="btn btn-primary btn-sm" value="Rechercher">
                 </form>
 

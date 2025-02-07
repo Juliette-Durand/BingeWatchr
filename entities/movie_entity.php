@@ -14,17 +14,16 @@
 			parent::__construct();
 			$this->_prefixe = 'movie';
 		}
-
-        private $_name;
-        private $_desc;
-        private $_release;
-        private $_create_date;
-        private $_poster;
+        
+        private string $_name;
+        private string $_desc;
+        private string $_release;
+        private string $_create_date;
+        private string $_poster;
         private $_pegi;
         private $_display;
-        private $_duration;
+        private string $_duration;
 
-       
         /**
          * Class have the name on Category_entity and on Movie_entity
          * Can we use like this or to add in Mother_Entity
@@ -35,14 +34,14 @@
 		*/
         public function getName(){
             return $this->_name;
-        }
+        } 
         /**
 		* Mise à jour du Name
 		* @param string Name
 		*/
         public function setName(string $strName){
             $this->_name = $strName;
-        }
+        } 
 
         /**
 		* Récupération du Desctiption
