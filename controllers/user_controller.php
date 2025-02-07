@@ -2,7 +2,7 @@
     /**
      * Controleur enfant de MotherController pour la gestion utilisateur
      * @author Juliette Durand
-     * Créé le 28/01/2025 - Dernière modification le 28/01/2025 par Juliette Durand
+     * Créé le 28/01/2025 - Dernière modification le 07/02/2025 par Juliette Durand
      */
 
     require_once("mother_controller.php");
@@ -26,8 +26,10 @@
          * Page de connexion
          */
         public function login(){
-            // session_destroy();
-            // var_dump($_SESSION);
+            // Redirection si l'utilisateur est déjà connecté
+            if(isset($_SESSION['user'])){
+                header("Location:future_index.php?ctrl=user&action=my_account");
+            }
             
             // Variables d'affichage
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
@@ -101,7 +103,11 @@
          * Page d'affichage et mise à jour des infos utilisateur
          */
         public function my_account(){
-            //var_dump($_SESSION);
+            // Redirection si l'utilisateur n'est pas connecté
+            if(!isset($_SESSION['user'])){
+                header("Location:future_index.php?ctrl=user&action=login");
+            }
+            
             // Variables d'affichage
             // Ce qui sert de h1 et/ou de nom dans le titre de la page
             $this->_arrData['strTitle'] =   "Mon compte";
@@ -109,7 +115,7 @@
             $this->_arrData['refPage']  =   "my_account";
             
             // Récupération des données en sessions de user
-            $arrUser	= $this->_objUserModel->findUser($_SESSION['user']->getId());
+            $arrUser	= $this->_objUserModel->displayUser($_SESSION['user']->getId());
 
             $objUser = new UserEntity();
             $objUser->hydrate($arrUser);
@@ -252,7 +258,7 @@
             if(!isset($_SESSION['user'])){
                 header("Location:future_index.php?ctrl=user&action=login");
             } else if ($_SESSION['user']->getRole() == 'user'){
-                header("Location:future_index.php?ctrl=user&action=my_account");
+                header("Location:future_index.php?ctrl=error&action=error403");
             }
 
             // Variables d'affichage
@@ -310,7 +316,7 @@
             // Vérification de la valeur de l'id en URL
             if($strId == ""){
                 // L'id est vide
-                header("Location:future_index.php?ctrl=movie&action=home");
+                header("Location:future_index.php?ctrl=error&action=error404");
             } else {
                 if($strId == $_SESSION['user']->getId()){
                     // L'id dans l'url est celui de l'utilisateur connecté
@@ -318,8 +324,17 @@
                 } else {
                     if($_SESSION['user']->getRole() == "user"){
                         // Le rôle de l'utilisateur n'est pas admin
-                        header("Location:future_index.php?ctrl=user&action=my_account");
+                        header("Location:future_index.php?ctrl=error&action=error403");
                     }
+
+                    $arrUserRole = $this->_objUserModel->checkRole($_GET['id']);
+                    var_dump($arrUserRole['role']);
+
+                    if (($arrUserRole['role'] == $_SESSION['user']->getRole()) || ($arrUserRole['role'] == 'admin')) {
+                        // L'utilisateur est redirigé si il tente de supprimé un utilisateur ayant le même rôle que lui ou supérieur
+                        header("Location:future_index.php?ctrl=error&action=error403");
+                    }
+
                     $this->_arrData['strTitle'] =   "Supprimer le compte d'un utilisateur";
                 }
             }

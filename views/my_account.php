@@ -126,6 +126,7 @@
 						<a class="btn btn-secondary" id="my_account_pwd_btn">Modifier le mot de passe</a>
 					</div>
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
+					<a href="future_index.php?ctrl=user&action=logout" class="mt-5 btn btn-primary">Déconnexion</a>
 				</div>
 			</form>
 			<div>

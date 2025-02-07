@@ -13,7 +13,7 @@
 
         <div class="container">
             
-            <?php if((isset($_SERVER['HTTP_REFERER'])) && (str_contains($_SERVER['HTTP_REFERER'], 'action=user_role_manage'))){ ?>
+            <?php if($_GET['id'] != $_SESSION['user']->getId()){ ?>
                 <div class="row">
                     <div class="col-5 offset-2">
                         <span class="display-6">Vous êtes sur le point de supprimer le compte d'un utilisateur</span>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-            <?php } else if((isset($_SERVER['HTTP_REFERER'])) && (str_contains($_SERVER['HTTP_REFERER'], 'action=my_account'))) { ?>
+            <?php } else { ?>
                 <div class="row">
                     <div class="col-5 offset-2">
                         <span class="display-6">Oh non...<br>Vous nous quittez déjà ?</span>
@@ -53,8 +53,6 @@
                         </div>
                     </div>
                 </div>
-            <?php } else {
-                header("Location:future_index.php?ctrl=user&action=my_account");
-            } ?>
+            <?php } ?>
         </div>
     </section>
