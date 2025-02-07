@@ -21,12 +21,20 @@
 		* Récupération de tous les utilisateurs
 		* @return array Tableau des utilisateurs de la bdd
 		*/
-		public function findAll():array{
+		public function findAll(string $strKeyword = ""):array{
 			
 			/* J'écris ma requête */
-			$strQuery 	= "	SELECT *
-							FROM user
-							ORDER BY user_last_name ASC, user_first_name ASC;";
+			$strQuery 	= "	SELECT user_id, user_last_name, user_first_name, user_avatar, user_role
+							FROM user";
+
+			// Recherche de l'utilisateur par mot clé
+			if($strKeyword != ""){
+				$strQuery	.="	WHERE LOWER(user_id) LIKE LOWER('".$strKeyword."%')
+								OR LOWER(user_first_name) LIKE LOWER('".$strKeyword."%')
+								OR LOWER(user_last_name) LIKE LOWER('".$strKeyword."%')";
+			}
+
+			$strQuery	.="	ORDER BY user_last_name ASC, user_first_name ASC;";
 	
 			/* Je récupère le résultat de ma requête d'utilisateurs */
 			$arrUsers	= $this->_db->query($strQuery)->fetchAll();
@@ -38,9 +46,9 @@
 		* Récupération des données d'un utilisateur via son id
 		* @return array Tableau des infos de l'utilisateur
 		*/
-		public function findUser($strId):array{		
+		public function displayUser($strId):array{		
 			/* J'écris ma requête */
-			$strQuery 	= "	SELECT *
+			$strQuery 	= "	SELECT user_id, user_first_name, user_last_name, user_mail, user_bio, user_password, user_avatar, user_role
 							FROM user
 							WHERE user_id = '".$strId."'
 							ORDER BY user_last_name ASC, user_first_name ASC;";
@@ -56,13 +64,13 @@
 		* @return array|bool Tableau des utilisateurs de la bdd ou false
 		*/
 		public function loginUser($strMail, $strPassword):array|bool{
-			$strQuery	= "	SELECT *
+			$strQuery	= "	SELECT user_id, user_mail, user_password, user_avatar, user_role
 							FROM user
 							WHERE user_mail = '".$strMail."';";
 			$arrUser	=	$this->_db->query($strQuery)->fetch();
 
 			if(($arrUser != false) && ($strPassword === $arrUser['user_password'])){
-				unset($arrUser['user_password'], $arrUser['user_mail'], $arrUser['user_create_date']);
+				unset($arrUser['user_password'], $arrUser['user_mail']);
 				return $arrUser;
 			}
 			return false;
@@ -152,5 +160,50 @@
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		* Mise à jour du rôle d'un utilisateur
+		* @return bool True si modification prise en compte sinon False
+		*/
+		public function updateRole(string $strRole, string $strId):bool{
+			try{
+				/* Écriture de la requête */
+				$strQuery	= "	UPDATE user
+								SET user_role = :role
+								WHERE user_id = :id;";
+				
+				$prep	=	$this->_db->prepare($strQuery);
+
+				$prep->bindValue(':role', $strRole, PDO::PARAM_STR);
+				$prep->bindValue(':id', $strId, PDO::PARAM_STR);
+				
+				$prep->execute();
+			}catch(PDOException $e) { 
+				return false;
+			} 
+			return true;
+		}
+
+		public function displayAvatar(string $strId):array{
+			$strQuery	= "	SELECT user_avatar
+							FROM user
+							WHERE user_id = '".$strId."';";
+			$arrAvatar	=	$this->_db->query($strQuery)->fetch();
+
+			return $arrAvatar;
+		}
+
+		/**
+		 * Recherche du role d'un utilisateur
+		 */
+		public function checkRole(string $strId):array{
+			$strQuery	= "	SELECT user_role AS 'role'
+							FROM user
+							WHERE user_id = '".$strId."';";
+			
+			$arrUser	=	$this->_db->query($strQuery)->fetch();
+
+			return $arrUser;
 		}
 	}

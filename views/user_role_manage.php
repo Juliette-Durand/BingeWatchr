@@ -10,37 +10,20 @@
 		
         <section class="container" id="users_list_role">
             <div class="row">
-				<?php
-					foreach($arrUser as $arrDetUser){
+				<div class="search my-4">
+					<form method="post" id="searchUser">
+						<input type="hidden" name="search" value="search">
+						<input type="text" name="keyWord" id="keyWord" value="<?php echo($strKeyword) ?>">
+
+						<input type="submit" value="Rechercher">
+					</form>
+				</div>
+				<div class="accordion" id="accordionListUsers">
+					<?php foreach($arrUser as $arrDetUser){
 						$objUser = new UserEntity();
-						$objUser->hydrate($arrDetUser);?>
-						
-						<div class="user_item col-12 d-flex align-items-center justify-content-between">
-							<div class="user_item_left">
-								<img src="assets/img/users/profile_pictures/<?php echo($objUser->getAvatar()); ?>" alt=""/>
-								<span class="user_title ms-2"><?php echo($objUser->getFull_name()); ?></span>
-								<span class="user_pseudo ms-2"><?php echo($objUser->getId()); ?></span>
-							</div>
-							<div class="user_item_right">
-								<span class="user_role">
-									<?php
-										switch($objUser->getRole()){
-											case "user":
-												echo("Watchr");
-												break;
-											case "modo":
-												echo("Modérateur");
-												break;
-											case "admin":
-												echo("Administrateur");
-												break;
-										}?>
-									</span>
-								<button class="btn btn-primary ms-2">Changer le rôle</button>
-							</div>
-						</div>
-						
-					<?php }?>
-				
+						$objUser->hydrate($arrDetUser);
+						include('views/_partial/user_item.php');
+					} ?>
+				</div>
 			</div>
         </section>

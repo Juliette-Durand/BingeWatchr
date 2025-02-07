@@ -7,13 +7,6 @@
 	
 	
 ?>	
-	<!-- Affichage de l'erreur de suppression de compte -->
-	<?php if(isset($_SESSION['account_deletion']['error'])){ ?>
-		<div class="alert alert-danger">
-			<?php echo($_SESSION['account_deletion']['error']); ?>
-		</div>
-	<?php } ?>
-
 	<section id="my_account">
 		<div class="container mb-5">
 			<h1><?php echo($strTitle); ?></h1>
@@ -133,10 +126,11 @@
 						<a class="btn btn-secondary" id="my_account_pwd_btn">Modifier le mot de passe</a>
 					</div>
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
+					<a href="future_index.php?ctrl=user&action=logout" class="mt-5 btn btn-primary">Déconnexion</a>
 				</div>
 			</form>
 			<div>
-				<a href="future_index.php?ctrl=user&action=delete_account" class="btn btn-danger mt-5">Supprimer le compte</a>
+				<a href="future_index.php?ctrl=user&action=delete_account&id=<?php echo($objUser->getId()); ?>" class="btn btn-danger mt-5">Supprimer le compte</a>
 			</div>
         </div>
 	</section>

@@ -19,16 +19,19 @@
 							<li class="nav-item">
 								<a class="nav-link" href="collection.php">Ma collection</a>
 							</li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Modération
-								</a>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
-									<li><a class="dropdown-item" href="#">Gestion des commentaires</a></li>
-									<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=user_role_manage">Rôles des utilisateurs</a></li>
-								</ul>
-							</li>
+							<?php if((isset($_SESSION['user'])) && ($_SESSION['user']->getRole() != "user")){ ?>
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										Modération
+									</a>
+	
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
+										<li><a class="dropdown-item" href="#">Gestion des commentaires</a></li>
+										<li><a class="dropdown-item" href="future_index.php?ctrl=user&action=user_role_manage">Gestion des utilisateurs</a></li>
+									</ul>
+								</li>
+							<?php } ?>
 							<?php
 								if(isset($_SESSION['user'])){ ?>
 									<li class="nav-item dropdown profile_picture">

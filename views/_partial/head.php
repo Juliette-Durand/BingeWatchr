@@ -20,6 +20,17 @@
         <?php
 			include_once("nav.php");
 		?>
+
+        <!-- Affichage du message de suppression de compte -->
+        <?php if(isset($_SESSION['account_deletion']['error'])){ ?>
+            <div class="alert alert-danger">
+                <?php echo($_SESSION['account_deletion']['error']); ?>
+            </div>
+        <?php } else if(isset($_SESSION['account_deletion']['success'])){ ?>
+            <div class="alert alert-success">
+                <?php echo($_SESSION['account_deletion']['success']); ?>
+            </div>
+        <?php } ?>
     </header>
 
     <main>
