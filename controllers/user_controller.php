@@ -248,8 +248,11 @@
          * Accessible uniquement aux Administrateurs
          */
         public function user_role_manage(){
+            // Vérifie que la page est accessible uniquement en session et par un admin/modo
             if(!isset($_SESSION['user'])){
                 header("Location:future_index.php?ctrl=user&action=login");
+            } else if ($_SESSION['user']->getRole() == 'user'){
+                header("Location:future_index.php?ctrl=user&action=my_account");
             }
 
             // Variables d'affichage
@@ -258,8 +261,15 @@
             // Variables fonctionnelles
             $this->_arrData['refPage']  =   "user_role_manage";
             
+            $strKeyword =   $_POST['keyWord']??"";
+            $this->_arrData['strKeyword'] =   trim($strKeyword);
+
+             // Recherche d'un utilisateur par son pseudo ou prénom ou nom
+             if((count($_POST)>0) && (isset($_POST['search']))){
+            }
+
             // Modification d'un rôle utilisateur
-            if(count($_POST)>0){
+            if((count($_POST)>0) && (!isset($_POST['search']))){
                 $strUserId    =   $_POST['user']??"";
                 $strRole    =   $_POST['role']??"";
                 
@@ -272,7 +282,7 @@
             }
 
             // Utilisation
-            $arrUser	= $this->_objUserModel->findAll();
+            $arrUser	= $this->_objUserModel->findAll($strKeyword);
             $this->_arrData['arrUser']  =   $arrUser;
             
             // Appel de la méthode display (MotherCtrl)

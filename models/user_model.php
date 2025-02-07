@@ -21,12 +21,20 @@
 		* Récupération de tous les utilisateurs
 		* @return array Tableau des utilisateurs de la bdd
 		*/
-		public function findAll():array{
+		public function findAll(string $strKeyword):array{
 			
 			/* J'écris ma requête */
 			$strQuery 	= "	SELECT user_id, user_last_name, user_first_name, user_avatar, user_role
-							FROM user
-							ORDER BY user_last_name ASC, user_first_name ASC;";
+							FROM user";
+
+			// Recherche de l'utilisateur par mot clé
+			if($strKeyword != ""){
+				$strQuery	.="	WHERE LOWER(user_id) LIKE LOWER('".$strKeyword."%')
+								OR LOWER(user_first_name) LIKE LOWER('".$strKeyword."%')
+								OR LOWER(user_last_name) LIKE LOWER('".$strKeyword."%')";
+			}
+
+			$strQuery	.="	ORDER BY user_last_name ASC, user_first_name ASC;";
 	
 			/* Je récupère le résultat de ma requête d'utilisateurs */
 			$arrUsers	= $this->_db->query($strQuery)->fetchAll();

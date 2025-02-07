@@ -10,6 +10,14 @@
 		
         <section class="container" id="users_list_role">
             <div class="row">
+				<div class="search my-4">
+					<form method="post" id="searchUser">
+						<input type="hidden" name="search" value="search">
+						<input type="text" name="keyWord" id="keyWord" value="<?php echo($strKeyword) ?>">
+
+						<input type="submit" value="Rechercher">
+					</form>
+				</div>
 				<div class="accordion" id="accordionListUsers">
 					<?php foreach($arrUser as $arrDetUser){
 						$objUser = new UserEntity();
