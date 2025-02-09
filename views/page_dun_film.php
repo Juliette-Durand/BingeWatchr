@@ -61,11 +61,11 @@
                         <?php }
                     ?>
                 
-                 <?php
+                <?php
                 // ajoute 3 dernier comments 
                 // CODE
                 
-                 ?>
+                ?>
                 <?php if(isset($_SESSION['user'])){ ?>
                     <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
                         <?php if (count($arrErrors) > 0){ ?>
@@ -76,15 +76,24 @@
                             </div>
                         <?php } ?>
                         <label class="col-12" for="title">Title comment</label>
-                        <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($_POST['title']) ?>">
-                        <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($_POST['content']) ?></textarea>
+                        <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($strTitleCom) ?>">
+                        <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($strContentCom) ?></textarea>
                         <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
                     </form>
                 <?php } ?>
             </div>
-            <div class='col-12'>
-                    <p>Touts comments</p>
+            
+                    <h3 class='mt-5'>Dernier trois commentes : </h3>
                     
-                </div>
+
+                    <?php
+                        foreach($arrComments as $arrDetComment){
+                            $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
+                            $objCommentEntity->hydrate($arrDetComment);
+                            include("views/_partial/comment.php");
+                        }
+                    ?>
+                    
+            
         </div>
     </div>

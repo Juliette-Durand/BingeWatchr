@@ -15,17 +15,16 @@
 			$this->_prefixe = 'movie';
 		}
 
-        //private int $_id; 
         private string $_name;
         private string $_desc;
         private string $_release;
         private string $_creation_date;
         private string $_poster;
-        private $_pegi;     // N'avait pas de chaîne 'string' car être NULL
-        private $_display;  // N'avait pas de chaîne 'string' car être NULL
+        private $_pegi;     // N'avait pas de chaîne 'string' car être NULL aussi dans la BDD
+        private $_display;  // N'avait pas de chaîne 'string' car être NULL aussi dans la BDD
         private string $_duration;
 
-       
+
         /**
          * Class have the name on Category_entity and on Movie_entity
          * Can we use like this or to add in Mother_Entity
@@ -60,7 +59,7 @@
             $this->_desc = $strDesc;
         }
 
-         /**
+        /**
 		* Récupération du date de Realise
 		* @return string date de Realise
 		*/

@@ -30,7 +30,7 @@
         public function findAll():array{
 
             /* Requête pour trouve tout les films */
-            $strQueryMovie  	= "	SELECT *
+            $strQueryMovie  	= "	SELECT movie.*
                                 FROM movie
                                 ORDER BY movie_name ASC;";
             //var_dump($strQueryMovie);
@@ -41,15 +41,15 @@
         }
         /**
          *  Requête pour trouve un film specifique avec id
-         * 
+         * @return array $arrOneMovie Tableau des movies de la bdd
          */
         public function findMovie(int $intId) : array {
-            $strQueryOneMovie = "SELECT * 
+            $strQueryOneMovie = "SELECT movie.* 
                                 FROM movie
                                 WHERE movie_id = ".$intId."
                                 ORDER BY movie_name ASC";
-                               
-                              
+                            
+                            
             $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $arrOneMovie;
         }
@@ -64,7 +64,7 @@
                             WHERE  movie_name LIKE '%".$this->strKeyword."%'";
             if ($boolDisplay){
                 $strQuery		.= " AND movie_display IS NOT NULL
-                                     ORDER BY movie_display DESC";
+                                    ORDER BY movie_display DESC";
             } else {
             $strQuery		.= " ORDER BY movie_creation_date DESC";
             }
@@ -74,17 +74,17 @@
             return $arrMovieDisplay;
         }
 
-         /*
+        /*
         * Récupération des 6 derniers films ajoutés 
         * @return array $arrMovieRecentAdd
         */
         public function movieRecentAdd():array {
-             $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
+            $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
                             FROM movie
                             ORDER BY movie_creation_date DESC
                             LIMIT 6 OFFSET 0;";
                             
-         $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
+        $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
         return $arrMovieRecentAdd;
         }
 
@@ -143,7 +143,7 @@
          * Function pour edit movie
          */
         public function editMovie(){
-           /* $strQuery = "UPDATE movie
+            /* $strQuery = "UPDATE movie
                         SET movie_poster='les_tuches.jpg', movie_name='Juan', movie_desc='Juan is one of the best', movie_release='2025-01-01'
                         WHERE movie_id=51;";
 

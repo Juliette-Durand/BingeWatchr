@@ -21,7 +21,7 @@
         
         public function addComment(object $objCommentEntity):bool{
             //var_dump($objCommentEntity->getId());
-           try{
+            try{
                 
                 // $objMovie = new MovieEntity();
                 $strQuery = " INSERT INTO comment (comm_movie_id, comm_user_id, comm_title, comm_date, comm_content)
@@ -47,11 +47,30 @@
         */
         public function allComments(){
             $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
-                        FROM comment;";
+                        FROM comment
+                        WHERE comm_movie_id= ".$_GET['id']."
+                        ORDER BY comm_date DESC
+                        LIMIT 3;";
+
             /* Je récupère le résultat de ma requête d'utilisateurs */
-            $arrMovie  = $this->_db->query($strQueryMovie)->fetchAll();
+            $arrMovie  = $this->_db->query($strQuery)->fetchAll();
 
             return $arrMovie;
         }
 
+        /**
+		 * Chérche avatad de une user pour fiche de comments
+		 * @return string $strOneUser avatar user
+		 */
+		public function findAvatarUser($user_id):string{		
+			/* J'écris ma requête */
+			$strQuery 	= "	SELECT user_avatar
+							FROM user
+							WHERE user_id = '".$user_id."';";
+	
+			/* Je récupère le résultat de ma requête d'utilisateur */
+			$strOneUser	= $this->_db->query($strQuery)->fetch();
+			
+			return $strOneUser ['user_avatar'];
+		}
     }
