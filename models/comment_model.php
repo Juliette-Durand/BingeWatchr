@@ -1,12 +1,13 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Arlind Halimi et Hugo
+	* @author Arlind Halimi
     * date : 07/02/2025
+    * modifiée par Arlind Halimi le 10/02/2025
 	*/
 
     /**
-     * require pour mother model
+     * require once mother model et comment entity
      */
     require_once("mother_model.php");
     require_once("entities/comment_entity.php");
@@ -19,6 +20,10 @@
             parent::__construct();
         }
         
+        /**
+         * Ajoute les Comments
+         * @return bool true ou false 
+         */
         public function addComment(object $objCommentEntity):bool{
             //var_dump($objCommentEntity->getId());
             try{
@@ -43,7 +48,7 @@
 
         /**
         * Récupération de tous les Comments
-        * @return array Tableau des comments
+        * @return array $arrMovie tableau des comments
         */
         public function allComments(){
             $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
