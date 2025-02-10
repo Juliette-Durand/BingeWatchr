@@ -389,4 +389,48 @@
             // Redirection vers la page de gestion des utilisateurs
             header("Location:future_index.php?ctrl=user&action=user_role_manage");
         }
+
+        /**
+         * Création d'un compte
+         */
+        public function create_account(){
+            // Variables d'affichage
+            // Ce qui sert de h1 et/ou de nom dans le titre de la page
+            $this->_arrData['strTitle'] =   "Créer mon compte";
+            // Variables fonctionnelles
+            $this->_arrData['refPage']  =   "create_account";
+            
+            if((count($_POST)>0)||(count($_FILES)>0)){
+                $arrImage = $_FILES['profile_picture'];
+                var_dump($arrImage);
+                if($arrImage['error']==0){
+                    // Source du fichier (endroit où il est stocké temporairement)
+                    $strSource		= $arrImage['tmp_name'];
+                    $image = imagecreatefromjpeg($strSource);
+
+                    // Destination du fichier
+                    $arrFileExplode	= explode(".", $arrImage['name']);
+                    $strFileExt		= $arrFileExplode[count($arrFileExplode)-1]; // Récupération de l'extension
+                    $strFileName 	= bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random
+                    $strDest		= "assets/img/users/profile_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+
+                    // Redimensionner
+                    // Dimensions de mon image
+					list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
+                    $size       = min($intWidth, $intHeight); // Récupération de la plus petite valeur qui servira de référence au rognage en carré
+                    $imageResized    = imagecrop($image, ['x' => 0, 'y' => 0, 'width' => $size, 'height' => $size]); // Création d'une nouvelle image carrée à partir des dimensions de référence
+
+                    $objMask		= imagecreatetruecolor(240, 240); // vide;
+					imagecopyresized($objMask, $imageResized, 0, 0, 0, 0, 240, 240, $size, $size);
+					imagewebp($objMask, $strDest);
+
+
+                    
+                    //$objArticle->setImg($strFileName);
+                }
+            }
+
+
+            $this->display('create_account');
+        }
     }
