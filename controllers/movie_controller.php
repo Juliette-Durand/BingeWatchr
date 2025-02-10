@@ -24,33 +24,18 @@
             
             require_once("entities/movie_entity.php");
             require_once("models/movie_model.php");
-            require_once("entities/category_entity.php");
-            require_once("models/category_model.php");
+            
 
             // object pour Movie Model
             $objMovieModel = new MovieModel();
-            $objMovieModel->strKeyword = $_POST['keywords']??"";
-            $objMovieModel->strStartDate = $_POST['startdate']??"";
-            $objMovieModel->strEndDate = $_POST['enddate']??"";
-            $objMovieModel->strStartTime = $_POST['minduration']??"";
-            $objMovieModel->strEndTime = $_POST['maxduration']??"";
-            $objCatModel = new CategoryModel;
-
 
             //Utilisation (création d'un tableau contenant les infos de la requête)
             $arrMovie         = $objMovieModel->movieList();
-            var_dump($arrMovie);
             $arrRecentMovie   = $objMovieModel->movieList(false);
-            $arrCat           = $objCatModel->findCategory();
-            $arrAdvMovie      = $objMovieModel->advSearchMovie();
-            var_dump($arrAdvMovie);
 
             // Transmission des variables dans la vue
             $this->_arrData['arrMovie'] = $arrMovie;
             $this->_arrData['arrRecentMovie'] = $arrRecentMovie;
-            $this->_arrData['objMovieModel'] = $objMovieModel;
-            $this->_arrData['arrCat'] = $arrCat;
-            $this->_arrData['arrAdvMovie'] = $arrAdvMovie; 
 
             $this->display('home');
          }  
@@ -59,16 +44,28 @@
 
             require_once("entities/movie_entity.php");
             require_once("models/movie_model.php");
+            require_once("entities/category_entity.php");
+            require_once("models/category_model.php");
 
             // object pour Movie Model
-            $objMovieModel = new MovieModel();
+            $objMovieModel                = new MovieModel();
+            $objCatModel                  = new CategoryModel();
+            $objMovieModel->strKeyword    = $_POST['keywords']??"";
+            $objMovieModel->strStartDate  = $_POST['startdate']??"";
+            $objMovieModel->strEndDate    = $_POST['enddate']??"";
+            $objMovieModel->strStartTime  = $_POST['minduration']??"";
+            $objMovieModel->strEndTime    = $_POST['maxduration']??"";
 
             //Utilisation
-            $arrMovie = $objMovieModel->findAll();
+            $arrMovie         = $objMovieModel->advSearchMovie();
+            $arrCat           = $objCatModel->findCategory();
+            $arrAdvMovie      = $objMovieModel->advSearchMovie();
 
             // Transmission des variables dans la vue
-            $this->_arrData['arrMovie'] = $arrMovie;
+            $this->_arrData['arrMovie']      = $arrMovie;
             $this->_arrData['objMovieModel'] = $objMovieModel;
+            $this->_arrData['arrCat']        = $arrCat;
+            $this->_arrData['arrAdvMovie']   = $arrAdvMovie; 
 
             $this->display('all_movies');
          }

@@ -62,16 +62,14 @@
         */
         public function movieList(bool $boolDisplay = true):array {
             $strQuery		=   "SELECT movie_name, movie_poster, movie_id  
-                            FROM movie
-                            WHERE  movie_name LIKE '%".$this->strKeyword."%'";
+                            FROM movie";  
             if ($boolDisplay){
-                $strQuery		.= " AND movie_display IS NOT NULL
+                $strQuery		.= " WHERE movie_display IS NOT NULL
                                         ORDER BY movie_display DESC";
             } else {
             $strQuery		.= " ORDER BY movie_creation_date DESC";
             }
             $strQuery		.= " LIMIT 6 OFFSET 0;";
-                            //var_dump($strQuery);
             $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
             return $arrMovieDisplay;
         }
@@ -87,6 +85,12 @@
                             INNER JOIN category ON cat_id = bel_cat_id";
             $strWhere = " WHERE";
             $arrCat = $_POST['cat[]']??[];  
+
+            // Vérifier si des mots-clés sont renseignés
+            if($this->strKeyword != "") {
+                $strQuery .= $strWhere." movie_name LIKE '%".$this->strKeyword."%'";
+                $strWhere = " AND";
+            }
             
             // Vérifier si des catégories sont cochées 
             if(count($arrCat) > 0) {
