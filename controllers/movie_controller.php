@@ -1,13 +1,13 @@
 <?php
-    /**
+   /**
      * Controleur enfant de MotherController pour la gestion des films
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
      */
 
-     require_once("mother_controller.php");
-    
-     class MovieCtrl extends MotherCtrl{
+   require_once("mother_controller.php");
+   
+   class MovieCtrl extends MotherCtrl{
 
          /**
          * Constructeur
@@ -84,24 +84,13 @@
             $strPhoto		= strtolower($strPhoto);
             $strTitleForm 		= $_POST['name']??"";
             $strDate 		= $_POST['release']??"";
-            // $strActor_ob	= $_POST['actor_ob']??"";
-            // $strActor_2		= $_POST['actor_2']??"";
-            // $strActor_3		= $_POST['actor_3']??"";
-            // $strActor_4		= $_POST['actor_4']??"";
             $strSynopsis	= $_POST['desc']??"";
             $strNotes 		= $_POST['notes']??"";
             $strDuration	= $_POST['duration']??"";
             $strMovieDisplay = $_POST['display']??"";
             $idActor 		= $_POST["actor"]??"";
 
-               
-
-            //var_dump($idActor);
-            //var_dump($arrMovie);
-            //var_dump($_FILES);
-            // var_dump($_POST);
-            // var_dump($objActorEntity->getId());
-            // var_dump($objMovieEntity->getId());
+         
                
 
 
@@ -218,24 +207,28 @@
           * 05/02/2025 par Arlind Halimi
           */
          public function page_dun_film(){
-            
-            /**
-             *                   ** ATTENTION **
-             * l'ID du film de GET['id'] est manquant, ce qui n'apparaît pas dans le lien
-             */
             require_once("entities/movie_entity.php");
             require_once("entities/acteur_entity.php");
+            require_once("entities/comment_entity.php");
             require_once("models/movie_model.php");
             require_once("models/actor_model.php");
+            require_once("models/comment_model.php");
+            
             
             // object pour Movie Model
-            $objMovieModel = new MovieModel(); 
-            $objMovie = new MovieEntity(); 
+            $objMovieModel    = new MovieModel(); 
+            $objMovie         = new MovieEntity(); 
+            $objCommentModel  = new CommentModel();
+            $objCommentEntity = new CommentEntity();
+            $objMovieEntity   = new MovieEntity();
+            
+            
 
             $objMovie->setId($_GET["id"]);
             $idMovie = $objMovie->getId();
             $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
             $objMovie->hydrate($arrMovieEntity);
+         
 
             // if (!$arrMovieEntity) {
             //    die("Erreur: Aucun film trouvé avec cet ID !");
@@ -243,25 +236,110 @@
       
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =  "Page de une film";
-
             // Variables fonctionnelles
             $this->_arrData['refPage']  =  "page_dun_film";
 
-            
-            
-               
-            // if (isset($_GET['id']) && ($_GET['id'] != $_SESSION['movie']->getId())){
-            // 		header("Location:error_403.php");
-            // 	}
-               //var_dump($arrMovieEntity);
+            $arrErrors = array();
+            $arrComments = array();
+            $arrComments = $objCommentModel->allComments();
+            $strTitleCom = '';
+            $strContentCom = '';
+            $strTitleCom   = $_POST['title']??"";
+            $strContentCom = $_POST['content']??"";
+            if(count($_POST) > 0){
+               // var_dump('je suis la');
+               // var_dump($objCommentEntity->getId());
 
-            $this->_arrData['objMovie']  =   $arrMovieEntity;
-            $this->_arrData['objMovie'] = $objMovie;
-            $this->_arrData['idMovie'] = $idMovie;
-            //$this->_arrData[''] = $strDateFr
+               
+               // duhet ti shkuash me dor keto setMovie sepse nuk i hidraton $_POST
+               $objCommentEntity->hydrate($_POST);
+               $objCommentEntity->setMovie_id($objMovie->getId());
+               $objCommentEntity->setUser_id($_SESSION['user']->getId());
+               // var_dump($objCommentEntity);
+               $strTitleCom   = $_POST['title']??"";
+               $strContentCom = $_POST['content']??"";
+
+               
+               if($strTitleCom == ""){
+                  $arrErrors['title'] = "Le titre est obligatoire pour comment!";
+               }
+               if($strContentCom == ""){
+                  $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
+               }
+               // var_dump($strComment);
+               // var_dump($strComment);
+               if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
+                  $objCommentModel->addComment($objCommentEntity);
+               }
+               
+            }
+            
+            
+
+            
+            $objMovieEntity->hydrate($arrMovieEntity);
+            /**
+             *       ATTENTION SAMARCHE PAS
+             * Vérifier si l'id du film est dans la base de données
+             * Si non, rediriger vers une page d'erreur
+             * Si oui, continuer
+             */
+            
+            if (!isset($_GET['id']) || !($objMovieModel->findMovie($_GET['id']) )){
+               header("Location:error_404.php");
+            }
+            // var_dump($_GET['id']);
+            // var_dump($objMovieEntity->getId());
+            // var_dump("je suis la");
+            // var_dump($objMovieModel->findMovie($_GET['id']));
+
+            
+
+            // pour qua comme parameter entre $arrMovieEntity 
+            
+            //var_dump($objMovieEntity->getId());
+
+            $this->_arrData['objMovie']         = $arrMovieEntity;
+            $this->_arrData['objMovie']         = $objMovieEntity;
+            $this->_arrData['idMovie']          = $idMovie;
+            $this->_arrData['strTitleCom']      = $strTitleCom;
+            $this->_arrData['strContentCom']    = $strContentCom;
+            $this->_arrData['arrErrors']        = $arrErrors;
+            $this->_arrData['arrComments']      = $arrComments;
+            $this->_arrData['objCommentModel']  = $objCommentModel;
 
             $this->display('page_dun_film');
-
-         
          }
+      public function edit_movie(){
+
+         // require_once("entities/movie_entity.php");
+         // require_once("entities/acteur_entity.php");
+         // require_once("models/movie_model.php");
+         // require_once("models/actor_model.php");
+         
+         // // object pour Movie Model
+         // $objMovieModel = new MovieModel(); 
+         // $objMovie = new MovieEntity(); 
+
+         // $objMovie->setId($_GET["id"]);
+         // $idMovie = $objMovie->getId();
+         // $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
+         // $objMovie->hydrate($arrMovieEntity);
+
+
+         // /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
+         // $this->_arrData['strTitle'] =  "Page de modifie film";
+
+         // // Variables fonctionnelles
+         // $this->_arrData['refPage']  =  "edit_movie";
+
+
+         // $this->_arrData['objMovie']  = $arrMovieEntity;
+         // $this->_arrData['objMovie'] = $objMovie;
+         // $this->_arrData['idMovie'] = $idMovie;
+         // //$this->_arrData[''] = $strDateFr
+
+
+         // $this->display('edit_movie');
+      }
    }

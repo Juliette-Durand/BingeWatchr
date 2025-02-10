@@ -59,10 +59,41 @@
                             ?> 
                             <p> <?php echo($objOneActor->getLast_name()." ". $objOneActor->getFirst_name()); ?> </p>
                         <?php }
-                        //var_dump($arrActors);
+                    ?>
+                
+                <?php
+                // ajoute 3 dernier comments 
+                // CODE
+                
+                ?>
+                <?php if(isset($_SESSION['user'])){ ?>
+                    <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
+                        <?php if (count($arrErrors) > 0){ ?>
+                            <div class="alert alert-danger">
+                                <?php foreach($arrErrors as $strError){ ?>
+                                    <p><?php echo $strError; ?></p>
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
+                        <label class="col-12" for="title">Title comment</label>
+                        <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($strTitleCom) ?>">
+                        <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($strContentCom) ?></textarea>
+                        <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
+                    </form>
+                <?php } ?>
+            </div>
+            
+                    <h3 class='mt-5'>Dernier trois commentes : </h3>
+                    
+
+                    <?php
+                        foreach($arrComments as $arrDetComment){
+                            $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
+                            $objCommentEntity->hydrate($arrDetComment);
+                            include("views/_partial/comment.php");
+                        }
                     ?>
                     
-                
-            </div>
+            
         </div>
     </div>
