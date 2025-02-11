@@ -70,7 +70,7 @@
 							WHERE user_mail = '".$strMail."';";
 			$arrUser	=	$this->_db->query($strQuery)->fetch();
 
-			if(($arrUser != false) && ($strPassword === $arrUser['user_password'])){
+			if(($arrUser != false) && (password_verify($strPassword, $arrUser['user_password']))){
 				unset($arrUser['user_password'], $arrUser['user_mail']);
 				return $arrUser;
 			}
@@ -94,14 +94,14 @@
 				$prep->bindValue(':fname', $objUser->getFirst_name(), PDO::PARAM_STR);
 				$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
 				$prep->bindValue(':mail', $objUser->getMail(), PDO::PARAM_STR);
-				$prep->bindValue(':password', $objUser->getPassword(), PDO::PARAM_STR);
+				$prep->bindValue(':password', $objUser->getPwdHash(), PDO::PARAM_STR);
 				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
 				if ($boolAvatar === true){
 					$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
 				} else {
 					$prep->bindValue(':avatar', "no_profile_pic.webp", PDO::PARAM_STR);
 				}
-				
+
 				$prep->execute();
 			}catch(PDOException $e) { 
 				return false;
