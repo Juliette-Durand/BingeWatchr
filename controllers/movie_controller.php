@@ -70,7 +70,6 @@
 
             $this->display('all_movies');
          }
-     }
             
          /**
           * Form movie
