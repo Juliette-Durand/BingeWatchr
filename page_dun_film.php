@@ -4,6 +4,7 @@
  * doit fait cette page
  */
 
+
     include('head.php');
 
     require_once("entities/movie_entity.php");
@@ -20,7 +21,9 @@
     //var_dump($objMovie->getId());
     $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
     
-
+// if (isset($_GET['id']) && ($_GET['id'] != $_SESSION['movie']->getId())){
+// 		header("Location:error_403.php");
+// 	}
     //var_dump($arrMovieEntity);
     
 ?>
@@ -40,7 +43,7 @@
                     <h2><?php echo($objMovie->getName()); ?>  </h2>
                     <p><?php echo($objMovie->getDesc()); ?> </p>
                     <p><?php echo($objMovie->getDateFr()); ?> </p>
-                    <p><?php echo($objMovie->getCreatedate()); ?>  </p>
+                    <p><?php echo($objMovie->getCreation_date()); ?>  </p>
                     <?php if($objMovie->getPegi() != null){ ?>
                         <p><?php echo($objMovie->getPegi()); ?> </p>
                     <?php } ?>

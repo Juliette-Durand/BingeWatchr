@@ -6,6 +6,13 @@
 	* @author Arlind Halimi et Hugo
     * modifiée par Hugo le 31/01/2025
 	*/
+
+    /**
+     * require pour mother model
+     */
+    require_once("mother_model.php");
+    require_once("entities/movie_entity.php");
+    
     class MovieModel extends MotherModel{
 
         // Attributs pour la recherche
@@ -29,33 +36,32 @@
         */
         public function findAll():array{
 
-            /* Requête pour trouver tous les films */
-            $strQueryMovie  	= "	SELECT *
+            /* Requête pour trouve tout les films */
+            $strQueryMovie  	= "	SELECT movie.*
                                 FROM movie
-                                ORDER BY movie_creation_date DESC;"; 
+                                ORDER BY movie_name ASC;";
             //var_dump($strQueryMovie);
-
 			/* Je récupère le résultat de ma requête d'utilisateurs */
             $arrMovie  = $this->_db->query($strQueryMovie)->fetchAll();
 
             return $arrMovie;
         }
 
-        /**
-         * Requête pour trouve un film specifique 
-         * @param int L'ID du movie
-         * @return array Tableau contenant les informations du film
+         /**
+         *  Requête pour trouve un film specifique avec id
+         * @return array $arrOneMovie Tableau des movies de la bdd
          */
-        public function findMovie(int $intId):array {
-        $strQueryOneMovie = "SELECT * 
-                            FROM movie
-                            WHERE movie_id = ".$intId."
-                            ORDER BY movie_name ASC";
+        public function findMovie(int $intId) : array {
+            $strQueryOneMovie = "SELECT movie.* 
+                                FROM movie
+                                WHERE movie_id = ".$intId."
+                                ORDER BY movie_name ASC";
                             
-        $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
-        return $arrOneMovie;
+                            
+            $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
+            return $arrOneMovie;
         }
-
+  
         /** 
         * Récupération des 6 derniers films à afficher 
         * @param bool Booléen qui indique si le champs movie_display est NULL ou non
@@ -113,4 +119,70 @@
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
         } 
+
+        /**
+         * Public function addMovie (string $strTitle, string $strTitle, string $strDate, string $strPhoto, string $strDuration)
+         * @return boole
+         */
+        public function addMovie($objMovieEntity){
+            try{
+                $strQuery = "INSERT INTO movie 
+                    (movie_name, movie_desc, movie_release, movie_creation_date, movie_poster, movie_pegi, movie_display, movie_duration)
+                    VALUE (:name, :desc, :release, NOW(), :poster, :pegi ,:display,:duration)";
+
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":name",       $objMovieEntity->getName(), PDO::PARAM_STR);
+                $prep->bindValue(":desc",       $objMovieEntity->getDesc(), PDO::PARAM_STR);
+                $prep->bindValue(":release",    $objMovieEntity->getRelease(), PDO::PARAM_STR);
+                $prep->bindValue(":poster",     $objMovieEntity->getPoster(), PDO::PARAM_STR);
+                $prep->bindValue(":pegi",       $objMovieEntity->getPegi(), PDO::PARAM_STR);
+                $prep->bindValue(":display",    $objMovieEntity->getDisplay(), PDO::PARAM_STR);
+                $prep->bindValue(":duration",   $objMovieEntity->getDuration(), PDO::PARAM_STR);
+
+                //var_dump($prep->debugDumpParams());
+                $prep->execute();
+            }catch(PDOExeption $e){
+                return false;
+            }
+            return true;
+        } 
+        /**
+        *   Public function playActor ()
+        * @return boole
+        */
+        public function playActor($intActor){
+            try{
+                $strQuery = "INSERT INTO 
+                    play (play_actor_id, play_movie_id) 
+                    VALUES (:play_actor_id, :play_movie_id)"; 
+
+                $lastMovieId = $this->_db->lastInsertId();  // prend le dernier ID de movie
+                //$intActor = $_POST['actor'];                // prendre l'ID de l'acteur de $_POST['actor']
+
+                $prep = $this->_db->prepare($strQuery); 
+        
+                $prep->bindValue(":play_actor_id",    $intActor, PDO::PARAM_STR);
+                $prep->bindValue(":play_movie_id",    $lastMovieId, PDO::PARAM_STR);
+
+                $prep->execute();
+            }catch(PDOExeption $e){
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Function pour edit movie
+         */
+        public function editMovie(){
+            /* $strQuery = "UPDATE movie
+                        SET movie_poster='les_tuches.jpg', movie_name='Juan', movie_desc='Juan is one of the best', movie_release='2025-01-01'
+                        WHERE movie_id=51;";
+
+            $prep = $this->_db->prepare($$strQuery);
+
+            $prep->execute();
+            */
+        }
+            
     }

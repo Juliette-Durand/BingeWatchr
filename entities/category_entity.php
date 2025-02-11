@@ -17,6 +17,11 @@
             $this->_prefixe = 'cat';
 			$this->_id;
 		}
+      
+        /**
+         * declare en prive variable name
+         */
+        private $_name;
 
         /**
          * Class have the name on Category_entity and on Movie_entity
@@ -47,7 +52,7 @@
         }
         /**
 		* Mise à jour du Name
-		* @param string Name
+		* @param string  $strName
 		*/
         public function setName(string $strName){
             $this->_name = $strName;
