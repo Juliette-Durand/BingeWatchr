@@ -12,13 +12,13 @@
 		* Initialisation des attributs
 		*/
 		protected mixed $_id = '';
-		private string $_last_name;
-		private string $_first_name;
-		private string $_mail;
+		private string $_last_name = '';
+		private string $_first_name = '';
+		private string $_mail = '';
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
-		private string $_bio;
+		private string $_bio = '';
 		private string $_role;
 		
 		/**

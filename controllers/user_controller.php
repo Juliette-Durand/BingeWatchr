@@ -2,7 +2,7 @@
     /**
      * Controleur enfant de MotherController pour la gestion utilisateur
      * @author Juliette Durand
-     * Créé le 28/01/2025 - Dernière modification le 07/02/2025 par Juliette Durand
+     * Créé le 28/01/2025 - Dernière modification le 11/02/2025 par Juliette Durand
      */
 
     require_once("mother_controller.php");
@@ -201,7 +201,7 @@
                                 $arrErrors['new_pwd'][]= "au moins un caractère spécial";
                             }
                             
-                            if (!isset($arrErrors['conf_pwd'])){
+                            if (!isset($arrErrors['new_pwd'])){
                                 // Si tout est ok pour le mot de passe, on s'occupe la confirmation
                                 if ($strConfPwd == ""){
                                     // Vérifie que le champ confirmation de mot de passe est renseigné
@@ -400,12 +400,101 @@
             // Variables fonctionnelles
             $this->_arrData['refPage']  =   "create_account";
             
+            $objUser = new UserEntity();
+
+            
+            var_dump($_POST);
+            $strConfPwd  = $_POST['confirm_pwd']??"";
+            $boolAvatar = false;
+
+            $arrErrors = array();
             if(count($_POST)>0){
-                
+                $objUser->hydrate($_POST);
+                var_dump($objUser);
+
+                // Vérification de l'ID
+                if($objUser->getId() == ""){
+                    $arrErrors['pseudo']    =   'Le champ "Pseudo" est obligatoire';
+                } else {
+                    $boolId   =   $this->_objUserModel->verifId($objUser->getId());
+                    if ($boolId === true){
+                        $arrErrors['pseudo'] =   "Ce pseudo est déjà utilisé";
+                    }
+                }
+                // Vérification du prénom
+                if($objUser->getFirst_name() == ""){
+                    $arrErrors['prenom']    =   'Le champ "Prénom" est obligatoire';
+                }
+                // Vérification du nom
+                if($objUser->getLast_name() == ""){
+                    $arrErrors['nom']       =   'Le champ "Nom" est obligatoire';
+                }
+                // Vérification de l'email
+                if($objUser->getMail() == ""){
+                    $arrErrors['email']     =   'Le champ "Adresse email" est obligatoire';
+                } else if (!filter_var($objUser->getMail(), FILTER_VALIDATE_EMAIL)){
+                    $arrErrors['email']     =   "L'adresse email renseignée n'est pas valide";
+                } else {
+                    $boolMail   =   $this->_objUserModel->verifMail($objUser->getMail());
+                    if ($boolMail === true){
+                        $arrErrors['email'] =   "Cette adresse email est déjà utilisée";
+                    }
+                }
+
+                // Vérification du mot de passe
+                if ($objUser->getPassword() == ""){
+                    $arrErrors['pwd']     =   'Le champ "mot de passe" est obligatoire';
+                } else {
+                    // Vérifie que le mot de passe contient au moins 8 caractères
+                    if (strlen($objUser->getPassword())<8){
+                        $boolErrorPwd = true;
+                        $arrErrorsPwd[]= "au minimum 8 caractères";
+                    }
+                    // Vérifie que le mot de passe contient un chiffre
+                    if (!preg_match("#[0-9]#", $objUser->getPassword())){
+                        $boolErrorPwd = true;
+                        $arrErrorsPwd[]= "au moins un chiffre";
+                    }
+                    // Vérifie que le mot de passe contient une lettre majuscule
+                    if (!preg_match("#[A-Z]#", $objUser->getPassword())){
+                        $boolErrorPwd = true;
+                        $arrErrorsPwd[]= "au moins une lettre majuscule";
+                    }
+                    // Vérifie que le mot de passe contient une lettre minuscule
+                    if (!preg_match("#[a-z]#", $objUser->getPassword())){
+                        $boolErrorPwd = true;
+                        $arrErrorsPwd[]= "au moins une lettre minuscule";
+                    }
+                    // Vérifie que le mot de passe contient un caractère spécial
+                    if (!preg_match("#\W#", $objUser->getPassword())){
+                        $boolErrorPwd = true;
+                        $arrErrorsPwd[]= "au moins un caractère spécial";
+                    }
+                    // Si le mot de passe ne respecte pas une des conditions, un booléen est renvoyé
+                    if((isset($boolErrorPwd)) && ($boolErrorPwd === true)){
+                        $this->_arrData['arrErrorsPwd']	=  $arrErrorsPwd;
+                        $arrErrors['pwd']     =   'Le mot de passe ne respecte pas les critères';
+                    }
+                    
+                    if (!isset($arrErrors['pwd'])){
+                        // Si tout est ok pour le mot de passe, on s'occupe la confirmation
+                        if ($strConfPwd == ""){
+                            // Vérifie que le champ confirmation de mot de passe est renseigné
+                            $arrErrors['conf_pwd']	= 'Le champ "Confirmation mot de passe" doit être renseigné';
+                        
+                        } else if ($objUser->getPassword() != $strConfPwd) {
+                            // Vérifie que les mots de passe correspondent
+                            $arrErrors['conf_pwd']	= "La confirmation de mot de passe ne correspond pas à celui renseigné";
+                        }
+                    }
+                    
+                }
+
                 // Vérifie qu'une photo de profil a été importée
                 if(count($_FILES)>0){
                     $arrImage = $_FILES['profile_picture'];
                     if($arrImage['error']==0){
+                        $boolAvatar = true;
                         $strSource = $arrImage['tmp_name']; // Récupération de l'image
 
                         // Traitement de l'image importée
@@ -465,7 +554,22 @@
                         $objUser->setAvatar($strFileName);
                     }
                 }
+
+                if(count($arrErrors) == 0){
+                    var_dump("hey");                    
+                    $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
+                    if ($boolCreation === true){
+                        $_SESSION['account_creation']['success'] = "Le compte a bien été créé";
+                        header("Location:future_index.php?ctrl=user&action=login");
+                    } else {
+                        $_SESSION['account_creation']['error'] = "Erreur lors de la création du compte";
+                    }
+                    var_dump($_SESSION);
+                }
             }
+
+            $this->_arrData['arrErrors']	=  $arrErrors;
+            $this->_arrData['objUser']		=  $objUser;
 
             $this->display('create_account');
         }
