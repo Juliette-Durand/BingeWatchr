@@ -3,35 +3,12 @@
  * Creator @Arlind Halimi
  * doit fait cette page
  */
-
-
-//     include('head.php');
-
-//     require_once("entities/movie_entity.php");
-//     require_once("entities/acteur_entity.php");
-//     require_once("models/movie_model.php");
-//     require_once("models/actor_model.php");
-
-//     // object pour Movie Model
-//     $objMovieModel = new MovieModel(); 
-//     $objMovie = new MovieEntity(); 
-
-//     $objMovie->setId($_GET["id"]);
-
-//     $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
-//     $idMovie = $objMovie->getId()
-    
-// // if (isset($_GET['id']) && ($_GET['id'] != $_SESSION['movie']->getId())){
-// // 		header("Location:error_403.php");
-// // 	}
-//     //var_dump($arrMovieEntity);
-    
 ?>
     <div class="container pt-5">
         <div class="row">
             <div class="col-md-4 card">
                 
-                <img src="assets/img/movies/movie_posters/<?php echo($objMovie->getPoster()); ?>" alt="photo de film">
+                <img src="assets/img/movies/movie_posters/ <?php echo($objMovie->getPoster()); ?>" alt="photo de film">
                                                         
             </div>
             <div class="col-md-8">
@@ -54,17 +31,13 @@
                         foreach($arrActors as $actor){
                             $objOneActor = new ActorEntity();
                             $objOneActor->hydrate($actor);
-                            //var_dump($objOneActor);
                             
                             ?> 
                             <p> <?php echo($objOneActor->getLast_name()." ". $objOneActor->getFirst_name()); ?> </p>
                         <?php }
                     ?>
-                
                 <?php
-                // ajoute 3 dernier comments 
-                // CODE
-                
+                // ajoute 3 dernier comments par requete LIMIT 3
                 ?>
                 <?php if(isset($_SESSION['user'])){ ?>
                     <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
@@ -82,18 +55,16 @@
                     </form>
                 <?php } ?>
             </div>
-            
-                    <h3 class='mt-5'>Dernier trois commentes : </h3>
-                    
+            <h3 class='mt-5'>Dernier trois commentes : </h3>
 
-                    <?php
-                        foreach($arrComments as $arrDetComment){
-                            $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
-                            $objCommentEntity->hydrate($arrDetComment);
-                            include("views/_partial/comment.php");
-                        }
-                    ?>
-                    
-            
+            <?php
+                foreach($arrComments as $arrDetComment){
+                    $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
+                    $objCommentEntity->hydrate($arrDetComment);
+                    include("views/_partial/comment.php");
+                }
+            ?>
+            <!-- button pour partage movie par mail -->
+            <a href="http://localhost/BingeWatchr-10/BingeWatchr/future_index.php?ctrl=movie&action=contact" class="btn">Partage par email</a>
         </div>
     </div>

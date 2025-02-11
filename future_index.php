@@ -5,6 +5,9 @@
      * Créé le 28/01/2025 - Dernière modification le 28/01/2025 par Juliette Durand
      */
 
+    // Autoloader Composer 
+	require('vendor/autoload.php');
+
     // Inclusion du fichier user_entity pour qu'il soit disponible constamment
     // -> Utilisation perpétuelle dans le header quand l'utilisateur est connecté
     require_once("entities/user_entity.php");

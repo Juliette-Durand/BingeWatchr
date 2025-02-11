@@ -4,11 +4,13 @@
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
      */
-
+   use PHPMailer\PHPMailer\PHPMailer;
+   use PHPMailer\PHPMailer\Exception;
+   
    require_once("mother_controller.php");
    
    class MovieCtrl extends MotherCtrl{
-
+     
          /**
          * Constructeur
          */
@@ -40,7 +42,6 @@
           * 04/02/2025 par Arlind Halimi
           */
          public function form_movie(){
-            // var_dump($_GET);
             // Variables d'affichage
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =  "Ajoute nouveau film";
@@ -69,18 +70,10 @@
                
             // Merr të gjithë aktorët
             $arrActor = $objActorModel->NameSurnameActors();
-            //var_dump($arrActor);
-            // Movie
-            //$arrMovie 	= $objMovie->findMovie();
-            
-            //foreach ($arrMovie as $arrDetMovie){
-               //$objMovie = new MovieEntity();
-               //$objMovie->hydrate($arrDetMovie);
-            //}
 
             // Récupérer les informations du $_POST
             // ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
-            $strPhoto 		= $_FILES['fichier']["name"]??"";
+            $strPhoto 		= $_FILES['fichier']['name']??"";
             $strPhoto		= strtolower($strPhoto);
             $strTitleForm 		= $_POST['name']??"";
             $strDate 		= $_POST['release']??"";
@@ -90,11 +83,8 @@
             $strMovieDisplay = $_POST['display']??"";
             $idActor 		= $_POST["actor"]??"";
 
-         
-               
 
-
-               // Initialisation du tableau vide
+            // Initialisation du tableau vide
             $arrErrors = array();
 
             if(count($_POST) > 0){
@@ -122,9 +112,7 @@
                   
                   
                // Vérification du fichier
-               // check if file is exist
-                  
-                  
+               // check if file is exist                 
                $arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
                if ($arrFichier['error'] == 4){
                   $arrErrors['fichier'] = "Le image est obligatoire";
@@ -176,11 +164,7 @@
                      
                }
             }
-            //var_dump($objActorEntity);
-           // exit();
 
-            // var_dump($objActorEntity->getFirst_name());
-            // var_dump($objActorEntity->getId());
 
             // besoin de déclarer toutes les variables utilisées dans le formulaire
             $this->_arrData['strPhoto']  =   $strPhoto;
@@ -201,12 +185,13 @@
             $this->display("form_movie");
       }
 
-         /**
-          * Page d'un film
-          * @author Arlind Halimi
-          * 05/02/2025 par Arlind Halimi
-          */
-         public function page_dun_film(){
+      /**
+       * Page d'un film
+       * @author Arlind Halimi
+       * 05/02/2025 par Arlind Halimi
+       */
+     
+      public function page_dun_film(){
             require_once("entities/movie_entity.php");
             require_once("entities/acteur_entity.php");
             require_once("entities/comment_entity.php");
@@ -221,19 +206,13 @@
             $objCommentModel  = new CommentModel();
             $objCommentEntity = new CommentEntity();
             $objMovieEntity   = new MovieEntity();
-            
-            
+              
 
             $objMovie->setId($_GET["id"]);
             $idMovie = $objMovie->getId();
             $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
             $objMovie->hydrate($arrMovieEntity);
          
-
-            // if (!$arrMovieEntity) {
-            //    die("Erreur: Aucun film trouvé avec cet ID !");
-            // }
-      
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =  "Page de une film";
             // Variables fonctionnelles
@@ -247,57 +226,34 @@
             $strTitleCom   = $_POST['title']??"";
             $strContentCom = $_POST['content']??"";
             if(count($_POST) > 0){
-               // var_dump('je suis la');
-               // var_dump($objCommentEntity->getId());
-
                
-               // duhet ti shkuash me dor keto setMovie sepse nuk i hidraton $_POST
+               // besoin ecrire setMovie_id et setUser_id parce que pas hydrate avec $_POST $_POST
                $objCommentEntity->hydrate($_POST);
                $objCommentEntity->setMovie_id($objMovie->getId());
                $objCommentEntity->setUser_id($_SESSION['user']->getId());
-               // var_dump($objCommentEntity);
+               
                $strTitleCom   = $_POST['title']??"";
                $strContentCom = $_POST['content']??"";
 
-               
                if($strTitleCom == ""){
                   $arrErrors['title'] = "Le titre est obligatoire pour comment!";
                }
                if($strContentCom == ""){
                   $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
                }
-               // var_dump($strComment);
-               // var_dump($strComment);
                if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
                   $objCommentModel->addComment($objCommentEntity);
                }
                
             }
             
-            
-
-            
             $objMovieEntity->hydrate($arrMovieEntity);
-            /**
-             *       ATTENTION SAMARCHE PAS
-             * Vérifier si l'id du film est dans la base de données
-             * Si non, rediriger vers une page d'erreur
-             * Si oui, continuer
-             */
-            
+      
             if (!isset($_GET['id']) || !($objMovieModel->findMovie($_GET['id']) )){
                header("Location:error_404.php");
-            }
-            // var_dump($_GET['id']);
-            // var_dump($objMovieEntity->getId());
-            // var_dump("je suis la");
-            // var_dump($objMovieModel->findMovie($_GET['id']));
-
-            
+            }          
 
             // pour qua comme parameter entre $arrMovieEntity 
-            
-            //var_dump($objMovieEntity->getId());
 
             $this->_arrData['objMovie']         = $arrMovieEntity;
             $this->_arrData['objMovie']         = $objMovieEntity;
@@ -309,7 +265,70 @@
             $this->_arrData['objCommentModel']  = $objCommentModel;
 
             $this->display('page_dun_film');
+      }
+      
+      public function contact(){
+         // Variables d'affichage
+         /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
+         $this->_arrData['strTitle'] =  "Partage le film par email";
+
+         // Variables fonctionnelles
+         $this->_arrData['refPage']  =  "contact";
+         
+         if( count($_POST) > 0){
+            $strName       = $_POST['name']??"";
+            $strMail       = $_POST['mail']??"";
+            $strMessage    = $_POST['message']??"";
+
+            //$strContentA = file_get_contents('');
+				$objMail = new PHPMailer(); 	// Nouvel objet Mail
+				$objMail->IsSMTP();
+				$objMail->Mailer 		   = "smtp";
+				$objMail->CharSet 	   = PHPMailer::CHARSET_UTF8;	// uft-8
+
+            // Si on veut afficher les messages de debug
+				$objMail->SMTPDebug 	= 0;
+				
+				// Connection au serveur de Mail
+				$objMail->SMTPAuth 		= TRUE;
+				$objMail->SMTPSecure 	= "tls";
+				$objMail->Port 			= 587;
+				$objMail->Host 			= "smtp.gmail.com";
+				$objMail->Username 		= 'christel.ceformation@gmail.com';
+				$objMail->Password 		= 'cdbk mrjr aiqo tndi';
+				
+				// Comment envoyer le mail
+				$objMail->IsHTML(true); // en HTML
+				$objMail->setFrom("no-replay@bingeWatchr.fr", "BingeWatchr"); // Expéditeyr ex. no-replay@blog.fr
+				// Destinataire(s)
+				$objMail->addAddress($strMail, $strName);
+				// $objMail->addAddress('autre@adresse-mail.com', 'Autre nom');
+				
+            $this->_arrData['name']       = $strName;
+				$this->_arrData['mail']			= $strMail;
+				$this->_arrData['message'] 	= $strMessage;
+						
+				// Contenu du mail
+				//$objMail->Subject = $strSubjecte;
+				$objMail->Body = $strMessage;
+				
+				
+				if (!$objMail->send()) {
+					//echo 'Erreur de Mailer : ' . $objMail->ErrorInfo;
+				} else {
+               $_SESSION['success'] 	= 'Le message a été envoyé.';
+               // Rediriger vers l'accueil
+               header("Location:future_index.php");
+               exit;
+					
+				}
+
          }
+
+         // est une méthode qui appelle une view nommée "contact" 
+         $this->display("contact");
+      }
+
       public function edit_movie(){
 
          // require_once("entities/movie_entity.php");
