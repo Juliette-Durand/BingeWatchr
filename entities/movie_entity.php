@@ -14,16 +14,15 @@
 			parent::__construct();
 			$this->_prefixe = 'movie';
 		}
-
+        
         private string $_name;
         private string $_desc;
         private string $_release;
-        private string $_creation_date;
+        private string $_create_date;
         private string $_poster;
-        private $_pegi;     // N'avait pas de chaîne 'string' car être NULL aussi dans la BDD
-        private $_display;  // N'avait pas de chaîne 'string' car être NULL aussi dans la BDD
+        private $_pegi;
+        private $_display;
         private string $_duration;
-
 
         /**
          * Class have the name on Category_entity and on Movie_entity
@@ -35,14 +34,14 @@
 		*/
         public function getName(){
             return $this->_name;
-        }
+        } 
         /**
 		* Mise à jour du Name
 		* @param string $strName
 		*/
         public function setName(string $strName){
             $this->_name = $strName;
-        }
+        } 
 
         /**
 		* Récupération du Desctiption

@@ -1,8 +1,10 @@
 <?php
+    require_once("mother_model.php");
+
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
 	* @author Arlind Halimi et Hugo
-  * modifiée par Hugo le 31/01/2025
+    * modifiée par Hugo le 31/01/2025
 	*/
 
     /**
@@ -14,7 +16,12 @@
     class MovieModel extends MotherModel{
 
         // Attributs pour la recherche
-        public string $strKeyword = "";
+        public string   $strKeyword     = ""; /**< Variable pour la recherche par mots-clés initialisée à chaîne de caractères vide si ce n'est pas renseigné */
+        public string 	$strStartDate 	= ""; /**< Variable pour la recherche par date de début initialisée à chaîne de caractères vide si ce n'est pas renseigné */
+		public string 	$strEndDate 	= ""; /**< Variable pour la recherche par date de fin initialisée à chaîne de caractères vide si ce n'est pas renseigné */
+        public int      $intStartTime   = 0; /**< Variable pour la recherche par durée du film (debut) initialisée à 0 si ce n'est pas renseigné */
+        public int      $intEndTime     = 0; /**< Variable pour la recherche par durée du film (fin) initialisée à 0 si ce n'est pas renseigné */
+        public array    $arrCategory    = []; /**< Variable pour le tableau des catégories initialisée à tableau vide */
 
         /**
         * Constructeur de la classe
@@ -39,7 +46,8 @@
 
             return $arrMovie;
         }
-        /**
+
+         /**
          *  Requête pour trouve un film specifique avec id
          * @return array $arrOneMovie Tableau des movies de la bdd
          */
@@ -53,40 +61,64 @@
             $arrOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $arrOneMovie;
         }
-
-        /*
-        * Récupération des 6 derniers films sortis 
-        * @return array $arrMovieDisplay
+  
+        /** 
+        * Récupération des 6 derniers films à afficher 
+        * @param bool Booléen qui indique si le champs movie_display est NULL ou non
+        * @return array tableau des films 
         */
         public function movieList(bool $boolDisplay = true):array {
             $strQuery		=   "SELECT movie_name, movie_poster, movie_id  
-                            FROM movie
-                            WHERE  movie_name LIKE '%".$this->strKeyword."%'";
+                            FROM movie";  
             if ($boolDisplay){
-                $strQuery		.= " AND movie_display IS NOT NULL
-                                    ORDER BY movie_display DESC";
+                $strQuery		.= " WHERE movie_display IS NOT NULL
+                                        ORDER BY movie_display DESC";
             } else {
             $strQuery		.= " ORDER BY movie_creation_date DESC";
             }
             $strQuery		.= " LIMIT 6 OFFSET 0;";
-                            //var_dump($strQuery);
             $arrMovieDisplay	= $this->_db->query($strQuery)->fetchAll();
             return $arrMovieDisplay;
         }
 
-        /*
-        * Récupération des 6 derniers films ajoutés 
-        * @return array $arrMovieRecentAdd
+        /** 
+        * Méthode pour la recherche de films par filtre avancé 
+        * @return array tableau des films après exécution de la requête
         */
-        public function movieRecentAdd():array {
-            $strQuery		=   "SELECT movie_name, movie_poster, movie_id 
-                            FROM movie
-                            ORDER BY movie_creation_date DESC
-                            LIMIT 6 OFFSET 0;";
-                            
-        $arrMovieRecentAdd	= $this->_db->query($strQuery)->fetchAll();
-        return $arrMovieRecentAdd;
-        }
+        public function advSearchMovie():array {
+            $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id
+                        FROM movie
+                            INNER JOIN belong ON bel_movie_id = movie_id 
+                            INNER JOIN category ON cat_id = bel_cat_id";
+            $strWhere = " WHERE";
+            $arrCat = $_POST['cat']??[];  
+
+            // Vérifier si des mots-clés sont renseignés
+            if($this->strKeyword != "") {
+                $strQuery .= $strWhere." movie_name LIKE '%".$this->strKeyword."%'";
+                $strWhere = " AND";
+            }
+            
+            // Vérifier si des catégories sont cochées 
+            if(count($arrCat) > 0) {
+                $strQuery .= $strWhere." bel_cat_id IN (".implode(",", $arrCat).")";
+                $strWhere = " AND";
+            }    
+            
+            // Vérifier si les dates sont renseignées
+            if($this->strStartDate != "" && $this->strEndDate != "") {
+                $strQuery .= $strWhere." movie_release BETWEEN '".$this->strStartDate."' AND '".$this->strEndDate."'";
+                $strWhere = " AND";
+            }
+
+            // Vérifier si la durée est renseignée 
+            if($this->intStartTime != 0 || $this->intEndTime != 0) {
+                $strQuery .= $strWhere." TIME_TO_SEC(movie_duration)/60 BETWEEN ".$this->intStartTime." AND ".$this->intEndTime;
+            }
+
+            $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
+            return $arrAdvMovie;
+        } 
 
         /**
          * Public function addMovie (string $strTitle, string $strTitle, string $strDate, string $strPhoto, string $strDuration)
