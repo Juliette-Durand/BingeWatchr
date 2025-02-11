@@ -3,7 +3,7 @@
 * Classe pour gérer les catégories 
 * @author Hugo Gomes
 */
-class CategoryModel extends MOtherModel{
+class CategoryModel extends MotherModel{
 		
     /**
     * Constructeur de la classe

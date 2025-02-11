@@ -12,8 +12,9 @@
         public string   $strKeyword     = ""; /**< Variable pour la recherche par mots-clés initialisée à chaîne de caractères vide si ce n'est pas renseigné */
         public string 	$strStartDate 	= ""; /**< Variable pour la recherche par date de début initialisée à chaîne de caractères vide si ce n'est pas renseigné */
 		public string 	$strEndDate 	= ""; /**< Variable pour la recherche par date de fin initialisée à chaîne de caractères vide si ce n'est pas renseigné */
-        public string   $strStartTime   = ""; /**< Variable pour la recherche par durée du film (debut) initialisée à chaîne de caractères vide si ce n'est pas renseigné */
-        public string   $strEndTime     = ""; /**< Variable pour la recherche par durée du film (fin) initialisée à chaîne de caractères vide si ce n'est pas renseigné */
+        public int      $intStartTime   = 0; /**< Variable pour la recherche par durée du film (debut) initialisée à 0 si ce n'est pas renseigné */
+        public int      $intEndTime     = 0; /**< Variable pour la recherche par durée du film (fin) initialisée à 0 si ce n'est pas renseigné */
+        public array    $arrCategory    = []; /**< Variable pour le tableau des catégories initialisée à tableau vide */
 
         /**
         * Constructeur de la classe
@@ -79,12 +80,12 @@
         * @return array tableau des films après exécution de la requête
         */
         public function advSearchMovie():array {
-            $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id, cat_name, bel_cat_id
-                        FROM belong
-                            INNER JOIN movie ON movie_id = bel_movie_id
+            $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id
+                        FROM movie
+                            INNER JOIN belong ON bel_movie_id = movie_id 
                             INNER JOIN category ON cat_id = bel_cat_id";
             $strWhere = " WHERE";
-            $arrCat = $_POST['cat[]']??[];  
+            $arrCat = $_POST['cat']??[];  
 
             // Vérifier si des mots-clés sont renseignés
             if($this->strKeyword != "") {
@@ -105,13 +106,11 @@
             }
 
             // Vérifier si la durée est renseignée 
-            if($this->strStartTime != "" && $this->strEndTime != "") {
-                $strQuery .= $strWhere." movie_duration BETWEEN '".$this->strStartTime."' AND '".$this->strEndTime."'";
-                $strWhere = " AND";
+            if($this->intStartTime != 0 || $this->intEndTime != 0) {
+                $strQuery .= $strWhere." TIME_TO_SEC(movie_duration)/60 BETWEEN ".$this->intStartTime." AND ".$this->intEndTime;
             }
 
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
-            var_dump(advSearchMovie());
         } 
     }

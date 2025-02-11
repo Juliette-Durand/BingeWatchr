@@ -40,6 +40,10 @@
             $this->display('home');
          }  
          
+         /*
+         * Méthode pour l'affichage de la page contenant tous les films de la BDD
+         * @return l'affichage de la page 
+         */
          public function allMovies() {
 
             require_once("entities/movie_entity.php");
@@ -53,16 +57,15 @@
             $objMovieModel->strKeyword    = $_POST['keywords']??"";
             $objMovieModel->strStartDate  = $_POST['startdate']??"";
             $objMovieModel->strEndDate    = $_POST['enddate']??"";
-            $objMovieModel->strStartTime  = $_POST['minduration']??"";
-            $objMovieModel->strEndTime    = $_POST['maxduration']??"";
+            $objMovieModel->intStartTime  = $_POST['minduration']??0;
+            $objMovieModel->intEndTime    = $_POST['maxduration']??0;
+            $objMovieModel->arrCategory   = $_POST['cat']??[];
 
             //Utilisation
-            $arrMovie         = $objMovieModel->advSearchMovie();
             $arrCat           = $objCatModel->findCategory();
             $arrAdvMovie      = $objMovieModel->advSearchMovie();
 
             // Transmission des variables dans la vue
-            $this->_arrData['arrMovie']      = $arrMovie;
             $this->_arrData['objMovieModel'] = $objMovieModel;
             $this->_arrData['arrCat']        = $arrCat;
             $this->_arrData['arrAdvMovie']   = $arrAdvMovie; 

@@ -23,9 +23,11 @@
                                         <!--Liste des catégories-->
                                         <?php foreach($arrCat as $arrDetCat) { 
                                             $objCat = new CategoryEntity(); 
-                                            $objCat->setName($arrDetCat['cat_name']); ?>                   
+                                            $objCat->setName($arrDetCat['cat_name']); 
+                                            $objCat->setId($arrDetCat['cat_id']); 
+                                        ?>                   
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="cat[]" value="<?php //$objCat->getId() ?>">
+                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="cat[]" <?php if(in_array($objCat->getId(), $objMovieModel->arrCategory)) { echo("checked"); } ?> value="<?php echo ($objCat->getId()); ?>">
                                             <label class="form-check-label" for="flexSwitchCheckDefault"><?php echo($objCat->getName()); ?></label>
                                         </div>
                                         <?php } ?>
@@ -45,16 +47,16 @@
                                         <h4>Durée du film (en minutes)</h4>
                                         <div class="col-5">
                                             <p><label>Min</label></p> 
-                                            <p><input type="number" name="minduration" class="form-control w-30" value="<?php echo($objMovieModel->strStartTime) ?>"></p> 
+                                            <p><input type="number" name="minduration" class="form-control w-30" value="<?php echo($objMovieModel->intStartTime) ?>"></p> 
                                         </div>
                                         <div class="col-5">
                                         <p><label>Max</label></p> 
-                                        <p><input type="number" name="maxduration" class="form-control w-30" value="<?php echo($objMovieModel->strEndTime) ?>"></p> 
+                                        <p><input type="number" name="maxduration" class="form-control w-30" value="<?php echo($objMovieModel->intEndTime) ?>"></p> 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <input type="submit" class="btn btn-primary btn-sm" value="filtrer mes recherches">  
+                                    <input type="submit" class="btn btn-primary btn-sm" value="filtrer mes recherches"> <input type="reset" class="btn btn-primary btn-sm mx-2" value="Réinitialiser">
                                 </div>
                             </div>
                         </div>    
@@ -70,11 +72,11 @@
     
 
 <div class="container">
-   <?php if(count($arrMovie) > 0) { ?>
+   <?php if(count($arrAdvMovie) > 0) { ?>
         <div class="row">
             <h2>Tous les films</h2>
             <?php 
-                foreach($arrMovie as $arrDetMovie) {
+                foreach($arrAdvMovie as $arrDetMovie) {
                     $objMovie = new MovieEntity();
                     $objMovie->hydrate($arrDetMovie);
                     include('movie_card.php');

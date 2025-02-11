@@ -6,7 +6,7 @@
     require_once('mother_entity.php');
 
     class CategoryEntity extends MotherEntity {
-
+        protected mixed $_id = '';
         private $_name;
         
         /**
@@ -14,12 +14,29 @@
 		*/
 		public function __construct(){
 			parent::__construct();
+            $this->_prefixe = 'cat';
+			$this->_id;
 		}
 
         /**
          * Class have the name on Category_entity and on Movie_entity
          * Can we use like this or to add in Mother_Entity
          */
+
+        /**
+		* Récupération du Name
+		* @return int Id
+		*/
+        public function getId():string|int{
+            return $this->_id;
+        }
+        /**
+		* Mise à jour du Name
+		* @param int Id
+		*/ 
+        public function setId(int|string $mixId){
+            $this->_id = $mixId;
+        } 
 
         /**
 		* Récupération du Name
