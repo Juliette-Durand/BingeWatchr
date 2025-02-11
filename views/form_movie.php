@@ -43,8 +43,8 @@
 					<div class="row">
 						<div class="col-6">
 							<div>
+								<!-- Select actor -->
 								<label for="actor">Actor</label>
-								<?php //var_dump($objActorModel->intActor) ;	?>
 								<select id="actor" name="actor" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
 									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
 									<?php foreach ($arrActor as $arrDetActor) { 
@@ -56,8 +56,25 @@
 									</option>
 									<?php }	?>
 								</select>
-								
-								
+							</div>
+							<div>
+
+							<!-- Select category -->
+							<label for="category">Category</label>
+								<?php $objMovie = new MovieModel();?>
+								<select id="category" name="category" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
+									<option value="0" <?php echo(($objMovie->intCategory == 0)?"selected":"");?> >--</option>
+									
+									<?php foreach ($arrCategory as $arrDetCategory) { 
+										$objCategoryEntity->hydrate($arrDetCategory);
+										var_dump($objActorModel->intActor);
+									?> 
+									<option value="<?php echo($objCategoryEntity->getId()); //=> Utiliser le getter ?>" 
+											<?php echo (($objMovie->intCategory == $objCategoryEntity->getId())?"selected":"");?> >
+										<?php echo($objCategoryEntity->getName()); ?> 
+									</option>
+									<?php }	?>
+								</select>
 							</div>
 						
 						</div>

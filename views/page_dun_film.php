@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-4 card">
                 
-                <img src="assets/img/movies/movie_posters/ <?php echo($objMovie->getPoster()); ?>" alt="photo de film">
+                <img src="assets/img/movies/movie_posters/<?php echo($objMovie->getPoster()); ?>" alt="photo de film">
                                                         
             </div>
             <div class="col-md-8">

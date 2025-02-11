@@ -60,13 +60,15 @@
             require_once("models/movie_model.php");
             require_once("models/actor_model.php");
             require_once("entities/acteur_entity.php");
+            require_once("entities/category_entity.php");
                
                
             // Instanciation
-            $objMovie		= new MovieModel();
-            $objMovieEntity	= new MovieEntity();
-            $objActorEntity = new ActorEntity();
-            $objActorModel 	= new ActorModel();
+            $objMovie		      = new MovieModel();
+            $objMovieEntity	   = new MovieEntity();
+            $objActorEntity      = new ActorEntity();
+            $objActorModel 	   = new ActorModel();
+            $objCategoryEntity   = new CategoryEntity();
                
             // Merr të gjithë aktorët
             $arrActor = $objActorModel->NameSurnameActors();
@@ -75,7 +77,8 @@
             // ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
             $strPhoto 		= $_FILES['fichier']['name']??"";
             $strPhoto		= strtolower($strPhoto);
-            $strTitleForm 		= $_POST['name']??"";
+            $strPhoto		= trim($strPhoto);
+            $strTitleForm 	= $_POST['name']??"";
             $strDate 		= $_POST['release']??"";
             $strSynopsis	= $_POST['desc']??"";
             $strNotes 		= $_POST['notes']??"";
@@ -132,7 +135,7 @@
                   $strSource = $_FILES['fichier']['tmp_name'];
                   // destination de fichier
                      
-                  $strDest	= "assets\img\movies\movie_posters\ ".$strPhoto;
+                  $strDest	= "assets/img/movies/movie_posters/".$strPhoto;
                   // On déplace le fichier
                   if (!move_uploaded_file($strSource, $strDest)){
                      $arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
@@ -159,7 +162,7 @@
                   }else{
                      $arrErrors[]="l'insertion s'est mal passée";
                   }
-                  //header( "Location:future_index.php", true);
+                  header( "Location:future_index.php", true);
                   // => exemple Insertion en BDD
                      
                }
