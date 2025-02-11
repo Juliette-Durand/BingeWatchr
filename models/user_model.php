@@ -1,7 +1,8 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Juliette Durand
+	* @author Juliette Durand 
+    * Créé le 28/01/2025 - Dernière modification le 11/02/2025 par Juliette Durand
 	*/
 
 
@@ -69,7 +70,7 @@
 							WHERE user_mail = '".$strMail."';";
 			$arrUser	=	$this->_db->query($strQuery)->fetch();
 
-			if(($arrUser != false) && ($strPassword === $arrUser['user_password'])){
+			if(($arrUser != false) && (password_verify($strPassword, $arrUser['user_password']))){
 				unset($arrUser['user_password'], $arrUser['user_mail']);
 				return $arrUser;
 			}
@@ -80,12 +81,32 @@
 		* Insertion des données d'un nouvel utilisateur lors de la création d'un compte
 		* @return bool True si insertion réussie sinon False
 		*/
-		public function newUser():bool{
-			
-			/* Écriture de la requête */
-			$strQuery	= "	INSERT INTO user (	user_id, user_first_name, user_last_name, user_mail, user_password,
-												user_create_date, user_avatar, user_bio, user_role)
-							VALUES ('', '', '', '', '', NOW(), '', '','user'); ";
+		public function newUser(object $objUser, bool $boolAvatar):bool{
+			try{
+				/* Écriture de la requête */
+				$strQuery	= "	INSERT INTO user (	user_id, user_first_name, user_last_name, user_mail, user_password,
+													user_create_date, user_avatar, user_bio, user_role)
+								VALUES (:id, :fname, :lname, :mail, :password, NOW(), :avatar, :bio,'user'); ";
+				
+				$prep	=	$this->_db->prepare($strQuery);
+	
+				$prep->bindValue(':id', $objUser->getId(), PDO::PARAM_STR);
+				$prep->bindValue(':fname', $objUser->getFirst_name(), PDO::PARAM_STR);
+				$prep->bindValue(':lname', $objUser->getLast_name(), PDO::PARAM_STR);
+				$prep->bindValue(':mail', $objUser->getMail(), PDO::PARAM_STR);
+				$prep->bindValue(':password', $objUser->getPwdHash(), PDO::PARAM_STR);
+				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
+				if ($boolAvatar === true){
+					$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
+				} else {
+					$prep->bindValue(':avatar', "no_profile_pic.webp", PDO::PARAM_STR);
+				}
+
+				$prep->execute();
+			}catch(PDOException $e) { 
+				return false;
+			} 
+			return true;
 		}
 		
 		/**
@@ -154,6 +175,22 @@
 			$strQuery	= "	SELECT user_mail
 							FROM user
 							WHERE user_mail = '".$strEmail."';";
+			$arrUser	=	$this->_db->query($strQuery)->fetch();
+
+			if($arrUser > 0){
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		* Vérification de la présence d'un id en base de donnée
+		* @return bool True si un id existe sinon False
+		*/
+		public function verifId(string $strId):bool{
+			$strQuery	= "	SELECT user_id
+							FROM user
+							WHERE user_id = '".$strId."';";
 			$arrUser	=	$this->_db->query($strQuery)->fetch();
 
 			if($arrUser > 0){
