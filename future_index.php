@@ -11,6 +11,7 @@
 
     // Activation de l'accès au $_SESSION sur toutes les pages
     session_start();
+
     // var_dump($_SESSION);
 
     // Récupération des informations dans l'url

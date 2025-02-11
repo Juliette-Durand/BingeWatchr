@@ -7,17 +7,20 @@
         <nav class="navbar navbar-expand-lg bg-body-tertiary head_navbar">
             <div class="container">
 				<div class="d-flex justify-content-between align-items-center w-100">
-						<a class="navbar-brand" href="index.php">BingeWatchr</a>
+						<a class="navbar-brand" href="future_index.php?ctrl=movie&action=home">BingeWatchr</a>
 						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
 					<div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
 						<ul class="navbar-nav d-flex align-items-center">
 							<li class="nav-item">
-								<a class="nav-link" href="index.php">Accueil</a>
+								<a class="nav-link" href="future_index.php?ctrl=movie&action=home">Accueil</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="collection.php">Ma collection</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="future_index.php?ctrl=movie&action=allmovies">Tous les films</a>
 							</li>
 							<?php if((isset($_SESSION['user'])) && ($_SESSION['user']->getRole() != "user")){ ?>
 								<li class="nav-item dropdown">

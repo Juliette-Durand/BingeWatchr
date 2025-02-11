@@ -3,7 +3,6 @@
     * Page permettant de se connecter grâce aux identifiants en base de donnée
     * @author Juliette Durand
     */
-    
    
 ?>
     <section id="login">
