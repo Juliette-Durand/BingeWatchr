@@ -205,3 +205,7 @@ nav .btn{
     font-size: 1.4rem;
     margin:0 1rem 0 1rem;
 }
+
+#movie_contact #message{
+    height: 200px;
+}
