@@ -1,19 +1,20 @@
-<?php
-    /**
+    {**
     * Page permettant à un utilisateur de supprimer son compte
     * @author Juliette Durand
     */
     
-   // Penser à optimiser l'affichage selon si le compte supprimé est celui de l'utilisateur connecté ou non
-?>
+    Penser à optimiser l'affichage selon si le compte supprimé est celui de l'utilisateur connecté ou non *}
+    {extends file="views/layout.tpl"}
+
+    {block name="contenu"}
     <section id="delete_account">
 		<div class="container mb-5">
-			<h1><?php echo($strTitle); ?></h1>
+			<h1>{$strTitle}</h1>
 		</div>
 
         <div class="container">
             
-            <?php if($_GET['id'] != $_SESSION['user']->getId()){ ?>
+            {if ($_GET['id'] != $_SESSION['user']->getId())}
                 <div class="row">
                     <div class="col-5 offset-2">
                         <span class="display-6">Vous êtes sur le point de supprimer le compte d'un utilisateur</span>
@@ -29,11 +30,11 @@
 
                     <div class="col-3">
                         <div class="picture_container mb-4 text-end">
-                            <img class="profile_pic" src="assets/img/users/profile_pictures/<?php echo($strUserAvatar); ?>" alt="">
+                            <img class="profile_pic" src="assets/img/users/profile_pictures/{$strUserAvatar}" alt="">
                         </div>
                     </div>
                 </div>
-            <?php } else { ?>
+            {else}
                 <div class="row">
                     <div class="col-5 offset-2">
                         <span class="display-6">Oh non...<br>Vous nous quittez déjà ?</span>
@@ -49,10 +50,11 @@
 
                     <div class="col-3">
                         <div class="picture_container mb-4 text-end">
-                            <img class="profile_pic" src="assets/img/users/profile_pictures/<?php echo($_SESSION['user']->getAvatar()); ?>" alt="">
+                            <img class="profile_pic" src="assets/img/users/profile_pictures/{$_SESSION['user']->getAvatar()}" alt="">
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            {/if}
         </div>
     </section>
+    {/block}

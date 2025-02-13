@@ -32,8 +32,21 @@
             $arrRecentMovie   = $objMovieModel->movieList(false);
 
             // Transmission des variables dans la vue
-            $this->_arrData['arrMovie'] = $arrMovie;
-            $this->_arrData['arrRecentMovie'] = $arrRecentMovie;
+            $this->_arrData['strTitle']         = "Bienvenue sur BingeWatchr";
+            $this->_arrData['arrMovie']         = $arrMovie;
+            $this->_arrData['arrRecentMovie']   = $arrRecentMovie;
+
+            // Tableau de tableau - liste des films
+            $arrMovies			   = $this->_objMovieModel->findAll();
+
+            $arrMoviesToDisplay 	= array();
+            foreach ($arrMovies as $arrDetMovies) {
+               $objMovie = new Movie();  
+               // hydrater l'objet
+               $objMovie->hydrate($arrDetMovies);
+               $arrMoviesToDisplay[] = $objMovie;
+            }
+            $this->_arrData['arrMovies']	= $arrMoviesToDisplay;
 
             $this->display('home');
          }  
@@ -64,13 +77,13 @@
             $arrAdvMovie      = $objMovieModel->advSearchMovie();
 
             // Transmission des variables dans la vue
+            $this->_arrData['strTitle']      = "Tous les films";
             $this->_arrData['objMovieModel'] = $objMovieModel;
             $this->_arrData['arrCat']        = $arrCat;
             $this->_arrData['arrAdvMovie']   = $arrAdvMovie; 
 
             $this->display('all_movies');
          }
-     }
             
          /**
           * Form movie
@@ -348,36 +361,4 @@
 
             $this->display('page_dun_film');
          }
-      public function edit_movie(){
-
-         // require_once("entities/movie_entity.php");
-         // require_once("entities/acteur_entity.php");
-         // require_once("models/movie_model.php");
-         // require_once("models/actor_model.php");
-         
-         // // object pour Movie Model
-         // $objMovieModel = new MovieModel(); 
-         // $objMovie = new MovieEntity(); 
-
-         // $objMovie->setId($_GET["id"]);
-         // $idMovie = $objMovie->getId();
-         // $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
-         // $objMovie->hydrate($arrMovieEntity);
-
-
-         // /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
-         // $this->_arrData['strTitle'] =  "Page de modifie film";
-
-         // // Variables fonctionnelles
-         // $this->_arrData['refPage']  =  "edit_movie";
-
-
-         // $this->_arrData['objMovie']  = $arrMovieEntity;
-         // $this->_arrData['objMovie'] = $objMovie;
-         // $this->_arrData['idMovie'] = $idMovie;
-         // //$this->_arrData[''] = $strDateFr
-
-
-         // $this->display('edit_movie');
-      }
    }

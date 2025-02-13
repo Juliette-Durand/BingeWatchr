@@ -1,38 +1,39 @@
-<?php
-    /**
+    {**
     * Page permettant de se connecter grâce aux identifiants en base de donnée
     * @author Juliette Durand
-    */
-   
-?>
+    *}
+    {extends file="views/layout.tpl"}      
+
+    {block name="contenu"}
+
     <section id="login">
 		<div class="container mb-5">
-			<h1><?php echo($strTitle); ?></h1>
+			<h1>{$strTitle}</h1>
 		</div>
 
         <div class="container">
             <div class="row">
                 <form class="col-6 offset-3" method="post">
-                    <?php if (isset($arrErrors['connect'])){ ?>
+                    {if $arrErrors['connect']|isset}
                         <div class="alert alert-danger">
-                            <?php echo($arrErrors['connect']); ?>
+                            {$arrErrors['connect']}
                         </div>
-                    <?php } ?>
+                    {/if}
                     <div>
-                        <?php if (isset($arrErrors['email'])){ ?>
+                        {if $arrErrors['email']|isset}
                             <div class="alert alert-danger">
-                                <?php echo($arrErrors['email']); ?>
+                                {$arrErrors['email']}
                             </div>
-                        <?php } ?>
+                        {/if}
                         <label for="mail">Adresse-email :</label>
-                        <input type="email" name="mail" id="mail" value="<?php echo($strMail); ?>">
+                        <input type="email" name="mail" id="mail" value="{$strMail}">
                     </div>
                     <div>
-                        <?php if (isset($arrErrors['password'])){ ?>
+                        {if $arrErrors['password']|isset}
                             <div class="alert alert-danger">
-                                <?php echo($arrErrors['password']); ?>
+                                {$arrErrors['password']}
                             </div>
-                        <?php } ?>
+                        {/if}
                         <label for="password">Mot de passe :</label>
                         <input type="password" name="password" id="password">
                     </div>
@@ -42,3 +43,4 @@
             </div>
         </div>
     </section>
+    {/block}
