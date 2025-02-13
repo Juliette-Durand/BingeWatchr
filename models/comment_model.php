@@ -1,9 +1,9 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Arlind Halimi
+	* @author Arlind Halimi et Juliette Durand
     * date : 07/02/2025
-    * modifiée par Arlind Halimi le 10/02/2025
+    * Dernière modification le 12/02/2025 par Juliette
 	*/
 
     /**
@@ -48,7 +48,7 @@
 
         /**
         * Récupération de tous les Comments
-        * @return array $arrMovie tableau des comments
+        * @return array $arrComments tableau des comments
         */
         public function allComments(){
             $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
@@ -58,9 +58,9 @@
                         LIMIT 3;";
 
             /* Je récupère le résultat de ma requête d'utilisateurs */
-            $arrMovie  = $this->_db->query($strQuery)->fetchAll();
+            $arrComments  = $this->_db->query($strQuery)->fetchAll();
 
-            return $arrMovie;
+            return $arrComments;
         }
 
         /**
@@ -78,4 +78,23 @@
 			
 			return $strOneUser ['user_avatar'];
 		}
+
+        // Juliette - 12/02/2025
+        /**
+         * Compte du nombre de photos déjà associées à un film
+         * @return int nombre de photos au total
+         */
+        public function countPictures(int $intId, int $intPicImport = 0):int{
+            $strQuery   = " SELECT COUNT(*) AS 'nbPic'
+                            FROM picture
+                                INNER JOIN comment ON pic_comment_id = comm_id
+                                INNER JOIN movie ON comm_movie_id = movie_id
+                            WHERE movie_id = ".$intId.";";
+            
+            /* Récupération d'un tableau ayant une seule colonne contenant le nombre de photos associées au film */
+            $arrCount = $this->_db->query($strQuery)->fetch();
+
+            /* Retourne le nombre de photos existantes + le nombre de photos importées */
+            return ($arrCount['nbPic']+$intPicImport);
+        }
     }

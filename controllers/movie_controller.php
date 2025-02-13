@@ -336,6 +336,25 @@
             
             //var_dump($objMovieEntity->getId());
 
+            // Juliette - 12/02/2025
+            $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
+            var_dump($intNbTotalPic);
+            var_dump($_FILES);
+            if(count($_POST)>0){
+               if($_FILES['pictures']['error']!=4){
+                  var_dump(count($_FILES['pictures']['name']));
+                  $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
+                  if($intNbTotalPic < 10){
+                     $intRestPic = $intNbTotalPic - count($_FILES['pictures']['name']);
+                     $arrErrors['pictures'] = "La limite de photos concernant ce film est dépassée. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
+                  } else {
+
+                  }
+               }
+            }
+            $this->_arrData['boolPictures'] = $boolPictures;
+            // Fin Juliette
+
             $this->_arrData['objMovie']         = $arrMovieEntity;
             $this->_arrData['objMovie']         = $objMovieEntity;
             $this->_arrData['idMovie']          = $idMovie;

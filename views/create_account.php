@@ -28,7 +28,7 @@
     
             <div class="mb-3">
                 <label for="mail">Adresse email</label>
-                <input type="text" name="mail" value="<?php echo($objUser->getMail()); ?>">
+                <input type="email" name="mail" value="<?php echo($objUser->getMail()); ?>">
             </div>
     
             <div class="mb-3">
@@ -58,11 +58,11 @@
                     <?php } ?>
                     <div class="mb-3">
                         <label for="password">Mot de passe</label>
-                        <input type="text" name="password">
+                        <input type="password" name="password">
                     </div>
                     <div>
                         <label for="confirm_pwd">Confirmation mot de passe</label>
-                        <input type="text" name="confirm_pwd">
+                        <input type="password" name="confirm_pwd">
                     </div>
                 </div>
             </div>
