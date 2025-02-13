@@ -119,6 +119,7 @@
         *   Public function playActor ()
         * @return boole
         */
+        
         public function playActor($intActor) : bool{
             try{
                 $strQuery = "INSERT INTO 
@@ -126,12 +127,11 @@
                     VALUES (:play_actor_id, :play_movie_id)"; 
 
                 $lastMovieId = $this->_db->lastInsertId();  // prend le dernier ID de movie
-                //$intActor = $_POST['actor'];                // prendre l'ID de l'acteur de $_POST['actor']
-
+               
                 $prep = $this->_db->prepare($strQuery); 
         
-                $prep->bindValue(":play_actor_id",    $intActor, PDO::PARAM_STR);
-                $prep->bindValue(":play_movie_id",    $lastMovieId, PDO::PARAM_STR);
+                $prep->bindValue(":play_actor_id",    $intActor, PDO::PARAM_INT);
+                $prep->bindValue(":play_movie_id",    $lastMovieId, PDO::PARAM_INT);
 
                 $prep->execute();
             }catch(PDOExeption $e){
@@ -139,8 +139,7 @@
             }
             return true;
         }
-       
-       
+
         /**
          * Function pour select id de category
          * @return int 
@@ -158,20 +157,21 @@
         *   Public function categoryMovie ()
         * @return boole
         */
-        public function categoryMovie($intCategory) : bool{
+        public function categoryMovie($idCategory) : bool{
             try{
                 $strQuery = "INSERT INTO 
-                    play (bel_cat_id, bel_movie_id) 
+                
+                    belong (bel_cat_id, bel_movie_id) /* id de category et dernier id de movie */
                     VALUES (:bel_cat_id, :bel_movie_id)"; 
-
-                $lastCategoryMovie = $this->_db->lastInsertId();  // prend le dernier ID de movie
-                //$intActor = $_POST['actor'];                // prendre l'ID de l'acteur de $_POST['actor']
-
-                $prep = $this->_db->prepare($strQuery); 
         
-                $prep->bindValue(":bel_cat_id",     $intActor, PDO::PARAM_STR);
-                $prep->bindValue(":bel_movie_id",   $lastCategoryMovie, PDO::PARAM_STR);
-
+                $lastMovieId = $this->_db->query("SELECT MAX(movie_id) AS last_movie_id FROM movie")->fetchColumn(); // prend le dernier ID de movie
+                //$lastMovieId = $this->_db->lastInsertId();  
+        
+                $prep = $this->_db->prepare($strQuery); 
+                
+                $prep->bindValue(":bel_cat_id",     $idCategory, PDO::PARAM_INT);
+                $prep->bindValue(":bel_movie_id",   $lastMovieId, PDO::PARAM_INT);
+        
                 $prep->execute();
             }catch(PDOExeption $e){
                 return false;

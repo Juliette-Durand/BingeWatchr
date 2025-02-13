@@ -44,6 +44,7 @@
 						<div class="col-6">
 							<div>
 								<!-- Select actor -->
+
 								<label for="actor">Actor</label>
 								<select id="actor" name="actor" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
 									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
@@ -57,29 +58,30 @@
 									<?php }	?>
 								</select>
 							</div>
+							
+		
 							<div>
-
+								
 							<!-- Select category -->
 							<label for="category">Category</label>
-								<?php $objMovie = new MovieModel();?>
-								<select id="category" name="category" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
-									<option value="0" <?php echo(($objMovie->intCategory == 0)?"selected":"");?> >--</option>
-									
-									<?php foreach ($arrCategory as $arrDetCategory) { 
-										$objCategoryEntity->hydrate($arrDetCategory);
-										var_dump($objActorModel->intActor);
-									?> 
-									<option value="<?php echo($objCategoryEntity->getId()); //=> Utiliser le getter ?>" 
-											<?php echo (($objMovie->intCategory == $objCategoryEntity->getId())?"selected":"");?> >
-										<?php echo($objCategoryEntity->getName()); ?> 
+							<select id="category" name="category" class="form-control <?php echo (isset($arrErrors['category']))?'is-invalid':''; ?>">
+								<option value="0" >--</option>
+								<?php foreach ($arrCategory as $arrDetCategory) { ?>
+									<?php //$objCategoryEntity->hydrate($category); ?>
+									<?php $objCategoryEntity->setId($arrDetCategory['cat_id']); ?>
+									<?php $objCategoryEntity->setName($arrDetCategory['cat_name']); ?>
+									<option value="<?php echo $objCategoryEntity->getId(); ?>" >
+										<?php echo $objCategoryEntity->getName(); ?> 
 									</option>
-									<?php }	?>
-								</select>
-							</div>
+								<?php }	?>
+							</select>
+						</div>
+					
+							
 						
 						</div>
 						<div class="col-6">
-							<label for="new actor">Ajoute un actor</label> 
+							<label for="new actor"></label> 
 							<a href='future_index.php?ctrl=actor&action=form_actor' class="form-control btn btn-primary"  value="Ajoute un actor">Ajoute un actor </a>
 						</div>
 						

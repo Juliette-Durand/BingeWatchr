@@ -70,8 +70,9 @@
             $objActorModel 	   = new ActorModel();
             $objCategoryEntity   = new CategoryEntity();
                
-            // Merr të gjithë aktorët
-            $arrActor = $objActorModel->NameSurnameActors();
+            // selectionner les acteurs et les categories
+            $arrActor      = $objActorModel->NameSurnameActors();
+            $arrCategory   = $objMovie->infoCategory();
 
             // Récupérer les informations du $_POST
             // ?? Version PHP 7 (équivalent isset) => Valeur par défaut si l'indice n'existe pas dans le $_POST
@@ -85,6 +86,7 @@
             $strDuration	= $_POST['duration']??"";
             $strMovieDisplay = $_POST['display']??"";
             $idActor 		= $_POST["actor"]??"";
+            $idCategory   = $_POST['category'] ?? "";
 
 
             // Initialisation du tableau vide
@@ -145,7 +147,7 @@
                   // $strChemin = "uploads/".$strNomFichier;
                   // move_uploaded_file($strNomTemporaire, $strChemin);
                }
-                  
+               
 
                // Si aucune erreur, traitement 	
                if (count($arrErrors) === 0){
@@ -153,7 +155,8 @@
                   // Appel une métgid dans le modéle, avec en paramétre l'objet
                   $boolOK = $objMovie->addMovie($objMovieEntity);
                   $boolOK = $objMovie->playActor($idActor);
-                  //var_dump($objActorEntity->getId());
+                  $boolOK = $objMovie->categoryMovie($idCategory);
+
 
                   //Informer l'utilisateur si einsertion ok/pas ok
                   if($boolOK){
@@ -175,13 +178,17 @@
             $this->_arrData['arrErrors']  =   $arrErrors;
             $this->_arrData['strMovieDisplay']  =   $strMovieDisplay;
             $this->_arrData['strDuration']  =   $strDuration;
-            $this->_arrData["actor"] = $idActor;
+            $this->_arrData["idActor"] = $idActor;
             $this->_arrData["objActorEntity"] = $objActorEntity ;
             $this->_arrData["objActorModel"] = $objActorModel ;
             $this->_arrData["arrActor"] = $arrActor ;
             $this->_arrData["strSynopsis"] = $strSynopsis ;
             $this->_arrData["strNotes"] = $strNotes ;
             $this->_arrData["strTitleForm"] = $strTitleForm ;
+            $this->_arrData["idCategory"]= $idCategory;
+            $this->_arrData["objMovie"] = $objMovie;
+            $this->_arrData["objCategoryEntity"] = $objCategoryEntity;
+            $this->_arrData["arrCategory"] = $arrCategory;
                
                
             // est une méthode qui appelle une view nommée "form_movie" 
@@ -269,7 +276,12 @@
 
             $this->display('page_dun_film');
       }
+
       
+      /**
+       * Page d'un film
+       * @author Arlind Halimi
+       */      
       public function contact(){
          // Variables d'affichage
          /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
