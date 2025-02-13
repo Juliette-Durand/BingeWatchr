@@ -1,12 +1,12 @@
 {
-    "name": "fc-235-03/binge-watchr",
+    "name": "arlin/binge-watchr",
     "require": {
         "phpmailer/phpmailer": "^6.9",
         "smarty/smarty": "^5.4"
     },
     "autoload": {
         "psr-4": {
-            "Fc23503\\BingeWatchr\\": "src/"
+            "Arlin\\BingeWatchr\\": "src/"
         }
     },
     "authors": [

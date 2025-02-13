@@ -19,7 +19,8 @@
     // Récupération des informations dans l'url
     $strController  = $_GET['ctrl']??"movie";
     $strAction      = $_GET['action']??"home";
-
+    $boolPb         = false;
+    
     // Appel du controleur pour page error_404
     require_once("controllers/mother_controller.php");
 	$strFile	= "controllers/".$strController."_controller.php";
@@ -45,7 +46,7 @@
 	}
     // Redirection si problème
 	if ($boolPb){
-		header("Location:index.php?ctrl=error&action=error404");
+		header("Location:future_index.php?ctrl=error&action=error404");
 	}
 
     // Construction du nom du controleur
