@@ -76,12 +76,14 @@
                             </div>
                         <?php } ?>
                         <label class="col-12" for="title">Title comment</label>
-                        <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($strTitleCom) ?>">
-                        <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($strContentCom) ?></textarea>
+                        <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($objCommentEntity->getTitle()) ?>">
+                        <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($objCommentEntity->getContent()) ?></textarea>
 
-                        <?php ?>
-                        <label for="picture">Ajouter des photos :</label>
-                        <input type="file" name="pictures[]" for="picture" multiple>
+                        <?php if($intNbTotalPic < 10){ ?>
+                            <label for="picture">Ajouter des photos :</label>
+                            <input type="file" name="pictures[]" for="picture" multiple>
+                        <?php } ?>
+
 
                         <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
                     </form>

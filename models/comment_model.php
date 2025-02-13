@@ -1,7 +1,7 @@
 <?php
 	/**
 	* Classe de gestion de la base de données pour les utilisateurs
-	* @author Arlind Halimi et Juliette Durand
+	* @author Arlind Halimi
     * date : 07/02/2025
     * Dernière modification le 12/02/2025 par Juliette
 	*/
@@ -22,9 +22,9 @@
         
         /**
          * Ajoute les Comments
-         * @return bool true ou false 
+         * @return bool|int false ou l'identifiant du commentaire ajouté
          */
-        public function addComment(object $objCommentEntity):bool{
+        public function addComment(object $objCommentEntity):bool|int{
             //var_dump($objCommentEntity->getId());
             try{
                 
@@ -43,7 +43,8 @@
             }catch(PDOExeption $e){
                 return false;
             }
-            return true;
+            //return true;
+            return $this->_db->lastInsertId();
         }
 
         /**
@@ -81,10 +82,10 @@
 
         // Juliette - 12/02/2025
         /**
-         * Compte du nombre de photos déjà associées à un film
+         * Compte du nombre de photos déjà associées à un film dans les commentaires
          * @return int nombre de photos au total
          */
-        public function countPictures(int $intId, int $intPicImport = 0):int{
+        public function countPictures(int $intId):int{
             $strQuery   = " SELECT COUNT(*) AS 'nbPic'
                             FROM picture
                                 INNER JOIN comment ON pic_comment_id = comm_id
@@ -95,6 +96,30 @@
             $arrCount = $this->_db->query($strQuery)->fetch();
 
             /* Retourne le nombre de photos existantes + le nombre de photos importées */
-            return ($arrCount['nbPic']+$intPicImport);
+            return $arrCount['nbPic'];
+        }
+
+        /**
+         * Insertion des photos en BDD
+         * @return bool
+         */
+        public function addPicture(object $objPicture){
+            try{
+                
+                // $objMovie = new MovieEntity();
+                $strQuery   = " INSERT INTO picture(pic_file,pic_comment_id)
+                                VALUES (:pic_file,:comm_id);";
+
+                $prep = $this->_db->prepare($strQuery); 
+
+                $prep->bindValue(":pic_file",  $objPicture->getFile(), PDO::PARAM_STR);
+                $prep->bindValue(":comm_id",   $objPicture->getComment_id(), PDO::PARAM_INT);
+
+                $prep->execute();
+
+            }catch(PDOExeption $e){
+                return false;
+            }
+            return true;
         }
     }

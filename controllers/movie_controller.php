@@ -283,33 +283,36 @@
             $strContentCom = '';
             $strTitleCom   = $_POST['title']??"";
             $strContentCom = $_POST['content']??"";
-            if(count($_POST) > 0){
-               // var_dump('je suis la');
-               // var_dump($objCommentEntity->getId());
+
+            // --> Fonctionnel pour les commentaires mais par pour les photos - auteur Arlind
+            // if(count($_POST) > 0){
+            //    // var_dump('je suis la');
+            //    // var_dump($objCommentEntity->getId());
 
                
-               // duhet ti shkuash me dor keto setMovie sepse nuk i hidraton $_POST
-               $objCommentEntity->hydrate($_POST);
-               $objCommentEntity->setMovie_id($objMovie->getId());
-               $objCommentEntity->setUser_id($_SESSION['user']->getId());
-               // var_dump($objCommentEntity);
-               $strTitleCom   = $_POST['title']??"";
-               $strContentCom = $_POST['content']??"";
+            //    // duhet ti shkuash me dor keto setMovie sepse nuk i hidraton $_POST
+            //    $objCommentEntity->hydrate($_POST);
+            //    $objCommentEntity->setMovie_id($objMovie->getId());
+            //    $objCommentEntity->setUser_id($_SESSION['user']->getId());
+            //    // var_dump($objCommentEntity);
+            //    $strTitleCom   = $_POST['title']??"";
+            //    $strContentCom = $_POST['content']??"";
 
                
-               if($strTitleCom == ""){
-                  $arrErrors['title'] = "Le titre est obligatoire pour comment!";
-               }
-               if($strContentCom == ""){
-                  $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
-               }
-               // var_dump($strComment);
-               // var_dump($strComment);
-               if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
-                  $objCommentModel->addComment($objCommentEntity);
-               }
+            //    if($strTitleCom == ""){
+            //       $arrErrors['title'] = "Le titre est obligatoire pour comment!";
+            //    }
+            //    if($strContentCom == ""){
+            //       $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
+            //    }
+            //    // var_dump($strComment);
+            //    // var_dump($strComment);
+            //    if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
+            //       $idComment = $objCommentModel->addComment($objCommentEntity);
+            //    }
                
-            }
+            // }
+            // -- Fin fonction commentaires Arlind
             
             
 
@@ -336,23 +339,70 @@
             
             //var_dump($objMovieEntity->getId());
 
-            // Juliette - 12/02/2025
+            // Juliette - 13/02/2025 - Requête insertion commentaire + photos
+            // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
             $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
-            var_dump($intNbTotalPic);
-            var_dump($_FILES);
-            if(count($_POST)>0){
-               if($_FILES['pictures']['error']!=4){
-                  var_dump(count($_FILES['pictures']['name']));
-                  $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
-                  if($intNbTotalPic < 10){
-                     $intRestPic = $intNbTotalPic - count($_FILES['pictures']['name']);
-                     $arrErrors['pictures'] = "La limite de photos concernant ce film est dépassée. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
-                  } else {
 
+            // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
+            require_once("entities/picture_entity.php");
+            if(count($_POST)>0){
+               $objCommentEntity->hydrate($_POST);
+               $objCommentEntity->setMovie_id($objMovie->getId());
+               $objCommentEntity->setUser_id($_SESSION['user']->getId());
+               
+               // Vérifie le contenu du titre
+               if($objCommentEntity->getTitle() == ""){
+                  $arrErrors['title'] = "Le champ Titre est obligatoire";
+               }
+               // Vérifie le contenu du contenu
+               if($objCommentEntity->getContent() == ""){
+                  $arrErrors['content'] = "Le champ Contenu est obligatoire";
+               }
+               // Vérifie si un fichier est importé et le nombre de fichiers importés
+               if($_FILES['pictures']['error'] != 4){
+                  // Compte du nombre de fichiers importés
+                  $intImportedPic = count($_FILES['pictures']['name']);
+
+                  $objPicture = new PictureEntity;
+
+                  // Vérifie que le nombre de fichiers importé ne dépasse pas la limite max pour le film
+                  if(($intNbTotalPic + $intImportedPic) > 10){
+                     $intRestPic = 10 - $intNbTotalPic;
+                     $arrErrors['picture'] = "Vous dépassez la limite de photos accordées à ce film. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
+                  } else {
+                     $boolPicOk = true;
+                  }
+               }
+            
+               if(count($arrErrors) == 0){
+                  // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
+                  $idComment = $objCommentModel->addComment($objCommentEntity);
+                  if($idComment !== false){
+                     if((isset($boolPicOk)) && ($boolPicOk === true)){
+
+                        // Pour chaque fichier importé, je récupère les infos et j'insère
+                        for($i = 0; $i<$intImportedPic; $i++){
+                           $objPicture->setFile($_FILES['pictures']['name'][$i]);
+                           $objPicture->setComment_id($idComment);
+
+                           // Récupère le résultat de la requête d'insertion des photos
+                           $boolPicQuery = $objCommentModel->addPicture($objPicture);
+
+                           if($boolPicQuery===false){
+                              $arrErrors['import']= "Erreur lors de l'importation des images";
+                              break;
+                           } else {
+                              var_dump("Succès import des photos");
+                           }
+                        }
+                     }
+                  } else {
+                     $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
                   }
                }
             }
-            $this->_arrData['boolPictures'] = $boolPictures;
+            $this->_arrData['objCommentEntity'] = $objCommentEntity;
+            $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
             // Fin Juliette
 
             $this->_arrData['objMovie']         = $arrMovieEntity;
