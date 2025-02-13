@@ -21,7 +21,7 @@
                         <p>{$objMovie->getPegi()}</p>
                     {/if}
                     <p>{$objMovie->getDuration()}</p>
-
+                    {*
                     <?php 
                         $objActorsModel = new ActorModel();
                         
@@ -41,7 +41,7 @@
                 // ajoute 3 dernier comments 
                 // CODE
                 
-                ?>
+                ?>*}
                 <?php if(isset($_SESSION['user'])){ ?>
                     <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
                         <?php if (count($arrErrors) > 0){ ?>
