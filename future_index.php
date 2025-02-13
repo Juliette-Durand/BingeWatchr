@@ -20,9 +20,33 @@
     $strController  = $_GET['ctrl']??"movie";
     $strAction      = $_GET['action']??"home";
 
-    // Appel du controleur
+    // Appel du controleur pour page error_404
     require_once("controllers/mother_controller.php");
-    require_once("controllers/".$strController."_controller.php");
+	$strFile	= "controllers/".$strController."_controller.php";
+	if (file_exists($strFile)){
+		require_once($strFile);
+		// Construction du nom du controller
+		$strCtrlName	= ucfirst($strController)."Ctrl";
+		//var_dump($strCtrlName);
+		if(class_exists($strCtrlName)){
+			// Instanciation du controller
+			$objController 	= new $strCtrlName();
+			if (method_exists($objController, $strAction)){
+				// Appel de la méthode
+				$objController->$strAction();
+			}else{
+				$boolPb	= true;
+			}
+		}else{
+			$boolPb	= true;
+		}
+	}else{
+		$boolPb	= true;
+	}
+    // Redirection si problème
+	if ($boolPb){
+		header("Location:index.php?ctrl=error&action=error404");
+	}
 
     // Construction du nom du controleur
     $strCtrlName    = ucfirst($strController)."Ctrl";
