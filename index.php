@@ -29,4 +29,4 @@
     // Instanciation du controleur
     $objController  = new $strCtrlName();
     // Appel de la méthode
-    $objController->$strAction();
+    $objController->$strAction(); 

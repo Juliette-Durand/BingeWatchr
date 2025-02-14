@@ -8,11 +8,21 @@
      require_once("mother_controller.php");
     
      class MovieCtrl extends MotherCtrl{
+         private object $_objMovieModel;
+         private object $_objCatModel;
          /**
          * Constructeur
          */
          public function __construct() {
             parent::__construct();  
+            require_once("entities/movie_entity.php");
+            require_once("models/movie_model.php");
+            require_once("entities/category_entity.php");
+            require_once("models/category_model.php");
+
+            // object pour Movie Model
+            $this->_objMovieModel   = new MovieModel();
+            $this->_objCatModel     = new CategoryModel();
          }
          
          /*
@@ -20,36 +30,36 @@
          * @return l'affichage de la page d'accueil
          */
          public function home() {
-            
-            require_once("entities/movie_entity.php");
-            require_once("models/movie_model.php");
-
-            // object pour Movie Model
-            $objMovieModel = new MovieModel();
-
-            //Utilisation (création d'un tableau contenant les infos de la requête)
-            $arrMovie         = $objMovieModel->movieList();
-            $arrRecentMovie   = $objMovieModel->movieList(false);
-
-            // Transmission des variables dans la vue
-            $this->_arrData['strTitle']         = "Bienvenue sur BingeWatchr";
-            $this->_arrData['arrMovie']         = $arrMovie;
-            $this->_arrData['arrRecentMovie']   = $arrRecentMovie;
 
             // Tableau de tableau - liste des films
-            $arrMovies			   = $this->_objMovieModel->findAll();
+            $arrMovies			   = $this->_objMovieModel->movieList();
+            $arrRecentMovie      = $this->_objMovieModel->movieList(false);
+         
+            // Transmission des variables dans la vue
+            $this->_arrData['strTitle']         = "Bienvenue sur BingeWatchr";
 
-            $arrMoviesToDisplay 	= array();
+            $arrMoviesToDisplay 	      = array();
+            $arrRecentMoviesToDisplay  = array();
             foreach ($arrMovies as $arrDetMovies) {
-               $objMovie = new Movie();  
+               $objMovie = new MovieEntity();  
                // hydrater l'objet
                $objMovie->hydrate($arrDetMovies);
                $arrMoviesToDisplay[] = $objMovie;
             }
             $this->_arrData['arrMovies']	= $arrMoviesToDisplay;
 
+             foreach ($arrRecentMovie as $arrDetMovies) {
+               $objMovie = new MovieEntity();  
+               // hydrater l'objet
+               $objMovie->hydrate($arrDetMovies);
+               $arrRecentMoviesToDisplay[] = $objMovie;
+            }
+            $this->_arrData['arrRecentMovie']   = $arrRecentMoviesToDisplay;
+
             $this->display('home');
+  
          }  
+         
          
          /*
          * Méthode pour l'affichage de la page contenant tous les films de la BDD
@@ -57,30 +67,45 @@
          */
          public function allMovies() {
 
-            require_once("entities/movie_entity.php");
-            require_once("models/movie_model.php");
-            require_once("entities/category_entity.php");
-            require_once("models/category_model.php");
-
             // object pour Movie Model
-            $objMovieModel                = new MovieModel();
-            $objCatModel                  = new CategoryModel();
-            $objMovieModel->strKeyword    = $_POST['keywords']??"";
-            $objMovieModel->strStartDate  = $_POST['startdate']??"";
-            $objMovieModel->strEndDate    = $_POST['enddate']??"";
-            $objMovieModel->intStartTime  = $_POST['minduration']??0;
-            $objMovieModel->intEndTime    = $_POST['maxduration']??0;
-            $objMovieModel->arrCategory   = $_POST['cat']??[];
+            //$objMovieModel                = new MovieModel();
+            //$objCatModel                  = new CategoryModel();
+            $this->objMovieModel->strKeyword    = $_POST['keywords']??"";
+            $this->objMovieModel->strStartDate  = $_POST['startdate']??"";
+            $this->objMovieModel->strEndDate    = $_POST['enddate']??"";
+            $this->objMovieModel->intStartTime  = $_POST['minduration']??0;
+            $this->objMovieModel->intEndTime    = $_POST['maxduration']??0;
+            $this->objMovieModel->arrCategory   = $_POST['cat']??[];
 
             //Utilisation
-            $arrCat           = $objCatModel->findCategory();
-            $arrAdvMovie      = $objMovieModel->advSearchMovie();
+            $arrCat           = $this->_objCatModel->findCategory();
+            $arrAdvMovie      = $this->_objMovieModel->advSearchMovie();
+
+            $arrAdvMoviesToDisplay 	      = array();
+            foreach ($arrAdvMovie as $arrDetMovies) {
+               $objMovie = new MovieEntity();  
+               // hydrater l'objet
+               $objMovie->hydrate($arrDetMovies);
+               $arrMoviesToDisplay[] = $objMovie;
+            }
+
+            $arrCatToDisplay  = array();
+            foreach ($arrCat as $arrDetCat) {
+               $objCat = new CategoryEntity();  
+               // hydrater l'objet
+               $objCat->hydrate($arrDetCat);
+               //$objCat->setName($arrDetCat['cat_name']); 
+               //$objCat->setId($arrDetCat['cat_id']); 
+               $arrCatToDisplay[] = $objCat;
+            }
+            $this->_arrData['arrCat']	= $arrCatToDisplay;
 
             // Transmission des variables dans la vue
             $this->_arrData['strTitle']      = "Tous les films";
             $this->_arrData['objMovieModel'] = $objMovieModel;
-            $this->_arrData['arrCat']        = $arrCat;
+            //$this->_arrData['arrCat']        = $arrCat;
             $this->_arrData['arrAdvMovie']   = $arrAdvMovie; 
+            $this->_arrData['arrAdvMovies']	= $arrAdvMoviesToDisplay;
 
             $this->display('all_movies');
          }

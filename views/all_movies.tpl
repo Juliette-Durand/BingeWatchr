@@ -22,11 +22,7 @@
                                     <h3>Catégories</h3>
                                     <div class="list-group">
                                         <!--Liste des catégories-->
-                                        {foreach $arrCat as $arrDetCat} 
-                                            $objCat = new CategoryEntity(); 
-                                            $objCat->setName($arrDetCat['cat_name']); 
-                                            $objCat->setId($arrDetCat['cat_id']); 
-                
+                                        {foreach $arrCat as $objCat} 
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="cat[]" {if (in_array($objCat->getId(), $objMovieModel->arrCategory))} checked {/if} value="{$objCat->getId()}">
                                             <label class="form-check-label" for="flexSwitchCheckDefault">{$objCat->getName()}</label>
@@ -76,9 +72,7 @@
     {if (count($arrAdvMovie) > 0)}
             <div class="row">
                 <h2>Tous les films</h2>
-                    {foreach $arrAdvMovie as $arrDetMovie}
-                        $objMovie = new MovieEntity();
-                        $objMovie->hydrate($arrDetMovie);
+                    {foreach $arrAdvMovie as $objMovie}
                         {include file="views/_partial/movie_card.tpl"};
                     {/foreach}
             </div>

@@ -8,13 +8,11 @@
     <div class="container pt-5">
         <h1>{$strTitle}</h1>              
 
-        {if count($arrMovie) > 0}
+        {if count($arrMovies) > 0}
         <div class="row">
             <h2>Films à l'affiche</h2>
-                {foreach $arrMovie as $objMovie}
-                    {* $objMovie = new MovieEntity();
-                    $objMovie->hydrate($arrDetMovie); *}
-                    {include file="views/_partial/movie_card.tpl"};
+                {foreach from=$arrMovies item=objMovie}
+                    {include file="views/_partial/movie_card.tpl"}
                 {/foreach}
         </div>
         {/if}
@@ -22,10 +20,8 @@
         {if count($arrRecentMovie) > 0}
         <div class="row">
             <h2>Films récemment ajoutés</h2>
-                {foreach $arrRecentMovie as $arrDetMovie}
-                    {* $objMovie = new MovieEntity();
-                    $objMovie->hydrate($arrDetMovie); *}
-                    {include file="views/_partial/movie_card.tpl"};
+                {foreach $arrRecentMovie as $objMovie}
+                    {include file="views/_partial/movie_card.tpl"}
                 {/foreach}
         </div>
         {/if}

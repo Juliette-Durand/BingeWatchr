@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2025-02-13 15:33:32
+/* Smarty version 5.4.3, created on 2025-02-14 10:34:25
   from 'file:views/_partial/head.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_67ae10cc81ac22_28802104',
+  'unifunc' => 'content_67af1c31e5c8c7_74259311',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:views/_partial/nav.tpl' => 1,
   ),
 ))) {
-function content_67ae10cc81ac22_28802104 (\Smarty\Template $_smarty_tpl) {
+function content_67af1c31e5c8c7_74259311 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\wamp64\\www\\BingeWatchrs\\views\\_partial';
 ?>    
 <!DOCTYPE html>
