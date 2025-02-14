@@ -74,6 +74,10 @@
                                     <p><?php echo $strError; ?></p>
                                 <?php } ?>
                             </div>
+                        <?php } else if(isset($strSuccess)){ ?>
+                            <div class="alert alert-success">
+                                <?php echo($strSuccess); ?>
+                            </div>
                         <?php } ?>
                         <label class="col-12" for="title">Title comment</label>
                         <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($objCommentEntity->getTitle()) ?>">

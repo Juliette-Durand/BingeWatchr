@@ -370,6 +370,12 @@
                      $intRestPic = 10 - $intNbTotalPic;
                      $arrErrors['picture'] = "Vous dépassez la limite de photos accordées à ce film. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
                   } else {
+                     for ($i = 0; $i < $intImportedPic; $i++){
+                        if ($_FILES['pictures']['error'][$i] == 1){
+                           $arrErrors['import'] = $_FILES['pictures']['name'][$i]." est trop lourde.";
+                           break;
+                        }
+                     }
                      $boolPicOk = true;
                   }
                }
@@ -377,12 +383,56 @@
                if(count($arrErrors) == 0){
                   // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
                   $idComment = $objCommentModel->addComment($objCommentEntity);
+
+                  // Insertion du commentaire réussie
                   if($idComment !== false){
                      if((isset($boolPicOk)) && ($boolPicOk === true)){
 
                         // Pour chaque fichier importé, je récupère les infos et j'insère
                         for($i = 0; $i<$intImportedPic; $i++){
-                           $objPicture->setFile($_FILES['pictures']['name'][$i]);
+                           $strSource = $_FILES['pictures']['tmp_name'][$i]; // Récupération de l'image
+
+                           // Traitement de l'image importée
+                           // Création d'une imageGD
+                           switch($_FILES['pictures']['type'][$i]){
+                              case "image/webp":
+                                 $image = imagecreatefromwebp($strSource);
+                                 break;
+                              case "image/jpeg":
+                                 $image = imagecreatefromjpeg($strSource);
+                                 break;
+                              case "image/png":
+                                 $image = imagecreatefrompng($strSource);
+                                 break;
+                           }
+
+
+                           $arrFileExplode	= explode(".", $_FILES['pictures']['name'][$i]);
+                           $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random en webp
+                           $strDest = "assets/img/movies/movie_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+                           
+                           list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
+
+                           $intShortSize   = 600; // Valeur du plus petit côté
+
+                           // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
+                           if ($intWidth < $intHeight){
+                              // Format portrait
+                              $boolPortrait = true;
+                              $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
+                              $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                           } else {
+                              // Format paysage
+                              $boolPortrait = false;
+                              $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
+                              $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
+                           }
+
+                           imagewebp($objMask,$strDest);
+
+                           $objPicture->setFile($strFileName);
                            $objPicture->setComment_id($idComment);
 
                            // Récupère le résultat de la requête d'insertion des photos
@@ -391,10 +441,15 @@
                            if($boolPicQuery===false){
                               $arrErrors['import']= "Erreur lors de l'importation des images";
                               break;
-                           } else {
-                              var_dump("Succès import des photos");
                            }
                         }
+                     }
+                     if(count($arrErrors) == 0 ){
+                        $strSuccess = "Succès de l'import des photos";
+                        $this->_arrData['strSuccess'] = $strSuccess;
+                     } else {
+                        $objCommentModel->deleteComment($idComment);
+                        $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
                      }
                   } else {
                      $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";

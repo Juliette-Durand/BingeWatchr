@@ -101,12 +101,10 @@
 
         /**
          * Insertion des photos en BDD
-         * @return bool
+         * @return bool insertion
          */
-        public function addPicture(object $objPicture){
+        public function addPicture(object $objPicture):bool{
             try{
-                
-                // $objMovie = new MovieEntity();
                 $strQuery   = " INSERT INTO picture(pic_file,pic_comment_id)
                                 VALUES (:pic_file,:comm_id);";
 
@@ -118,6 +116,26 @@
                 $prep->execute();
 
             }catch(PDOExeption $e){
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Suppression d'un commentaire
+         * @return bool suppression
+         */
+        public function deleteComment(int $intComment):bool{
+            try{
+                $strQuery   = " DELETE FROM comment
+                                WHERE comm_id = :id";
+                
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+
+                $prep->execute();
+                
+            } catch (PDOException $e){
                 return false;
             }
             return true;
