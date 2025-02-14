@@ -3,6 +3,7 @@
      * Controleur enfant de MotherController pour la gestion des films
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
+     * Dernière modification par Juliette le 14/02/2025
      */
 
    use PHPMailer\PHPMailer\PHPMailer;
@@ -288,7 +289,7 @@
             $strContentCom = '';
             $strTitleCom   = $_POST['title']??"";
             $strContentCom = $_POST['content']??"";
-            
+
                // Récupération de l'id en URL
                $strId  =   $_GET['id']??"";
                // Vérification de la valeur de l'id en URL si exist
@@ -299,29 +300,30 @@
                   // L'id est vide
                   header("Location:future_index.php?ctrl=error&action=error404");
               }
-            if(count($_POST) > 0){
+            // --> Fonctionnel pour les commentaires mais par pour les photos - auteur Arlind
+            //    if(count($_POST) > 0){
                
-               // besoin ecrire setMovie_id et setUser_id parce que pas hydrate avec $_POST $_POST
-               $objCommentEntity->hydrate($_POST);
-               $objCommentEntity->setMovie_id($objMovie->getId());
-               $objCommentEntity->setUser_id($_SESSION['user']->getId());
+            //       // besoin ecrire setMovie_id et setUser_id parce que pas hydrate avec $_POST $_POST
+            //       $objCommentEntity->hydrate($_POST);
+            //       $objCommentEntity->setMovie_id($objMovie->getId());
+            //       $objCommentEntity->setUser_id($_SESSION['user']->getId());
                
-               $strTitleCom   = $_POST['title']??"";
-               $strContentCom = $_POST['content']??"";
-               var_dump("ici");
-               var_dump($objMovieModel->findMovie($objMovie->getId()));
+            //       $strTitleCom   = $_POST['title']??"";
+            //       $strContentCom = $_POST['content']??"";
+            //       var_dump("ici");
+            //       var_dump($objMovieModel->findMovie($objMovie->getId()));
                
-               if($strTitleCom == ""){
-                  $arrErrors['title'] = "Le titre est obligatoire pour comment!";
-               }
-               if($strContentCom == ""){
-                  $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
-               }
-               if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
-                  $objCommentModel->addComment($objCommentEntity);
-               }
-               
-            }
+            //       if($strTitleCom == ""){
+            //          $arrErrors['title'] = "Le titre est obligatoire pour comment!";
+            //       }
+            //       if($strContentCom == ""){
+            //          $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
+            //       }
+            //       if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
+            //          $objCommentModel->addComment($objCommentEntity);
+            //       }
+            // }
+            // -- Fin fonction commentaires Arlind
             
             $objMovieEntity->hydrate($arrMovieEntity);
       
@@ -333,6 +335,142 @@
 
             // pour qua comme parameter entre $arrMovieEntity 
 
+
+
+
+            // --- Juliette - 13/02/2025 - Requête insertion commentaire + photos
+            // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
+            $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
+
+            // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
+            require_once("entities/picture_entity.php");
+            if(count($_POST)>0){
+               $objCommentEntity->hydrate($_POST);
+               $objCommentEntity->setMovie_id($objMovie->getId());
+               $objCommentEntity->setUser_id($_SESSION['user']->getId());
+               
+               // Vérifie le contenu du titre
+               if($objCommentEntity->getTitle() == ""){
+                  $arrErrors['title'] = "Le champ Titre est obligatoire";
+               }
+               // Vérifie le contenu du contenu
+               if($objCommentEntity->getContent() == ""){
+                  $arrErrors['content'] = "Le champ Contenu est obligatoire";
+               }
+               // Vérifie si un fichier est importé et le nombre de fichiers importés
+               if($_FILES['pictures']['error'][0] != 4){
+                  // Compte du nombre de fichiers importés
+                  $intImportedPic = count($_FILES['pictures']['name']);
+
+                  // Instancie l'entité Picture
+                  $objPicture = new PictureEntity;
+
+                  // Vérifie que le nombre de fichiers importé ne dépasse pas la limite max pour le film
+                  if(($intNbTotalPic + $intImportedPic) > 10){
+                     $intRestPic = 10 - $intNbTotalPic;
+                     $arrErrors['picture'] = "Vous dépassez la limite de photos accordées à ce film. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
+                  } else {
+                     for ($i = 0; $i < $intImportedPic; $i++){
+                        if ($_FILES['pictures']['error'][$i] == 1){
+                           $arrErrors['import'] = $_FILES['pictures']['name'][$i]." est trop lourde.";
+                           break;
+                        }
+                     }
+                     $boolPicOk = true;
+                  }
+               }
+               
+               // Pas d'erreur dans le formulaire -> on traite la donnée
+               if(count($arrErrors) == 0){
+                  // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
+                  $idComment = $objCommentModel->addComment($objCommentEntity);
+
+                  // Insertion du commentaire réussie
+                  if($idComment !== false){
+                     if((isset($boolPicOk)) && ($boolPicOk === true)){
+                        // Pour chaque fichier importé, je récupère les infos et j'insère
+                        for($i = 0; $i<$intImportedPic; $i++){
+                           $strSource = $_FILES['pictures']['tmp_name'][$i]; // Récupération de l'image
+
+                           // Traitement de l'image importée
+                           // Création d'une imageGD
+                           switch($_FILES['pictures']['type'][$i]){
+                              case "image/webp":
+                                 $image = imagecreatefromwebp($strSource);
+                                 break;
+                              case "image/jpeg":
+                                 $image = imagecreatefromjpeg($strSource);
+                                 break;
+                              case "image/png":
+                                 $image = imagecreatefrompng($strSource);
+                                 break;
+                           }
+
+                           // -- TRAITEMENT DE L'IMAGE
+                           $arrFileExplode	= explode(".", $_FILES['pictures']['name'][$i]);
+                           $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random en webp
+                           $strDest = "assets/img/movies/movie_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+                           
+                           list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
+
+                           $intShortSize   = 600; // Valeur du plus petit côté
+
+                           // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
+                           if ($intWidth < $intHeight){
+                              // Format portrait
+                              $boolPortrait = true;
+                              $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
+                              $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                           } else {
+                              // Format paysage
+                              $boolPortrait = false;
+                              $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
+                              $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
+                           }
+                           // Génération de l'image traitée dans le dossier
+                           imagewebp($objMask,$strDest);
+
+                           // Remplissage des données
+                           $objPicture->setFile($strFileName);
+                           $objPicture->setComment_id($idComment);
+                           // Récupère le résultat de la requête d'insertion des photos
+                           $boolPicQuery = $objCommentModel->addPicture($objPicture);
+
+                           if($boolPicQuery===false){
+                              $arrErrors['import']= "Erreur lors de l'importation des images";
+                              break;
+                           }
+                        }
+
+                        // Si erreur dans le traitement des données, on supprime le commentaire qui vient d'être inséré
+                        if(count($arrErrors) != 0){
+                           $objCommentModel->deleteComment($idComment);
+                           $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
+                        }
+                     }
+
+                     // Pas d'erreur -> On renvoie un message de validation
+                     $_SESSION['success'] = "Commentaire enregistré. Il sera soumis à la modération avant publication.";
+
+                     // Redirection sur la même page pour vider le $_POST
+                     $strUrl = $_SERVER['QUERY_STRING'];
+                     header("Location:future_index.php?".$strUrl);
+
+                  } else {
+                     // Erreur lors de l'insertion du commentaire seul
+                     $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
+                  }
+               }
+            }
+            $this->_arrData['objCommentEntity'] = $objCommentEntity;
+            $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
+            // --- Fin Juliette
+            
+
+            
+
             $this->_arrData['objMovie']         = $arrMovieEntity;
             $this->_arrData['objMovie']         = $objMovieEntity;
             $this->_arrData['idMovie']          = $idMovie;
@@ -341,7 +479,7 @@
             $this->_arrData['arrErrors']        = $arrErrors;
             $this->_arrData['arrComments']      = $arrComments;
             $this->_arrData['objCommentModel']  = $objCommentModel;
-
+            
             $this->display('page_dun_film');
       }
 

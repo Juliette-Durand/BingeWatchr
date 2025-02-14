@@ -22,6 +22,10 @@
             foreach($this->_arrData as $key=>$value){
                 $$key   =   $value;
             }
+            $strSuccess = $_SESSION['success']??"";
+            unset($_SESSION['success']);
+            if(isset($_SESSION['success'])){
+            }
             include_once("views/_partial/head.php");
             include_once("views/".$strView.".php");
             include_once("views/_partial/footer.php");

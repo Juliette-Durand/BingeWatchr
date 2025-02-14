@@ -402,6 +402,10 @@
             
             $objUser = new UserEntity();
 
+            if(isset($_SESSION['user'])){
+                header("Location:future_index.php?ctrl=user&action=my_account");
+                die;
+            }
             
             var_dump($_POST);
             $strConfPwd  = $_POST['confirm_pwd']??"";
