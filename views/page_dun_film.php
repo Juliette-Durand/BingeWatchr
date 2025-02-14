@@ -74,7 +74,7 @@
                                     <p><?php echo $strError; ?></p>
                                 <?php } ?>
                             </div>
-                        <?php } else if(isset($strSuccess)){ ?>
+                        <?php } else if($strSuccess != ""){ ?>
                             <div class="alert alert-success">
                                 <?php echo($strSuccess); ?>
                             </div>
@@ -89,7 +89,7 @@
                         <?php } ?>
 
 
-                        <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
+                        <input class="col-12 btn btn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
                     </form>
                 <?php } ?>
             </div>

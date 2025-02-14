@@ -3,6 +3,7 @@
      * Controleur enfant de MotherController pour la gestion des films
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
+     * Dernière modification par Juliette le 14/02/2025
      */
 
      require_once("mother_controller.php");
@@ -339,6 +340,9 @@
             
             //var_dump($objMovieEntity->getId());
 
+
+
+
             // Juliette - 13/02/2025 - Requête insertion commentaire + photos
             // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
             $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
@@ -359,10 +363,11 @@
                   $arrErrors['content'] = "Le champ Contenu est obligatoire";
                }
                // Vérifie si un fichier est importé et le nombre de fichiers importés
-               if($_FILES['pictures']['error'] != 4){
+               if($_FILES['pictures']['error'][0] != 4){
                   // Compte du nombre de fichiers importés
                   $intImportedPic = count($_FILES['pictures']['name']);
 
+                  // Instancie l'entité Picture
                   $objPicture = new PictureEntity;
 
                   // Vérifie que le nombre de fichiers importé ne dépasse pas la limite max pour le film
@@ -379,7 +384,8 @@
                      $boolPicOk = true;
                   }
                }
-            
+               
+               // Pas d'erreur dans le formulaire -> on traite la donnée
                if(count($arrErrors) == 0){
                   // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
                   $idComment = $objCommentModel->addComment($objCommentEntity);
@@ -387,7 +393,6 @@
                   // Insertion du commentaire réussie
                   if($idComment !== false){
                      if((isset($boolPicOk)) && ($boolPicOk === true)){
-
                         // Pour chaque fichier importé, je récupère les infos et j'insère
                         for($i = 0; $i<$intImportedPic; $i++){
                            $strSource = $_FILES['pictures']['tmp_name'][$i]; // Récupération de l'image
@@ -406,7 +411,7 @@
                                  break;
                            }
 
-
+                           // -- TRAITEMENT DE L'IMAGE
                            $arrFileExplode	= explode(".", $_FILES['pictures']['name'][$i]);
                            $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random en webp
                            $strDest = "assets/img/movies/movie_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
@@ -429,12 +434,12 @@
                               $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
                               imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
                            }
-
+                           // Génération de l'image traitée dans le dossier
                            imagewebp($objMask,$strDest);
 
+                           // Remplissage des données
                            $objPicture->setFile($strFileName);
                            $objPicture->setComment_id($idComment);
-
                            // Récupère le résultat de la requête d'insertion des photos
                            $boolPicQuery = $objCommentModel->addPicture($objPicture);
 
@@ -443,15 +448,23 @@
                               break;
                            }
                         }
+
+                        // Si erreur dans le traitement des données, on supprime le commentaire qui vient d'être inséré
+                        if(count($arrErrors) != 0){
+                           $objCommentModel->deleteComment($idComment);
+                           $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
+                        }
                      }
-                     if(count($arrErrors) == 0 ){
-                        $strSuccess = "Succès de l'import des photos";
-                        $this->_arrData['strSuccess'] = $strSuccess;
-                     } else {
-                        $objCommentModel->deleteComment($idComment);
-                        $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
-                     }
+
+                     // Pas d'erreur -> On renvoie un message de validation
+                     $_SESSION['success'] = "Commentaire enregistré. Il sera soumis à la modération avant publication.";
+
+                     // Redirection sur la même page pour vider le $_POST
+                     $strUrl = $_SERVER['QUERY_STRING'];
+                     header("Location:future_index.php?".$strUrl);
+
                   } else {
+                     // Erreur lors de l'insertion du commentaire seul
                      $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
                   }
                }
@@ -459,6 +472,9 @@
             $this->_arrData['objCommentEntity'] = $objCommentEntity;
             $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
             // Fin Juliette
+            
+
+            
 
             $this->_arrData['objMovie']         = $arrMovieEntity;
             $this->_arrData['objMovie']         = $objMovieEntity;
@@ -468,7 +484,7 @@
             $this->_arrData['arrErrors']        = $arrErrors;
             $this->_arrData['arrComments']      = $arrComments;
             $this->_arrData['objCommentModel']  = $objCommentModel;
-
+            
             $this->display('page_dun_film');
          }
       public function edit_movie(){

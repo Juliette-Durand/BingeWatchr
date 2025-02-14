@@ -31,7 +31,7 @@
 		* @param string $strTitle titre de comment
 		*/
         public function setTitle(string $strTitle){
-            $this->_title = $strTitle;
+            $this->_title = trim($strTitle);
         }
 
         /**
@@ -46,7 +46,7 @@
 		* @param string $strComment content de comment
 		*/
         public function setContent(string $strComment){
-            $this->_content = $strComment;
+            $this->_content = trim($strComment);
         }
 
         /**
