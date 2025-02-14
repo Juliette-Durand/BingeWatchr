@@ -18,19 +18,13 @@
                     <p><input type="text" value="<?php echo($objMovie->getDuration()); ?>"> </p>
 
                     <?php 
-                        $objActorsModel = new ActorModel();
-                        
-                        $arrActors = $objActorsModel->findActor($idMovie); // cherche le ID de movie
-
                         foreach($arrActors as $actor){
                             $objOneActor = new ActorEntity();
                             $objOneActor->hydrate($actor);
                             //var_dump($objOneActor);
-                            
                             ?> 
                             <p> <input type="text" value="<?php echo($objOneActor->getLast_name()." ".$objOneActor->getFirst_name()); ?>">  </p>
                         <?php }
-                        //var_dump($arrActors);
                     ?>
                     <input class="btn" type="submit" name="edit" id="edit" value="Edit">
                 </form>   

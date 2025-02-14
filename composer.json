@@ -1,0 +1,18 @@
+{
+    "name": "arlin/binge-watchr",
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "smarty/smarty": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arlin\\BingeWatchr\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arlind Halimi",
+            "email": "arlindhalimi1604@gmail.com"
+        }
+    ]
+}

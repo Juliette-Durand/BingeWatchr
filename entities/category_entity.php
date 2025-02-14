@@ -14,10 +14,12 @@
 		*/
 		public function __construct(){
 			parent::__construct();
+
             $this->_prefixe = 'cat';
 			$this->_id;
-		}
 
+		}
+      
         /**
          * Class have the name on Category_entity and on Movie_entity
          * Can we use like this or to add in Mother_Entity
