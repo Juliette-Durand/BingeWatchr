@@ -41,6 +41,11 @@
 
 
             $arrErrors = array();
+              // Rederige si l'utilisateur n'est pas conecte
+            if( !isset($_SESSION['user']) ){
+                header("Location:future_index.php?ctrl=user&action=login");
+                exit;
+            }
 
             if(count($_POST) > 0){
 
@@ -50,7 +55,7 @@
                     $arrErrors['first_name'] = "Le champs 'nom' est obligatoire";
                 }
                 if($strPrenom == ""){
-                    $arrErrors['last_name'] = "Le champs 'pénom' est obligatoire";
+                    $arrErrors['last_name'] = "Le champs 'prénom' est obligatoire";
                 }
                 if($strImage == ""){
                     $arrErrors['fichier'] = "Le champs 'image' est obligatoire";

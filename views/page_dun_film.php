@@ -50,9 +50,10 @@
                         <?php } ?>
                         <label class="col-12" for="title">Title comment</label>
                         <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($strTitleCom) ?>">
+                        <label class="col-12" for="content">Content du comment</label>
                         <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($strContentCom) ?></textarea>
-                        <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
-                    </form>
+                        <input class="col-12 btn brn-primary my-3" type="submit" name="addComment" id="addComment" value="add comment">
+                    </form>             
                 <?php } ?>
             </div>
             <h3 class='mt-5'>Dernier trois commentes : </h3>
@@ -65,6 +66,8 @@
                 }
             ?>
             <!-- button pour partage movie par mail -->
-            <a href="http://localhost/BingeWatchr-10/BingeWatchr/future_index.php?ctrl=movie&action=contact" class="btn">Partage par email</a>
+            <div>
+                <a href="http://localhost/BingeWatchr-10/BingeWatchr/future_index.php?ctrl=movie&action=contact" class="btn">Partage par email</a>
+            </div>
         </div>
     </div>

@@ -131,7 +131,11 @@
 
             // Initialisation du tableau vide
             $arrErrors = array();
-
+            // Rederige si l'utilisateur n'est pas conecte
+            if( !isset($_SESSION['user']) ){
+               header("Location:future_index.php?ctrl=user&action=login");
+               exit;
+            }
             if(count($_POST) > 0){
                $objMovieEntity->hydrate($_POST);
                //$objMovieEntity->setPoster($strFileName);
@@ -263,15 +267,18 @@
             $objCommentModel  = new CommentModel();
             $objCommentEntity = new CommentEntity();
             $objMovieEntity   = new MovieEntity();
-              
+            
+            // Récupération de l'id en URL
+            $strId  =   $_GET['id']??"";
+            // Vérification de la valeur de l'id en URL si exist
+            if($strId=="" || $objMovieModel->findMovie($strId)===false){
+               header("Location:future_index.php?ctrl=error&action=error404");
+               exit();
+           }
 
-            
-            
-
-            
-            $objMovie->setId($_GET["id"]);
+            $objMovie->setId($strId);
             $idMovie = $objMovie->getId();
-            $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
+            $arrMovieEntity = $objMovieModel->findMovie($strId);
             $objMovie->hydrate($arrMovieEntity);
             
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
@@ -279,37 +286,19 @@
             // Variables fonctionnelles
             $this->_arrData['refPage']  =  "page_dun_film";
 
-
             
             $arrErrors = array();
             $arrComments = array();
             $arrComments = $objCommentModel->allComments();
-            $strTitleCom = '';
-            $strContentCom = '';
             $strTitleCom   = $_POST['title']??"";
-            $strContentCom = $_POST['content']??"";
-            
-               // Récupération de l'id en URL
-               $strId  =   $_GET['id']??"";
-               // Vérification de la valeur de l'id en URL si exist
-               if($strId == ""){
-                  // L'id est vide
-                  header("Location:future_index.php?ctrl=error&action=error404");
-              }elseif($objMovieModel->findMovie($strId) === false){
-                  // L'id est vide
-                  header("Location:future_index.php?ctrl=error&action=error404");
-              }
-            if(count($_POST) > 0){
+            $strContentCom = $_POST['content']??"";           
                
+              
+            if(count($_POST) > 0 ){
                // besoin ecrire setMovie_id et setUser_id parce que pas hydrate avec $_POST $_POST
                $objCommentEntity->hydrate($_POST);
                $objCommentEntity->setMovie_id($objMovie->getId());
                $objCommentEntity->setUser_id($_SESSION['user']->getId());
-               
-               $strTitleCom   = $_POST['title']??"";
-               $strContentCom = $_POST['content']??"";
-               var_dump("ici");
-               var_dump($objMovieModel->findMovie($objMovie->getId()));
                
                if($strTitleCom == ""){
                   $arrErrors['title'] = "Le titre est obligatoire pour comment!";
@@ -317,15 +306,17 @@
                if($strContentCom == ""){
                   $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
                }
-               if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
+          
+               if(($strTitleCom !='') && ($strContentCom !='')){
                   $objCommentModel->addComment($objCommentEntity);
+                  header("Location: future_index.php?ctrl=movie&action=page_dun_film&id=" . $strId);
+                  exit();
                }
                
             }
             
             $objMovieEntity->hydrate($arrMovieEntity);
       
-           
 
             // if (!isset($_GET['id']) || !($objMovieModel->findMovie($_GET['id']) )){
             //    header("Location:future_index.php?ctrl=error&action=error404");
@@ -333,7 +324,7 @@
 
             // pour qua comme parameter entre $arrMovieEntity 
 
-            $this->_arrData['objMovie']         = $arrMovieEntity;
+            $this->_arrData['arrMovieEntity']   = $arrMovieEntity;
             $this->_arrData['objMovie']         = $objMovieEntity;
             $this->_arrData['idMovie']          = $idMovie;
             $this->_arrData['strTitleCom']      = $strTitleCom;
@@ -414,38 +405,38 @@
 
       public function edit_movie(){
 
-         require_once("entities/movie_entity.php");
-         require_once("entities/acteur_entity.php");
-         require_once("models/movie_model.php");
-         require_once("models/actor_model.php");
+         // require_once("entities/movie_entity.php");
+         // require_once("entities/acteur_entity.php");
+         // require_once("models/movie_model.php");
+         // require_once("models/actor_model.php");
          
-         // object pour Movie Model
-         $objMovieModel = new MovieModel(); 
-         $objMovie = new MovieEntity(); 
+         // // object pour Movie Model
+         // $objMovieModel = new MovieModel(); 
+         // $objMovie = new MovieEntity(); 
 
-         $objMovie->setId($_GET["id"]);
-         $idMovie = $objMovie->getId();
-         $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
-         $objMovie->hydrate($arrMovieEntity);
+         // $objMovie->setId($_GET["id"]);
+         // $idMovie = $objMovie->getId();
+         // $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
+         // $objMovie->hydrate($arrMovieEntity);
 
 
 
-         $arrActors = $objActorsModel->findActor($idMovie); // cherche le ID de movie
+         // $arrActors = $objActorsModel->findActor($idMovie); // cherche le ID de movie
 
          
-         /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
-         $this->_arrData['strTitle'] =  "Page de modifie film";
+         // /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
+         // $this->_arrData['strTitle'] =  "Page de modifie film";
 
-         // Variables fonctionnelles
-         $this->_arrData['refPage']  =  "edit_movie";
-
-
-         $this->_arrData['objMovie']  = $arrMovieEntity;
-         $this->_arrData['objMovie'] = $objMovie;
-         $this->_arrData['idMovie'] = $idMovie;
-         //$this->_arrData[''] = $strDateFr
+         // // Variables fonctionnelles
+         // $this->_arrData['refPage']  =  "edit_movie";
 
 
-         $this->display('edit_movie');
+         // $this->_arrData['objMovie']  = $arrMovieEntity;
+         // $this->_arrData['objMovie'] = $objMovie;
+         // $this->_arrData['idMovie'] = $idMovie;
+         // //$this->_arrData[''] = $strDateFr
+
+
+         // $this->display('edit_movie');
       }
    }
