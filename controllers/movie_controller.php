@@ -138,11 +138,7 @@
             }
             if(count($_POST) > 0){
                $objMovieEntity->hydrate($_POST);
-               //$objMovieEntity->setPoster($strFileName);
                // Vérification du formulaire
-               // if($strPhoto == ""){
-                // 	$arrErrors['fichier'] = "Image est obligatoire";
-               // }
                if($strTitleForm == ""){
                   $arrErrors['name'] = "Title est obligatoire";
                }
@@ -152,14 +148,17 @@
                if($idActor == "" || $idActor == 0){
                   $arrErrors['actor'] = "Le nom de l'acteur est obligatoire";
                }
+               if ($idCategory == "" || $idCategory == 0){
+                  $arrErrors['category'] = "La zone de  category est obligatoire";
+               }
                if ($strSynopsis == ""){
                   $arrErrors['desc'] = "La zone de texte synopsis est obligatoire";
                }
                if ($strNotes == ""){
                   $arrErrors['notes'] = "La zone de texte notes est obligatoire";
                }
-                  
-                  
+               
+
                // Vérification du fichier
                // check if file is exist                 
                $arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
@@ -180,12 +179,6 @@
                    // Fichier temporaire = source
                   $strSource = $_FILES['fichier']['tmp_name'];
                   // destination de fichier
-                     
-                  // $strDest	= "assets/img/movies/movie_posters/".$strPhoto;
-                  // // On déplace le fichier
-                  // if (!move_uploaded_file($strSource, $strDest)){
-                  //    $arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
-                  // }
 
                   $arrFileExplode	= explode(".", $arrFichier['name']);
 						$strFileExt		= $arrFileExplode[count($arrFileExplode)-1];
@@ -210,36 +203,31 @@
 
                   //Informer l'utilisateur si einsertion ok/pas ok
                   if($boolOK){
-                     //var_dump('ok');
-                     
+                     $_SESSION['success'] 	= "L'insertion est passée avac succes.";
+                     header( "Location:future_index.php", true);
                   }else{
-                     $arrErrors[]="l'insertion s'est mal passée";
+                     $arrErrors[]="L'insertion s'est mal passée";
                   }
-                  header( "Location:future_index.php", true);
-                  // => exemple Insertion en BDD
-                     
                }
-               
             }
 
-
             // besoin de déclarer toutes les variables utilisées dans le formulaire
-            $this->_arrData['strPhoto']  =   $strPhoto;
-            $this->_arrData['strDate']  =   $strDate;
-            $this->_arrData['arrErrors']  =   $arrErrors;
-            $this->_arrData['strMovieDisplay']  =   $strMovieDisplay;
-            $this->_arrData['strDuration']  =   $strDuration;
-            $this->_arrData["idActor"] = $idActor;
-            $this->_arrData["objActorEntity"] = $objActorEntity ;
-            $this->_arrData["objActorModel"] = $objActorModel ;
-            $this->_arrData["arrActor"] = $arrActor ;
-            $this->_arrData["strSynopsis"] = $strSynopsis ;
-            $this->_arrData["strNotes"] = $strNotes ;
-            $this->_arrData["strTitleForm"] = $strTitleForm ;
-            $this->_arrData["idCategory"]= $idCategory;
-            $this->_arrData["objMovie"] = $objMovie;
+            $this->_arrData['strPhoto']         = $strPhoto;
+            $this->_arrData['strDate']          = $strDate;
+            $this->_arrData['strMovieDisplay']  = $strMovieDisplay;
+            $this->_arrData['strDuration']      = $strDuration;
+            $this->_arrData["idActor"]          = $idActor;
+            $this->_arrData["arrActor"]         = $arrActor ;
+            $this->_arrData["strSynopsis"]      = $strSynopsis ;
+            $this->_arrData["strNotes"]         = $strNotes ;
+            $this->_arrData["strTitleForm"]     = $strTitleForm ;
+            $this->_arrData["idCategory"]       = $idCategory;
+            $this->_arrData["arrCategory"]      = $arrCategory;
+            $this->_arrData['arrErrors']        = $arrErrors;
+            $this->_arrData["objActorEntity"]   = $objActorEntity ;
+            $this->_arrData["objActorModel"]    = $objActorModel ;
+            $this->_arrData["objMovie"]         = $objMovie;
             $this->_arrData["objCategoryEntity"] = $objCategoryEntity;
-            $this->_arrData["arrCategory"] = $arrCategory;
                
                
             // est une méthode qui appelle une view nommée "form_movie" 
@@ -251,7 +239,6 @@
        * @author Arlind Halimi
        * 05/02/2025 par Arlind Halimi
        */
-     
       public function page_dun_film(){
             require_once("entities/movie_entity.php");
             require_once("entities/acteur_entity.php");
@@ -274,7 +261,7 @@
             if($strId=="" || $objMovieModel->findMovie($strId)===false){
                header("Location:future_index.php?ctrl=error&action=error404");
                exit();
-           }
+            }
 
             $objMovie->setId($strId);
             $idMovie = $objMovie->getId();
@@ -293,7 +280,6 @@
             $strTitleCom   = $_POST['title']??"";
             $strContentCom = $_POST['content']??"";           
                
-              
             if(count($_POST) > 0 ){
                // besoin ecrire setMovie_id et setUser_id parce que pas hydrate avec $_POST $_POST
                $objCommentEntity->hydrate($_POST);
@@ -306,7 +292,7 @@
                if($strContentCom == ""){
                   $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
                }
-          
+
                if(($strTitleCom !='') && ($strContentCom !='')){
                   $objCommentModel->addComment($objCommentEntity);
                   header("Location: future_index.php?ctrl=movie&action=page_dun_film&id=" . $strId);
@@ -349,11 +335,14 @@
          // Variables fonctionnelles
          $this->_arrData['refPage']  =  "contact";
          
-         if( count($_POST) > 0){
-            $strName       = $_POST['name']??"";
-            $strMail       = $_POST['mail']??"";
-            $strMessage    = $_POST['message']??"";
+         // Création d'un tableau d'erreurs
+         $arrErrors  =   array();
+         $strName       = $_POST['name']??"";
+         $strMail       = $_POST['mail']??"";
+         $strMessage    = $_POST['message']??"";
 
+         if( count($_POST) > 0){
+            
             //$strContentA = file_get_contents('');
 				$objMail = new PHPMailer(); 	// Nouvel objet Mail
 				$objMail->IsSMTP();
@@ -385,19 +374,38 @@
 				// Contenu du mail
 				//$objMail->Subject = $strSubjecte;
 				$objMail->Body = $strMessage;
-				
-				
-				if (!$objMail->send()) {
-					//echo 'Erreur de Mailer : ' . $objMail->ErrorInfo;
-				} else {
-               $_SESSION['success'] 	= 'Le message a été envoyé.';
-               // Rediriger vers l'accueil
-               header("Location:future_index.php");
-               exit;
-					
-				}
+            
+               // Vérification du nom
+               if($strName == ""){
+                  $arrErrors['name'] =  'Le Nom et Prénom est obligatoire';
+               }
+               // Vérification de l'adresse email
+               if ($strMail == "") {
+                  $arrErrors['mail'] =   "L'adresse email est obligatoire";
+               } else if (!filter_var($strMail, FILTER_VALIDATE_EMAIL)){
+                  $arrErrors['mail'] =   "L'adresse email n'est pas valide";
+               }
+                // Vérification du message
+               if($strMessage == ""){
+                  $arrErrors['message'] =  'Le champ message est obligatoire';
+               }
 
+               if(count($arrErrors) == 0){
+                  if (!$objMail->send()) {
+                     echo 'Erreur de Mailer : ' . $objMail->ErrorInfo;
+                  } else {
+                     $_SESSION['success'] 	= 'Le message a été envoyé.';
+                     // Rediriger vers l'accueil
+                     header("Location:future_index.php");
+                     exit;
+                  }
+               }
+         
          }
+         $this->_arrData['arrErrors']  = $arrErrors;
+         $this->_arrData['strName']    = $strName;
+         $this->_arrData['strMail']    = $strMail;
+         $this->_arrData['strMessage'] = $strMessage;
 
          // est une méthode qui appelle une view nommée "contact" 
          $this->display("contact");
