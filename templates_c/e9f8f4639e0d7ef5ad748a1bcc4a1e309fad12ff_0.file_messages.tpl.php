@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2025-02-14 10:34:26
+/* Smarty version 5.4.3, created on 2025-02-17 15:00:35
   from 'file:views/_partial/messages.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_67af1c321696b6_08577256',
+  'unifunc' => 'content_67b34f137d7c84_15721774',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67af1c321696b6_08577256 (\Smarty\Template $_smarty_tpl) {
+function content_67b34f137d7c84_15721774 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\wamp64\\www\\BingeWatchrs\\views\\_partial';
 if (($_smarty_tpl->getSmarty()->getModifierCallback('count')($_smarty_tpl->getValue('arrErrors')) > 0)) {?>
 <div class="alert alert-danger">

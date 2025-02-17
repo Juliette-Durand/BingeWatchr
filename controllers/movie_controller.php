@@ -67,15 +67,12 @@
          */
          public function allMovies() {
 
-            // object pour Movie Model
-            //$objMovieModel                = new MovieModel();
-            //$objCatModel                  = new CategoryModel();
-            $this->objMovieModel->strKeyword    = $_POST['keywords']??"";
-            $this->objMovieModel->strStartDate  = $_POST['startdate']??"";
-            $this->objMovieModel->strEndDate    = $_POST['enddate']??"";
-            $this->objMovieModel->intStartTime  = $_POST['minduration']??0;
-            $this->objMovieModel->intEndTime    = $_POST['maxduration']??0;
-            $this->objMovieModel->arrCategory   = $_POST['cat']??[];
+            $this->_objMovieModel->strKeyword    = $_POST['keywords']??"";
+            $this->_objMovieModel->strStartDate  = $_POST['startdate']??"";
+            $this->_objMovieModel->strEndDate    = $_POST['enddate']??"";
+            $this->_objMovieModel->intStartTime  = $_POST['minduration']??0;
+            $this->_objMovieModel->intEndTime    = $_POST['maxduration']??0;
+            $this->_objMovieModel->arrCategory   = $_POST['cat']??[];
 
             //Utilisation
             $arrCat           = $this->_objCatModel->findCategory();
@@ -86,26 +83,22 @@
                $objMovie = new MovieEntity();  
                // hydrater l'objet
                $objMovie->hydrate($arrDetMovies);
-               $arrMoviesToDisplay[] = $objMovie;
+               $arrAdvMoviesToDisplay[] = $objMovie;
             }
+            $this->_arrData['arrAdvMovie']	= $arrAdvMoviesToDisplay;
 
             $arrCatToDisplay  = array();
             foreach ($arrCat as $arrDetCat) {
                $objCat = new CategoryEntity();  
                // hydrater l'objet
                $objCat->hydrate($arrDetCat);
-               //$objCat->setName($arrDetCat['cat_name']); 
-               //$objCat->setId($arrDetCat['cat_id']); 
                $arrCatToDisplay[] = $objCat;
             }
             $this->_arrData['arrCat']	= $arrCatToDisplay;
 
             // Transmission des variables dans la vue
+            $this->_arrData['objMovieModel']	= $this->_objMovieModel;
             $this->_arrData['strTitle']      = "Tous les films";
-            $this->_arrData['objMovieModel'] = $objMovieModel;
-            //$this->_arrData['arrCat']        = $arrCat;
-            $this->_arrData['arrAdvMovie']   = $arrAdvMovie; 
-            $this->_arrData['arrAdvMovies']	= $arrAdvMoviesToDisplay;
 
             $this->display('all_movies');
          }
@@ -297,8 +290,6 @@
             $objCommentModel  = new CommentModel();
             $objCommentEntity = new CommentEntity();
             $objMovieEntity   = new MovieEntity();
-            
-            
 
             $objMovie->setId($_GET["id"]);
             $idMovie = $objMovie->getId();

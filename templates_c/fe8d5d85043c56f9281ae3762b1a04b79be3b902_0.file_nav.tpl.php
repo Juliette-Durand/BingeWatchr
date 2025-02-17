@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2025-02-14 10:34:26
+/* Smarty version 5.4.3, created on 2025-02-17 15:00:35
   from 'file:views/_partial/nav.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_67af1c32069112_00965439',
+  'unifunc' => 'content_67b34f136be9c5_86957110',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_67af1c32069112_00965439 (\Smarty\Template $_smarty_tpl) {
+function content_67b34f136be9c5_86957110 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\wamp64\\www\\BingeWatchrs\\views\\_partial';
 ?>		        <nav class="navbar navbar-expand-lg bg-body-tertiary head_navbar">
             <div class="container">

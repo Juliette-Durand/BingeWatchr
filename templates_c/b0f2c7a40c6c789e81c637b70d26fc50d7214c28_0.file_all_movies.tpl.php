@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.3, created on 2025-02-14 10:42:39
+/* Smarty version 5.4.3, created on 2025-02-17 15:00:35
   from 'file:views/all_movies.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_67af1e1f5c7973_14679823',
+  'unifunc' => 'content_67b34f13137a71_92330028',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b0f2c7a40c6c789e81c637b70d26fc50d7214c28' => 
     array (
       0 => 'views/all_movies.tpl',
-      1 => 1739529759,
+      1 => 1739804283,
       2 => 'file',
     ),
   ),
@@ -21,21 +21,21 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:views/_partial/movie_card.tpl' => 1,
   ),
 ))) {
-function content_67af1e1f5c7973_14679823 (\Smarty\Template $_smarty_tpl) {
+function content_67b34f13137a71_92330028 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\wamp64\\www\\BingeWatchrs\\views';
 $_smarty_tpl->getInheritance()->init($_smarty_tpl, true);
 ?>
         
 
     <?php 
-$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_213626320867af1e1f5a2358_55627230', "contenu");
+$_smarty_tpl->getInheritance()->instanceBlock($_smarty_tpl, 'Block_14460347667b34f13116538_38532210', "contenu");
 ?>
 
 
 <?php $_smarty_tpl->getInheritance()->endChild($_smarty_tpl, "views/layout.tpl", $_smarty_current_dir);
 }
 /* {block "contenu"} */
-class Block_213626320867af1e1f5a2358_55627230 extends \Smarty\Runtime\Block
+class Block_14460347667b34f13116538_38532210 extends \Smarty\Runtime\Block
 {
 public function callBlock(\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\wamp64\\www\\BingeWatchrs\\views';
@@ -129,7 +129,7 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('objMovie')->value) {
 $foreach1DoElse = false;
 ?>
                         <?php $_smarty_tpl->renderSubTemplate("file:views/_partial/movie_card.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
-?>;
+?>
                     <?php
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>

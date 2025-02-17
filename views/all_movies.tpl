@@ -73,7 +73,7 @@
             <div class="row">
                 <h2>Tous les films</h2>
                     {foreach $arrAdvMovie as $objMovie}
-                        {include file="views/_partial/movie_card.tpl"};
+                        {include file="views/_partial/movie_card.tpl"}
                     {/foreach}
             </div>
         {/if} 

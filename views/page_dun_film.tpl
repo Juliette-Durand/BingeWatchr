@@ -12,64 +12,37 @@
             </div>
             <div class="col-md-8">
             
-
-                    <h2>{$objMovie->getName()}</h2>
-                    <p>{$objMovie->getDesc()}</p>
-                    <p>{$objMovie->getDateFr()}</p>
-                    <p>{$objMovie->getCreation_date()}</p>
-                    {if $objMovie->getPegi() != null}
-                        <p>{$objMovie->getPegi()}</p>
-                    {/if}
-                    <p>{$objMovie->getDuration()}</p>
-                    {*
-                    <?php 
-                        $objActorsModel = new ActorModel();
-                        
-                        $arrActors = $objActorsModel->findActor($idMovie); // cherche le ID de movie
-
-                        foreach($arrActors as $actor){
-                            $objOneActor = new ActorEntity();
-                            $objOneActor->hydrate($actor);
-                            //var_dump($objOneActor);
-                            
-                            ?> 
-                            <p> <?php echo($objOneActor->getLast_name()." ". $objOneActor->getFirst_name()); ?> </p>
-                        <?php }
-                    ?>
-                
-                <?php
-                // ajoute 3 dernier comments 
-                // CODE
-                
-                ?>*}
-                <?php if(isset($_SESSION['user'])){ ?>
+                <h2>{$objMovie->getName()}</h2>
+                <p>{$objMovie->getDesc()}</p>
+                <p>{$objMovie->getDateFr()}</p>
+                <p>{$objMovie->getCreation_date()}</p>
+                {if $objMovie->getPegi() != null}
+                    <p>{$objMovie->getPegi()}</p>
+                {/if}
+                <p>{$objMovie->getDuration()}</p>
+                    
+                {if(isset($_SESSION['user']))}
                     <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
-                        <?php if (count($arrErrors) > 0){ ?>
+                        {if (count($arrErrors) > 0)}
                             <div class="alert alert-danger">
-                                <?php foreach($arrErrors as $strError){ ?>
-                                    <p><?php echo $strError; ?></p>
-                                <?php } ?>
+                                {foreach $arrErrors as $strError}
+                                    <p>{$strError}</p>
+                                {/foreach}
                             </div>
-                        <?php } ?>
+                        {/if}
                         <label class="col-12" for="title">Title comment</label>
                         <input class="col-12 form-control my-3 <?php echo (isset($arrErrors['title']))?'is-invalid':'';  ?>" type="text" name="title" id="title" value="<?php echo($strTitleCom) ?>">
                         <textarea class="col-12 form-control <?php echo (isset($arrErrors['content']))?'is-invalid':'';  ?>" name="content" id="content" value=""><?php echo($strContentCom) ?></textarea>
                         <input class="col-12 btn brn-primary my-3" type="submit" name="addComent" id="addComment" value="add comment">
                     </form>
-                <?php } ?>
+                {/if}
             </div>
             
                     <h3 class='mt-5'>Dernier trois commentes : </h3>
-                    
-
-                    <?php
-                        foreach($arrComments as $arrDetComment){
-                            $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
-                            $objCommentEntity->hydrate($arrDetComment);
-                            include("views/_partial/comment.php");
-                        }
-                    ?>
-                    
-            
+                    {foreach $arrComments as $arrDetComment}
+                        $objCommentEntity = new CommentEntity(); // Article 'coquille vide' 
+                        $objCommentEntity->hydrate($arrDetComment);
+                        {include file="views/_partial/comment.php"}
+                    {/foreach}           
         </div>
     </div>
