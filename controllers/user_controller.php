@@ -328,7 +328,6 @@
                     }
 
                     $arrUserRole = $this->_objUserModel->checkRole($_GET['id']);
-                    var_dump($arrUserRole['role']);
 
                     if (($arrUserRole['role'] == $_SESSION['user']->getRole()) || ($arrUserRole['role'] == 'admin')) {
                         // L'utilisateur est redirigé si il tente de supprimé un utilisateur ayant le même rôle que lui ou supérieur
@@ -373,7 +372,6 @@
                 if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
                     unset($_SESSION['user']);
                     header("Location:future_index.php?ctrl=user&action=login");
-                    die;
                 }
             } else {
                 // La requête a rencontré un problème
@@ -382,10 +380,8 @@
                 // Si l'utilisateur supprimé est l'utilisateur en session -> redirection vers la page mon compte
                 if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
                     header("Location:future_index.php?ctrl=user&action=my_account");
-                    die;
                 }
             }
-            die;
             // Redirection vers la page de gestion des utilisateurs
             header("Location:future_index.php?ctrl=user&action=user_role_manage");
         }
@@ -404,7 +400,6 @@
 
             if(isset($_SESSION['user'])){
                 header("Location:future_index.php?ctrl=user&action=my_account");
-                die;
             }
             
             var_dump($_POST);
