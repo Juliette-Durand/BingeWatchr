@@ -15,11 +15,11 @@
 			</div>
 		<?php } ?>
         <label> Nom de d'actor : *</label>
-        <input  class="form-control <?php echo (isset($arrErrors['first_name']))?'is-invalid':'';  ?>" type="text" id="first_name" name="first_name">
+        <input  class="form-control <?php echo (isset($arrErrors['first_name']))?'is-invalid':'';  ?>" type="text" id="first_name" name="first_name" value="<?php echo($strName); ?>">
         <label> Prénom d'actor : *</label>
-        <input  class="form-control <?php echo (isset($arrErrors['last_name']))?'is-invalid':'';  ?>" type="text" name="last_name" id="last_name">
+        <input  class="form-control <?php echo (isset($arrErrors['last_name']))?'is-invalid':'';  ?>" type="text" name="last_name" id="last_name" value="<?php echo($strPrenom); ?>">
         <label>Actor Image * : <small class="secondPlan"> (5Mo max)</small></label>
-        <input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php //echo($strPhoto) ?>" name="fichier" type="file">
+        <input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php echo($strImage) ?>" name="fichier" type="file" >
         <div class="col-5">
 	    	<input class="col-3 form-control  my-3  btn btn-primary" type="submit"  value="Soumettre cet acteur">	
 		</div>

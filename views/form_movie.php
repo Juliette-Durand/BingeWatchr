@@ -91,10 +91,7 @@
 						<label>Zone de texte synopsis*:</label>
 						<textarea name="desc" class="form-control <?php echo (isset($arrErrors['desc']))?'is-invalid':''; ?>" id="" value="<?php echo($strSynopsis) ?>"></textarea>
 					</div>
-					<div class="col-md-6">
-						<label>Zone de texte Notes*:</label>
-						<textarea name="notes" class="form-control <?php echo (isset($arrErrors['notes']))?'is-invalid':''; ?>" id="" value="<?php echo($strNotes) ?>"></textarea>
-					</div>
+					
 				</div>
 				<div class="row mt-3">
 					<div class="col-3">

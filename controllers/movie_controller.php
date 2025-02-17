@@ -122,7 +122,6 @@
             $strTitleForm 	= $_POST['name']??"";
             $strDate 		= $_POST['release']??"";
             $strSynopsis	= $_POST['desc']??"";
-            $strNotes 		= $_POST['notes']??"";
             $strDuration	= $_POST['duration']??"";
             $strMovieDisplay = $_POST['display']??"";
             $idActor 		= $_POST["actor"]??"";
@@ -154,9 +153,7 @@
                if ($strSynopsis == ""){
                   $arrErrors['desc'] = "La zone de texte synopsis est obligatoire";
                }
-               if ($strNotes == ""){
-                  $arrErrors['notes'] = "La zone de texte notes est obligatoire";
-               }
+              
                
 
                // Vérification du fichier
@@ -219,7 +216,6 @@
             $this->_arrData["idActor"]          = $idActor;
             $this->_arrData["arrActor"]         = $arrActor ;
             $this->_arrData["strSynopsis"]      = $strSynopsis ;
-            $this->_arrData["strNotes"]         = $strNotes ;
             $this->_arrData["strTitleForm"]     = $strTitleForm ;
             $this->_arrData["idCategory"]       = $idCategory;
             $this->_arrData["arrCategory"]      = $arrCategory;

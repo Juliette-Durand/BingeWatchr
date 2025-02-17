@@ -110,7 +110,11 @@
                     // => exemple Insertion en BDD
                 }
             }
-            $this->_arrData['arrErrors']  =   $arrErrors;
+            $this->_arrData['arrErrors'] = $arrErrors;
+            $this->_arrData['strName']   = $strName ;
+            $this->_arrData['strPrenom'] = $strPrenom;
+            $this->_arrData['strImage']  = $strImage;
+
             $this->display("form_actor");
         }
         
