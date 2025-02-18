@@ -13,9 +13,9 @@
 			</div>
 		{/if}
         <label> Nom de d'actor : *</label>
-        <input  class="form-control {if $arrErrors['first_name']|isset} is-invalid {/if}" type="text" id="first_name" name="first_name">
+        <input  class="form-control {if $arrErrors['first_name']|isset} is-invalid {/if}" type="text" id="first_name" name="first_name" value="{$strName}">
         <label> Prénom d'actor : *</label>
-        <input  class="form-control {if $arrErrors['last_name']|isset} is-invalid {/if}" type="text" name="last_name" id="last_name">
+        <input  class="form-control {if $arrErrors['last_name']|isset} is-invalid {/if}" type="text" name="last_name" id="last_name" value="{$strPrenom}">
         <label>Actor Image * : <small class="secondPlan"> (5Mo max)</small></label>
         <input class="form-control {if $arrErrors['fichier']|isset} is-invalid {/if}" value="{$strPhoto}" name="fichier" type="file">
         <div class="col-5">

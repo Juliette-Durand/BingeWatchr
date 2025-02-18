@@ -2,7 +2,7 @@
     /**
      * Controleur enfant de MotherController pour la actor
      * @author Arlind Halimi
-     * Créé le 04/02/2025 
+     * @date 04/02/2025 
      */
 
     require_once("mother_controller.php");
@@ -19,48 +19,42 @@
             require_once("models/actor_model.php");
             require_once("entities/acteur_entity.php");
 
-            $objActorModel   =   new ActorModel();
+            $objActorModel      = new ActorModel();
+            $objActorEntity     = new ActorEntity(); 
 
             // Variables d'affichage
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =  "Ajouter un Acteur";
-
             // Variables fonctionnelles
             $this->_arrData['refPage']  =  "form_actor";
-
-            
-
-            $objActorEntity = new ActorEntity();
-            $objActorModel 	= new ActorModel();
-            
 
             $strName    = $_POST['first_name']??"";
             $strPrenom  = $_POST['last_name']??"";
             $strImage   = $_FILES['fichier']['name']??"";
             $strImage   = strtolower($strImage);
 
-
             $arrErrors = array();
+              // Rederige si l'utilisateur n'est pas conecte
+            if( !isset($_SESSION['user']) ){
+                header("Location:future_index.php?ctrl=user&action=login");
+                exit;
+            }
 
-            if(count($_POST) > 0){
-
+            if(count($_POST) > 0){    
                 $objActorEntity->hydrate($_POST);
                 $objActorEntity->setPicture($strImage);
                 if($strName == ""){
                     $arrErrors['first_name'] = "Le champs 'nom' est obligatoire";
                 }
                 if($strPrenom == ""){
-                    $arrErrors['last_name'] = "Le champs 'pénom' est obligatoire";
+                    $arrErrors['last_name'] = "Le champs 'prénom' est obligatoire";
                 }
                 if($strImage == ""){
                     $arrErrors['fichier'] = "Le champs 'image' est obligatoire";
                 }
         
-
-
                 // Vérification du fichier
                 // check if file is exist
-                    
                 $arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
                 if ($arrFichier['error'] == 4){
                     $arrErrors['fichier'] = "Le image est obligatoire";
@@ -68,10 +62,11 @@
                     if($arrFichier['error'] != 0){
                         $arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
                     }elseif($arrFichier['type'] != 'image/jpeg'){
-                        $arrErrors['fichier'] = "Le fichier doit être au format jpg";}	
-                    elseif ($arrFichier['size'] > 5 * 1024 * 1024) {
-                        $arrErrors['fichier'] = "Le fichier ne doit pas dépasser 5Mo";
+                        $arrErrors['fichier'] = "Le fichier doit être au format jpg";
+                    } elseif (($arrFichier['size'] > 1024*1024) ) {
+                        $arrErrors['fichier'] = "Le fichier ne doit pas dépasser 1Mo";
                     }
+                    
                 }
 
                 if (!isset($arrErrors['fichier'])){
@@ -86,13 +81,10 @@
                     }
                 }
 
-
                 // Si aucune erreur, traitement 	
                 if (count($arrErrors) === 0){
-
                     // => Formulaire OK
                     // Appel une métgid dans le modéle, avec en paramétre l'objet
-                    var_dump($objActorEntity);
                     $boolOK = $objActorModel->addActor($objActorEntity);
 
                     //Informer l'utilisateur si einsertion ok/pas ok
@@ -102,11 +94,13 @@
                         $arrErrors[]="l'insertion s'est mal passée";
                     }
                     header( "Location:future_index.php?ctrl=movie&action=form_movie", true);
-                    // => exemple Insertion en BDD
                 }
             }
-            $this->_arrData['arrErrors']  =   $arrErrors;
+            $this->_arrData['arrErrors'] = $arrErrors;
+            $this->_arrData['strName']   = $strName ;
+            $this->_arrData['strPrenom'] = $strPrenom;
+            $this->_arrData['strImage']  = $strImage;
+
             $this->display("form_actor");
         }
-        
     }
