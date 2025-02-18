@@ -457,6 +457,7 @@
                      // Redirection sur la même page pour vider le $_POST
                      $strUrl = $_SERVER['QUERY_STRING'];
                      header("Location:future_index.php?".$strUrl);
+                     exit;
 
                   } else {
                      // Erreur lors de l'insertion du commentaire seul

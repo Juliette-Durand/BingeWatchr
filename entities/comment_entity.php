@@ -1,4 +1,4 @@
-<?php 
+   <?php 
     /**
 	* Classe d'un comment
 	* @author Arlind Halimi et Juliette Durand
@@ -17,7 +17,8 @@
         private $_date;
         private $_user_id;
         private $_movie_id;
-        private $_state;
+        private string $_movie_name;
+        private string $_state;
 
         /**
 		* Récupération du titre de comment
@@ -108,5 +109,20 @@
 		*/
         public function setState(string $strState){
             $this->_state = $strState;
+        }
+
+        /**
+		* Récupération du nom du film
+		* @return string _movie_id
+		*/
+        public function getMovie_name(){
+            return $this->_movie_name;
+        }
+        /**
+		* Mise à jour du nom du film
+		* @param string $strMovie_name nom du film
+		*/
+        public function setMovie_name(string $strMovie_name){
+            $this->_movie_name = $strMovie_name;
         }
     }

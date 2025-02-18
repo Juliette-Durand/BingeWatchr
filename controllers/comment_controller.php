@@ -2,30 +2,77 @@
     /**
      * Controleur enfant de MotherController pour la gestion des commentaires
      * @author Juliette Durand
-     * Créé le 17/02/2025 - Dernière modification le 17/02/2025 par Juliette Durand
+     * Créé le 17/02/2025 - Dernière modification le 18/02/2025 par Juliette Durand
      */
 
     require_once("mother_controller.php");
     
     class CommentCtrl extends MotherCtrl{
+
+        private object $_objCommentModel; /**< Object Comment utilisé dans tous les controllers, instancié en CommentModel et qui sert à l'exécution des requêtes */
+
         /**
          * Constructeur de la classe
          */
         public function __construct(){
             parent::__construct();
+            require_once("models/comment_model.php");
+            require_once("entities/comment_entity.php");
+
+            $this->_objCommentModel   =   new CommentModel();
         }
 
         /**
-         * Page d'erreur 403 - L'utilisateur n'a pas les droits pour accéder à cette page
+         * Page de gestion des commentaires - seuls les modérateurs et admin y ont accès
          */
         public function comment_manage(){
+            require_once("entities/user_entity.php");
+            require_once("models/user_model.php");
+            require_once("entities/picture_entity.php");
+            $objUserModel = new UserModel;
+
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =   "Gestion des commentaires";
             
             // Variables fonctionnelles
             $this->_arrData['refPage']  =   "comment_manage";
 
+            $arrComment = $this->_objCommentModel->findAllComments();
+            // var_dump($arrComment);
 
+            $arrCommentToDisplay = array();
+            foreach($arrComment as $arrDetComment){
+                // Commentaire et son contenu
+                $objComment = new CommentEntity;
+                $objComment->hydrate($arrDetComment);
+
+                // Utilisateur auteur du commentaire
+                $arrUser = $objUserModel->displayUser($objComment->getUser_id());
+                $objUser = new UserEntity;
+                $objUser->hydrate($arrUser);
+
+                // Photos associées au commentaire
+                $picturesComment = $this->_objCommentModel->findPictures($objComment->getId());
+                // var_dump($picturesComment);
+
+                // Vérifie si des photos sont associées au commentaire
+                if($picturesComment !== false){
+                    foreach($picturesComment as $picDet){
+                        $objPicture = new PictureEntity;
+                        $objPicture->hydrate($picDet);
+                        $arrPictures[] = $objPicture;
+                    }
+                    $arrCommentToDisplay[$objComment->getId()]['picture']   =   $arrPictures;
+                }
+
+                $arrCommentToDisplay[$objComment->getId()]['comment']   =   $objComment;
+                $arrCommentToDisplay[$objComment->getId()]['user']      =   $objUser;
+            }
+
+            // Donne les variables à la vue
+            $this->_arrData['arrComment'] = $arrCommentToDisplay;
+
+            // AFfichage de la vue
             $this->display('comment_manage');
         }
     }

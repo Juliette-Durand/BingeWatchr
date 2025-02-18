@@ -174,12 +174,12 @@
 
                 $boolPwd = false;
                 if ($strOldPwd != ""){
-                    if ($strOldPwd != $objUser->getPassword()){
+                    if (!password_verify($strOldPwd, $objUser->getPassword())){
                         // Vérifie que le mot de passe renseigné correspond à celui en bdd
                         $arrErrors['old_pwd']  =   "Le mot de passe renseigné ne correspond pas au mot de passe actuel";
                     } else {
                         $boolPwd = true;
-                        if ($objUser->getPassword() != ""){
+                        if ($strNewPwd != ""){
                             // Vérifie que le mot de passe contient au moins 8 caractères
                             if (strlen($strNewPwd)<8){
                                 $arrErrors['new_pwd'][]= "au minimum 8 caractères";

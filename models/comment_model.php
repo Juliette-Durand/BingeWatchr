@@ -140,4 +140,72 @@
             }
             return true;
         }
+
+        /**
+         * Récupération du tableau de photos associées à un commentaire
+         * @return array|bool Tableau des photos, sinon false
+         */
+        public function findPictures(int $intComment):array|bool{
+            $strQuery   = " SELECT pic_file
+                            FROM picture
+                            WHERE pic_comment_id = ".$intComment.";";
+
+            /* Récupération du tableau des photos associées au commentaire */
+            $arrPictures = $this->_db->query($strQuery)->fetchAll();
+
+            if(count($arrPictures)>0){
+                return $arrPictures;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * Récupération du tableau de photos associées à un commentaire
+         * @return bool True pour publié/dépublié, false si erreur
+         */
+        public function publishComment(bool $boolPublish):bool{
+
+            // Variable contenant la valeur à modifier en BDD (P pour Published - U pour Unpublished)
+            if($boolPublish === true){
+                $strStatement = "P";
+            } else {
+                $strStatement = "U";
+            }
+
+            // Requête
+            try{
+                $strQuery   = " UPDATE comment
+                                SET comm_state = :state
+                                WHERE comm_id = :id;";
+                
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":state", $strStatement, PDO::PARAM_STR);
+                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+
+                $prep->execute();
+
+            } catch (PDOException $e){
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Récupération du tableau de tous les commentaires
+         * @return array tableau commentaires
+         */
+        public function findAllComments():array{
+
+            $strQuery   = " SELECT comm_id, comm_title, comm_content, comm_state, comm_date, movie_name, user_id
+                            FROM comment
+                                INNER JOIN movie ON comm_movie_id = movie_id
+                                INNER JOIN user ON comm_user_id = user_id
+                            ORDER BY comm_state DESC, comm_date DESC;";
+
+            /* Récupération du tableau des photos associées au commentaire */
+            $arrComments = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrComments;
+        }
     }
