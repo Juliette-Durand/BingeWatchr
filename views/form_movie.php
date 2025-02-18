@@ -19,7 +19,7 @@
 				<?php } ?>
 				<div class="row pt-5"> 
 					<div class="col-4">
-						<label>Image * : <small class="secondPlan"> (5Mo max)</small></label>
+						<label>Image * : <small class="secondPlan"> (1Mo max)</small></label>
 						<input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php echo($strPhoto) ?>" name="fichier" type="file">
 					</div>
 					<div class="col-8">

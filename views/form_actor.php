@@ -18,7 +18,7 @@
         <input  class="form-control <?php echo (isset($arrErrors['first_name']))?'is-invalid':'';  ?>" type="text" id="first_name" name="first_name" value="<?php echo($strName); ?>">
         <label> Prénom d'actor : *</label>
         <input  class="form-control <?php echo (isset($arrErrors['last_name']))?'is-invalid':'';  ?>" type="text" name="last_name" id="last_name" value="<?php echo($strPrenom); ?>">
-        <label>Actor Image * : <small class="secondPlan"> (5Mo max)</small></label>
+        <label>Actor Image * : <small class="secondPlan"> (1Mo max)</small></label>
         <input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php echo($strImage) ?>" name="fichier" type="file" >
         <div class="col-5">
 	    	<input class="col-3 form-control  my-3  btn btn-primary" type="submit"  value="Soumettre cet acteur">	
