@@ -21,6 +21,11 @@
 		}
       
         /**
+         * declare en prive variable name
+         */
+        //private $_name;
+
+        /**
          * Class have the name on Category_entity and on Movie_entity
          * Can we use like this or to add in Mother_Entity
          */

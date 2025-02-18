@@ -78,14 +78,14 @@
 		* @return string date de entre de la BDD
 		*/
         public function getCreation_date(){
-            return $this->_creation_date;
+            return $this->_create_date;
         }
         /**
 		* Mise à jour du date de entre de la BDD
 		* @param string $strCreateDate
 		*/
         public function setCreation_date(string $strCreateDate){
-            $this->_creation_date = $strCreateDate;
+            $this->_create_date = $strCreateDate;
         }
 
 
