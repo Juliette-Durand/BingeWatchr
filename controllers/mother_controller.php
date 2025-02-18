@@ -47,9 +47,11 @@
 
             // Donner le tableau des erreurs (construit dans les controllers) au template
 			$objSmarty->assign("arrErrors", $this->_arrErrors);
-			$objSmarty->assign("strSuccess", $this->_strSuccess);
+            $objSmarty->assign("strSuccess", $_SESSION['success']??$this->_strSuccess);
 
             if($boolDisplay) {
+
+                unset($_SESSION['success']);
                 $objSmarty->display("views/".$strView.".tpl");
             } else {
                 return $objSmarty->fetch("views/".$strView.".tpl");

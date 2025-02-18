@@ -33,7 +33,7 @@
             $strImage   = $_FILES['fichier']['name']??"";
             $strImage   = strtolower($strImage);
 
-            $arrErrors = array();
+            // $arrErrors = array();
               // Rederige si l'utilisateur n'est pas conecte
             if( !isset($_SESSION['user']) ){
                 header("Location:future_index.php?ctrl=user&action=login");
@@ -44,32 +44,32 @@
                 $objActorEntity->hydrate($_POST);
                 $objActorEntity->setPicture($strImage);
                 if($strName == ""){
-                    $arrErrors['first_name'] = "Le champs 'nom' est obligatoire";
+                    $this->_arrErrors['first_name'] = "Le champs 'nom' est obligatoire";
                 }
                 if($strPrenom == ""){
-                    $arrErrors['last_name'] = "Le champs 'prénom' est obligatoire";
+                    $this->_arrErrors['last_name'] = "Le champs 'prénom' est obligatoire";
                 }
                 if($strImage == ""){
-                    $arrErrors['fichier'] = "Le champs 'image' est obligatoire";
+                    $this->_arrErrors['fichier'] = "Le champs 'image' est obligatoire";
                 }
         
                 // Vérification du fichier
                 // check if file is exist
                 $arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
                 if ($arrFichier['error'] == 4){
-                    $arrErrors['fichier'] = "Le image est obligatoire";
+                    $this->_arrErrors['fichier'] = "Le image est obligatoire";
                 }else{
                     if($arrFichier['error'] != 0){
-                        $arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
+                        $this->_arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
                     }elseif($arrFichier['type'] != 'image/jpeg'){
-                        $arrErrors['fichier'] = "Le fichier doit être au format jpg";
+                        $this->_arrErrors['fichier'] = "Le fichier doit être au format jpg";
                     } elseif (($arrFichier['size'] > 1024*1024) ) {
-                        $arrErrors['fichier'] = "Le fichier ne doit pas dépasser 1Mo";
+                        $this->_arrErrors['fichier'] = "Le fichier ne doit pas dépasser 1Mo";
                     }
                     
                 }
 
-                if (!isset($arrErrors['fichier'])){
+                if (!isset($this->_arrErrors['fichier'])){
                     // Fichier temporaire = source
                     $strSource = $_FILES['fichier']['tmp_name'];
                     // destination de fichier
@@ -77,26 +77,28 @@
                     $strDest	= "assets\img\actor\ ".$strImage;
                     // On déplace le fichier
                     if (!move_uploaded_file($strSource, $strDest)){
-                        $arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
+                        $this->_arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
                     }
                 }
 
                 // Si aucune erreur, traitement 	
-                if (count($arrErrors) === 0){
+                if (count($this->_arrErrors) === 0){
                     // => Formulaire OK
                     // Appel une métgid dans le modéle, avec en paramétre l'objet
                     $boolOK = $objActorModel->addActor($objActorEntity);
 
                     //Informer l'utilisateur si einsertion ok/pas ok
                     if($boolOK){
-                        //var_dump('ok');
+                        $_SESSION['success'] 	= "L'insertion est passée avac succes.";
+                        header( "Location:index.php", true);
+                        exit();
                     }else{
-                        $arrErrors[]="l'insertion s'est mal passée";
+                        $this->_arrErrors[]="l'insertion s'est mal passée";
                     }
                     header( "Location:future_index.php?ctrl=movie&action=form_movie", true);
                 }
             }
-            $this->_arrData['arrErrors'] = $arrErrors;
+            // $this->_arrData['arrErrors'] = $arrErrors;
             $this->_arrData['strName']   = $strName ;
             $this->_arrData['strPrenom'] = $strPrenom;
             $this->_arrData['strImage']  = $strImage;

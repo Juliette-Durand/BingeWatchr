@@ -131,9 +131,9 @@
          // Instanciation
          $objMovie		      = new MovieModel();
          $objMovieEntity	   = new MovieEntity();
-         $objActorEntity      = new ActorEntity();
+         //$objActorEntity      = new ActorEntity();
          $objActorModel 	   = new ActorModel();
-         $objCategoryEntity   = new CategoryEntity();
+         
             
          // selectionner les acteurs et les categories
          $arrActor      = $objActorModel->NameSurnameActors();
@@ -151,8 +151,24 @@
          $idActor 		= $_POST["actor"]??"";
          $idCategory    = $_POST['category'] ?? "";
 
+         $arrCategoryToDisplay = array();
+         foreach ($arrCategory as $arrDetCategory) {
+            $objCategoryEntity   = new CategoryEntity();
+            $objCategoryEntity->hydrate($arrDetCategory);
+            $arrCategoryToDisplay[] = $objCategoryEntity;
+         }
+         $this->_arrData['arrCategory'] = $arrCategoryToDisplay;
+
+         $arrActorToDisplay = array();
+         foreach ($arrActor as $arrDetActor) {
+            $objActorEntity   = new ActorEntity();
+            $objActorEntity->hydrate($arrDetActor);
+            $arrActorToDisplay[] = $objActorEntity;
+            }
+         $this->_arrData['arrActor'] = $arrActorToDisplay;
+
+
          // Initialisation du tableau vide
-         $arrErrors = array();
          // Rederige si l'utilisateur n'est pas conecte
          if( !isset($_SESSION['user']) ){
             header("Location:future_index.php?ctrl=user&action=login");
@@ -162,37 +178,37 @@
             $objMovieEntity->hydrate($_POST);
             // Vérification du formulaire
             if($strTitleForm == ""){
-               $arrErrors['name'] = "Title est obligatoire";
+               $this->_arrErrors['name'] = "Le titre est obligatoire";
             }
             if($strDate == "" ){
-               $arrErrors['release'] = "Le date est obligatoire";
+               $this->_arrErrors['release'] = "Le date est obligatoire";
             }
             if($idActor == "" || $idActor == 0){
-               $arrErrors['actor'] = "Le nom de l'acteur est obligatoire";
+               $this->_arrErrors['actor'] = "Le nom de l'acteur est obligatoire";
             }
             if ($idCategory == "" || $idCategory == 0){
-               $arrErrors['category'] = "La zone de  category est obligatoire";
+               $this->_arrErrors['category'] = "La zone de  category est obligatoire";
             }
             if ($strSynopsis == ""){
-               $arrErrors['desc'] = "La zone de texte synopsis est obligatoire";
+               $this->_arrErrors['desc'] = "La zone de texte synopsis est obligatoire";
             }
             
             // Vérification du fichier
             // check si file existe                 
             $arrFichier = $_FILES['fichier']; // Récupération du tableau de l'élément 'fichier'
             if ($arrFichier['error'] == 4){
-               $arrErrors['fichier'] = "Le image est obligatoire";
+               $this->_arrErrors['fichier'] = "Le image est obligatoire";
             }else{
                if($arrFichier['error'] != 0){
-                  $arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
+                  $this->_arrErrors['fichier'] = "Le fichier a rencontré un problème lors de l'upload";
                }elseif($arrFichier['type'] != 'image/jpeg'){
-                  $arrErrors['fichier'] = "Le fichier doit être au format jpg";}	
+                  $this->_arrErrors['fichier'] = "Le fichier doit être au format jpg";}	
                elseif ($arrFichier['size'] > 1024 * 1024) {
-                  $arrErrors['fichier'] = "Le fichier ne doit pas dépasser 1Mo";
+                  $this->_arrErrors['fichier'] = "Le fichier ne doit pas dépasser 1Mo";
                }
             }
                   
-            if (!isset($arrErrors['fichier'])){
+            if (!isset($this->_arrErrors['fichier'])){
                   // Fichier temporaire = source
                $strSource = $_FILES['fichier']['tmp_name'];
                // destination de fichier
@@ -203,14 +219,14 @@
                $strDest	= "assets/img/movies/movie_posters/".$strFileName;
                // On déplace le fichier
                if (!move_uploaded_file($strSource, $strDest)){
-                  $arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
+                  $this->_arrErrors['fichier'] = "Le fichier ne s'est pas correctement téléchargé";
                }
                $objMovieEntity->setPoster($strFileName);
             }
             
 
             // Si aucune erreur, traitement 	
-            if (count($arrErrors) === 0){
+            if (count($this->_arrErrors) === 0){
                // => Formulaire OK
                // Appel une métgid dans le modéle, avec en paramétre l'objet
                $boolOK = $objMovie->addMovie($objMovieEntity);
@@ -221,9 +237,10 @@
                //Informer l'utilisateur si einsertion ok/pas ok
                if($boolOK){
                   $_SESSION['success'] 	= "L'insertion est passée avac succes.";
-                  header( "Location:future_index.php", true);
+                  header( "Location:index.php", true);
+                  exit();
                }else{
-                  $arrErrors[]="L'insertion s'est mal passée";
+                  $this->_arrErrors[]="L'insertion s'est mal passée";
                }
             }
          }
@@ -234,16 +251,13 @@
          $this->_arrData['strMovieDisplay']  = $strMovieDisplay;
          $this->_arrData['strDuration']      = $strDuration;
          $this->_arrData["idActor"]          = $idActor;
-         $this->_arrData["arrActor"]         = $arrActor ;
          $this->_arrData["strSynopsis"]      = $strSynopsis ;
          $this->_arrData["strTitleForm"]     = $strTitleForm ;
          $this->_arrData["idCategory"]       = $idCategory;
-         $this->_arrData["arrCategory"]      = $arrCategory;
-         $this->_arrData['arrErrors']        = $arrErrors;
          $this->_arrData["objActorEntity"]   = $objActorEntity ;
          $this->_arrData["objActorModel"]    = $objActorModel ;
          $this->_arrData["objMovie"]         = $objMovie;
-         $this->_arrData["objCategoryEntity"] = $objCategoryEntity;
+      
             
             
          // est une méthode qui appelle une view nommée "form_movie" 
@@ -292,7 +306,7 @@
          if($strId == ""){
             // L'id est vide
             header("Location:future_index.php?ctrl=error&action=error404");
-         }elseif($objMovieModel->findMovie($strId) === false){
+         }elseif($this->_objMovieModel->findMovie($strId) === false){
             // L'id est vide
             header("Location:future_index.php?ctrl=error&action=error404");
          }
@@ -330,7 +344,7 @@
          // }
          // -- Fin fonction commentaires Arlind
          
-         $objMovieEntity->hydrate($arrMovieEntity);
+         $objMovie->hydrate($arrMovieEntity);
    
          
 
@@ -475,7 +489,7 @@
          
 
          $this->_arrData['objMovie']         = $arrMovieEntity;
-         $this->_arrData['objMovie']         = $objMovieEntity;
+         $this->_arrData['objMovie']         = $objMovie;
          $this->_arrData['idMovie']          = $idMovie;
          $this->_arrData['strTitleCom']      = $strTitleCom;
          $this->_arrData['strContentCom']    = $strContentCom;
