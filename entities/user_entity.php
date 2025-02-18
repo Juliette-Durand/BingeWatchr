@@ -12,13 +12,13 @@
 		* Initialisation des attributs
 		*/
 		protected mixed $_id = '';
-		private string $_last_name;
-		private string $_first_name;
-		private string $_mail;
+		private string $_last_name = '';
+		private string $_first_name = '';
+		private string $_mail = '';
 		private string $_password;
 		private string $_create_date;
 		private string $_avatar;
-		private string $_bio;
+		private string $_bio = '';
 		private string $_role;
 		
 		/**
@@ -41,7 +41,7 @@
 		* Mise à jour de l'id
 		*/
 		public function setId(int|string $mixId) {
-			$this->_id = $mixId;
+			$this->_id = trim($mixId);
 		}
 		
 		/**
@@ -55,7 +55,7 @@
 		* Mise à jour du nom
 		*/
 		public function setLast_name(string $strName){
-			$this->_last_name = $strName;
+			$this->_last_name = ucfirst(strtolower(trim($strName)));
 		}
 		
 		/**
@@ -69,7 +69,7 @@
 		* Mise à jour du prénom
 		*/
 		public function setFirst_name(string $strFirstName){
-			$this->_first_name = $strFirstName;
+			$this->_first_name = ucfirst(strtolower(trim($strFirstName)));
 		}
 		
 		/**
@@ -92,7 +92,7 @@
 		* Mise à jour de l'email
 		*/
 		public function setMail(string $strMail){
-			$this->_mail = $strMail;
+			$this->_mail = strtolower(trim($strMail));
 		}
 		
 		/**
@@ -107,6 +107,14 @@
 		*/
 		public function setPassword(string $strPwd){
 			$this->_password = $strPwd;
+		}
+
+		/**
+		* Récupération du mot de passe haché
+		* @return string mot de passe haché
+		*/
+		public function getPwdHash(){
+			return password_hash($this->getPassword(), PASSWORD_DEFAULT);
 		}
 		
 		/**

@@ -18,7 +18,7 @@
         private string $_name;
         private string $_desc;
         private string $_release;
-        private string $_create_date;
+        private string $_creation_date;
         private string $_poster;
         private $_pegi;
         private $_display;

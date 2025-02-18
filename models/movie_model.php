@@ -16,12 +16,14 @@
     class MovieModel extends MotherModel{
 
         // Attributs pour la recherche
+
         public string   $strKeyword     = ""; /**< Variable pour la recherche par mots-clés initialisée à chaîne de caractères vide si ce n'est pas renseigné */
         public string 	$strStartDate 	= ""; /**< Variable pour la recherche par date de début initialisée à chaîne de caractères vide si ce n'est pas renseigné */
 		public string 	$strEndDate 	= ""; /**< Variable pour la recherche par date de fin initialisée à chaîne de caractères vide si ce n'est pas renseigné */
         public int      $intStartTime   = 0; /**< Variable pour la recherche par durée du film (debut) initialisée à 0 si ce n'est pas renseigné */
         public int      $intEndTime     = 0; /**< Variable pour la recherche par durée du film (fin) initialisée à 0 si ce n'est pas renseigné */
         public array    $arrCategory    = []; /**< Variable pour le tableau des catégories initialisée à tableau vide */
+        public int 	    $intCategory = 0;
 
         /**
         * Constructeur de la classe
@@ -51,7 +53,7 @@
          *  Requête pour trouve un film specifique avec id
          * @return array $arrOneMovie Tableau des movies de la bdd
          */
-        public function findMovie(int $intId) : array {
+        public function findMovie(int $intId) : array|false {
             $strQueryOneMovie = "SELECT movie.* 
                                 FROM movie
                                 WHERE movie_id = ".$intId."
@@ -124,7 +126,7 @@
          * Public function addMovie (string $strTitle, string $strTitle, string $strDate, string $strPhoto, string $strDuration)
          * @return boole
          */
-        public function addMovie($objMovieEntity){
+        public function addMovie($objMovieEntity) : bool{
             try{
                 $strQuery = "INSERT INTO movie 
                     (movie_name, movie_desc, movie_release, movie_creation_date, movie_poster, movie_pegi, movie_display, movie_duration)
@@ -150,19 +152,19 @@
         *   Public function playActor ()
         * @return boole
         */
-        public function playActor($intActor){
+        
+        public function playActor($intActor) : bool{
             try{
                 $strQuery = "INSERT INTO 
                     play (play_actor_id, play_movie_id) 
                     VALUES (:play_actor_id, :play_movie_id)"; 
 
                 $lastMovieId = $this->_db->lastInsertId();  // prend le dernier ID de movie
-                //$intActor = $_POST['actor'];                // prendre l'ID de l'acteur de $_POST['actor']
-
+               
                 $prep = $this->_db->prepare($strQuery); 
         
-                $prep->bindValue(":play_actor_id",    $intActor, PDO::PARAM_STR);
-                $prep->bindValue(":play_movie_id",    $lastMovieId, PDO::PARAM_STR);
+                $prep->bindValue(":play_actor_id",    $intActor, PDO::PARAM_INT);
+                $prep->bindValue(":play_movie_id",    $lastMovieId, PDO::PARAM_INT);
 
                 $prep->execute();
             }catch(PDOExeption $e){
@@ -172,7 +174,48 @@
         }
 
         /**
+         * Function pour select id de category
+         * @return int 
+        */
+        public function infoCategory(){
+            $strQuery      = "SELECT cat_id, cat_name 
+                                FROM category;";
+
+            $arrActors = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrActors;
+        }
+        
+        /**
+        *   Public function categoryMovie ()
+        * @return boole
+        */
+        public function categoryMovie($idCategory) : bool{
+            try{
+                $strQuery = "INSERT INTO 
+                
+                    belong (bel_cat_id, bel_movie_id) /* id de category et dernier id de movie */
+                    VALUES (:bel_cat_id, :bel_movie_id)"; 
+        
+                $lastMovieId = $this->_db->query("SELECT MAX(movie_id) AS last_movie_id FROM movie")->fetchColumn(); // prend le dernier ID de movie
+                //$lastMovieId = $this->_db->lastInsertId();  
+        
+                $prep = $this->_db->prepare($strQuery); 
+                
+                $prep->bindValue(":bel_cat_id",     $idCategory, PDO::PARAM_INT);
+                $prep->bindValue(":bel_movie_id",   $lastMovieId, PDO::PARAM_INT);
+        
+                $prep->execute();
+            }catch(PDOExeption $e){
+                return false;
+            }
+            return true;
+        }
+
+
+        /**
          * Function pour edit movie
+         * OPTIONEL
          */
         public function editMovie(){
             /* $strQuery = "UPDATE movie

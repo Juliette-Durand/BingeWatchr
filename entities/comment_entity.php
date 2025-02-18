@@ -1,8 +1,8 @@
 <?php 
     /**
 	* Classe d'un comment
-	* @author Arlind Halimi
-    * date : 07/02/2025
+	* @author Arlind Halimi et Juliette Durand
+    * date : 07/02/2025 - Dernière modification le 12/02/2025 par Juliette
 	*/
     require_once('mother_entity.php');
     class CommentEntity extends MotherEntity {
@@ -17,6 +17,7 @@
         private $_date;
         private $_user_id;
         private $_movie_id;
+        private $_state;
 
         /**
 		* Récupération du titre de comment
@@ -30,7 +31,7 @@
 		* @param string $strTitle titre de comment
 		*/
         public function setTitle(string $strTitle){
-            $this->_title = $strTitle;
+            $this->_title = trim($strTitle);
         }
 
         /**
@@ -45,7 +46,7 @@
 		* @param string $strComment content de comment
 		*/
         public function setContent(string $strComment){
-            $this->_content = $strComment;
+            $this->_content = trim($strComment);
         }
 
         /**
@@ -92,5 +93,20 @@
 		*/
         public function setMovie_id(string $strMovie_id){
             $this->_movie_id = $strMovie_id;
+        }
+
+        /**
+		* Récupération de l'état du commentaire (publié ou non)
+		* @return string _state
+		*/
+        public function getState(){
+            return $this->_state;
+        }
+        /**
+		* Mise à jour de l'état du commentaire (publié ou non)
+		* @param string $strState
+		*/
+        public function setState(string $strState){
+            $this->_state = $strState;
         }
     }

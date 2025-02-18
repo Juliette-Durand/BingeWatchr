@@ -14,8 +14,10 @@
 		*/
 		public function __construct(){
 			parent::__construct();
+
             $this->_prefixe = 'cat';
 			$this->_id;
+
 		}
       
         /**
