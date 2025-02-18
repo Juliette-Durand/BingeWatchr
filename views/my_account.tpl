@@ -9,38 +9,38 @@
 ?>	
 	<section id="my_account">
 		<div class="container mb-5">
-			<h1><?php echo($strTitle); ?></h1>
+			<h1>{$strTitle}</h1>
 		</div>
 		
         <div class="container">
-			<?php if (isset($this->_arrData['boolChange'])){
-				// Vérifie la présence de la variable contenant le résultat de la requête PDO
-				if ($this->_arrData['boolChange'] === true){
-					// Si la requête s'est bien déroulée -> affichage d'une alerte de succès ?>
+			{if $this->_arrData['boolChange']|isset}
+				{* Vérifie la présence de la variable contenant le résultat de la requête PDO *}
+				{if $this->_arrData['boolChange'] === true}
+					{* Si la requête s'est bien déroulée -> affichage d'une alerte de succès *}
 					<div class="alert alert-success">
 						Les modifications ont bien été prises en compte
 					</div>
-				<?php } else {
-					// Si une erreur est retournée -> affichage d'une alerte d'erreur ?>
+				{else}
+					{* Si une erreur est retournée -> affichage d'une alerte d'erreur *}
 					<div class="alert alert-danger">
 						Erreur lors de la prise en compte des modifications
 					</div>
-				<?php }
-			} ?>
+				{/if}
+			{/if}
 
 			<form method="POST" class="row" enctype="multipart/form-data" id="my_account_form">
                 <div class="col-5 d-flex flex-column align-items-center">
                     <div class="picture_container mb-4">
-                        <img class="profile_pic" src="assets/img/users/profile_pictures/<?php echo($objUser->getAvatar()); ?>" alt="">
+                        <img class="profile_pic" src="assets/img/users/profile_pictures/{$objUser->getAvatar()}" alt="">
                     </div>
-					<h2 class="mb-5"><?php echo($objUser->getId()); ?></h2>
+					<h2 class="mb-5">{$objUser->getId()}</h2>
 
 					<!-- Affichage de l'erreur si le fichier importé ne respecte pas les critères -->
-					<?php if (isset($arrErrors['avatar'])) { ?>
+					{if $arrErrors['avatar']|isset}
 						<div class="alert alert-danger">
-							<?php echo($arrErrors['avatar']) ?>
+							{$arrErrors['avatar']}
 						</div>
-					<?php } ?>
+					{/if}
 					<!-- Champ d'import de l'avatar -->
 					<div id="my_account_file">
 						<input type="file" name="avatar" id="avatar" >
@@ -51,55 +51,55 @@
 				<div class="col-7">        
                     <div>
                         <label for="first_name">Prénom</label>
-                        <input type="text" name="first_name" id="first_name" value="<?php echo($objUser->getFirst_name()); ?>">
+                        <input type="text" name="first_name" id="first_name" value="{$objUser->getFirst_name()}">
 						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="last_name">Nom</label>
-                        <input type="text" name="last_name" id="last_name" value="<?php echo($objUser->getLast_name()); ?>">
+                        <input type="text" name="last_name" id="last_name" value="{$objUser->getLast_name()}">
 						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
 						<!-- Affichage de l'erreur si l'adresse email ne respecte pas les critères -->
-						<?php if (isset($arrErrors['email'])) { ?>
+						{if $arrErrors['email']|isset}
 							<div class="alert alert-danger">
-								<?php echo($arrErrors['email']) ?>
+								{$arrErrors['email']}
 							</div>
-						<?php } ?>
+						{/if}
                         <label for="mail">Email</label>
-                        <input type="email" name="mail" id="mail" value="<?php echo($objUser->getMail()); ?>">
+                        <input type="email" name="mail" id="mail" value="{$objUser->getMail()}">
 						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="bio">Bio</label>
-                        <textarea name="bio" id="bio" rows="4"><?php echo($objUser->getBio()); ?></textarea>
+                        <textarea name="bio" id="bio" rows="4">{$objUser->getBio()}</textarea>
 						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
 					
 					<div>
-						<?php if (isset($arrErrors['old_pwd'])){ ?>
+						{if $arrErrors['old_pwd']|isset}
 							<div class="alert alert-danger">
-								<?php echo($arrErrors['old_pwd']) ?>
+								{$arrErrors['old_pwd']}
 							</div>
-						<?php } ?>
-						<?php if (isset($arrErrors['new_pwd'])){ ?>
+						{/if}
+						{if $arrErrors['new_pwd']|isset}
 							<div class="alert alert-danger">
 								<ul>
 								Le mot de passe renseigné ne répond pas aux critères suivants :
-								<?php foreach ($arrErrors['new_pwd'] as $strError){ ?>
-									<li><?php echo($strError); ?></li>
-								<?php } ?>
+								{foreach $arrErrors['new_pwd'] as $strError}
+									<li>{$strError}</li>
+								{/foreach}
 								</ul>
 							</div>
-						<?php } ?>
-						<?php if (isset($arrErrors['conf_pwd'])){ ?>
+						{/if}
+						{if $arrErrors['conf_pwd']|isset}
 							<div class="alert alert-danger">
-								<?php echo($arrErrors['conf_pwd']) ?>
+								{$arrErrors['conf_pwd']}
 							</div>
-						<?php } ?>
+						{/if}
 						<div id="my_account_pwd">
 							<div>
 								<label for="old_pwd">Ancien mot de passe</label>
@@ -130,7 +130,7 @@
 				</div>
 			</form>
 			<div>
-				<a href="future_index.php?ctrl=user&action=delete_account&id=<?php echo($objUser->getId()); ?>" class="btn btn-danger mt-5">Supprimer le compte</a>
+				<a href="future_index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger mt-5">Supprimer le compte</a>
 			</div>
         </div>
 	</section>
