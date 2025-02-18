@@ -28,7 +28,7 @@
 
         <div class="row">
             <span>Vous ne trouvez pas le film que vous cherchez ?</span>
-            <a href="form_movie.php"><button type="button" class="btn btn-primary btn-sm">Ajoutez le ici</button></a>
+            <a href="index.php?ctrl=movie&action=form_movie"><button type="button" class="btn btn-primary btn-sm">Ajoutez le ici</button></a>
         </div>
     </div>
     {/block}

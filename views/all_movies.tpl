@@ -69,7 +69,7 @@
     
 
     <div class="container">
-    {if (count($arrAdvMovie) > 0)}
+    {if count($arrAdvMovie) > 0}
             <div class="row">
                 <h2>Tous les films</h2>
                     {foreach $arrAdvMovie as $objMovie}

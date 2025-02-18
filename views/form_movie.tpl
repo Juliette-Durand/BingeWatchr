@@ -7,51 +7,49 @@
 	
 		<form action="" method="post" id="movie_form" enctype="multipart/form-data">
 			<div class="row g-5 py-3">
-				<?php if (count($arrErrors) > 0){ ?>
+				{if count($arrErrors) > 0}
 					<div class="alert alert-danger">
-						<?php foreach($arrErrors as $strError){ ?>
-							<p><?php echo $strError; ?></p>
-						<?php } ?>
+						{foreach $arrErrors as $strError}
+							<p>{$strError}</p>
+						{/foreach}
 					</div>
-				<?php } ?>
+				{/if}
 				<div class="row pt-5"> 
 					<div class="col-4">
 						<label>Image * : <small class="secondPlan"> (5Mo max)</small></label>
-						<input class="form-control <?php echo (isset($arrErrors['fichier']))?'is-invalid':'';  ?>" value="<?php echo($strPhoto) ?>" name="fichier" type="file">
+						<input class="form-control {if $arrErrors['fichier']|isset} is-invalid {/if}" value="{$strPhoto}" name="fichier" type="file">
 					</div>
 					<div class="col-8">
 						<div>
 							<label for="name">Titre *</label>
-							<input type="text" name="name" id="name" value="<?php echo($strTitleForm); ?>"  class="form-control <?php echo (isset($arrErrors['name']))?'is-invalid':''; ?>" >
+							<input type="text" name="name" id="name" value="{$strTitleForm}"  class="form-control { if $arrErrors['name']|isset} is-invalid {/if}" >
 						</div>
 						<div>
 							<label for="release">Date realise *</label>
-							<input type="date" name="release" id="release" class="form-control <?php echo (isset($arrErrors['release']))?'is-invalid':''; ?>" value="<?php echo($strDate); ?>">
+							<input type="date" name="release" id="release" class="form-control {if $arrErrors['release']|isset} is-invalid {/if}" value="{$strDate}">
 						</div>
 						<div>
 							<label for="display">Date mise a l'affiche</label>
-							<input type="date" name="display" id="display" class="form-control <?php echo (isset($arrErrors['date']))?'is-invalid':''; ?>" value="<?php echo($strMovieDisplay); ?>">
+							<input type="date" name="display" id="display" class="form-control {if $arrErrors['date']|isset} is-invalid {/if}" value="{$strMovieDisplay}">
 						</div>
 						<div>
 							<label for="duration">Duration</label>
-							<input type="time" name="duration" id="duration" class="form-control <?php echo (isset($arrErrors['duration']))?'is-invalid':''; ?>" value="<?php echo($strDuration); ?>">
+							<input type="time" name="duration" id="duration" class="form-control {if $arrErrors['duration']|isset} is-invalid {/if}" value="{$strDuration}">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-6">
 							<div>
 								<label for="actor">Actor</label>
-								<?php //var_dump($objActorModel->intActor) ;	?>
-								<select id="actor" name="actor" class="form-control  <?php echo (isset($arrErrors['actor']))?'is-invalid':''; ?>">
-									<option value="0" <?php echo(($objActorModel->intActor == 0)?"selected":"");?> >--</option>
-									<?php foreach ($arrActor as $arrDetActor) { 
-										$objActorEntity->hydrate($arrDetActor);
-									?> 
-									<option value="<?php echo($objActorEntity->getId()); //=> Utiliser le getter ?>" 
-											<?php echo (($objActorModel->intActor == $objActorEntity->getId())?"selected":"");?> >
-										<?php echo($objActorEntity->getFirst_name()." ". $objActorEntity->getLast_name()); ?> 
+								<select id="actor" name="actor" class="form-control  {if $arrErrors['actor']|isset} is-invalid {/if}">
+									<option value="0" {if ($objActorModel->intActor == 0)} selected {else} {/if}>--</option>
+									{foreach $arrActor as $arrDetActor} 
+										{$objActorEntity->hydrate($arrDetActor)}
+									<option value="{$objActorEntity->getId()}" 
+											{if ($objActorModel->intActor == $objActorEntity->getId())} selected {else} {/if}>
+										{$objActorEntity->getFirst_name()} {$objActorEntity->getLast_name()} 
 									</option>
-									<?php }	?>
+									{/foreach} 
 								</select>
 								
 								
@@ -69,11 +67,11 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label>Zone de texte synopsis*:</label>
-						<textarea name="desc" class="form-control <?php echo (isset($arrErrors['desc']))?'is-invalid':''; ?>" id="" value="<?php echo($strSynopsis) ?>"></textarea>
+						<textarea name="desc" class="form-control {if $arrErrors['desc']|isset} is-invalid {/if}" id="" value="{$strSynopsis}""></textarea>
 					</div>
 					<div class="col-md-6">
 						<label>Zone de texte Notes*:</label>
-						<textarea name="notes" class="form-control <?php echo (isset($arrErrors['notes']))?'is-invalid':''; ?>" id="" value="<?php echo($strNotes) ?>"></textarea>
+						<textarea name="notes" class="form-control {if $arrErrors['notes']|isset} is-invalid {/if}" id="" value="{$strNotes}""></textarea>
 					</div>
 				</div>
 				<div class="row mt-3">

@@ -33,7 +33,7 @@
 									</ul>
 								</li>
 							{/if}
-							{if (isset($_SESSION['user']))}
+							{if $_SESSION['user']|isset}
 									<li class="nav-item dropdown profile_picture">
 										<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 											<div class="pic_container"><img src="assets/img/users/profile_pictures/{$_SESSION['user']->getAvatar()}" alt=""></div>

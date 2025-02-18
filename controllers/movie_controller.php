@@ -276,30 +276,20 @@
           * 05/02/2025 par Arlind Halimi
           */
          public function page_dun_film(){
-            require_once("entities/movie_entity.php");
+
             require_once("entities/acteur_entity.php");
             require_once("entities/comment_entity.php");
-            require_once("models/movie_model.php");
             require_once("models/actor_model.php");
             require_once("models/comment_model.php");
-            
-            
-            // object pour Movie Model
-            $objMovieModel    = new MovieModel(); 
+
             $objMovie         = new MovieEntity(); 
             $objCommentModel  = new CommentModel();
-            $objCommentEntity = new CommentEntity();
-            $objMovieEntity   = new MovieEntity();
+            //$objCommentEntity = new CommentEntity();
 
             $objMovie->setId($_GET["id"]);
             $idMovie = $objMovie->getId();
-            $arrMovieEntity = $objMovieModel->findMovie($objMovie->getId());
+            $arrMovieEntity = $this->_objMovieModel->findMovie($objMovie->getId());
             $objMovie->hydrate($arrMovieEntity);
-         
-
-            // if (!$arrMovieEntity) {
-            //    die("Erreur: Aucun film trouvé avec cet ID !");
-            // }
       
             /* Ce qui sert de h1 et/ou de nom dans le titre de la page */
             $this->_arrData['strTitle'] =  "Page de une film";
@@ -309,70 +299,59 @@
             $arrErrors = array();
             $arrComments = array();
             $arrComments = $objCommentModel->allComments();
-            $strTitleCom = '';
-            $strContentCom = '';
+            $arrCommentToDisplay = array();
+            //$strTitleCom = '';
+            //$strContentCom = '';
             $strTitleCom   = $_POST['title']??"";
             $strContentCom = $_POST['content']??"";
-            if(count($_POST) > 0){
-               // var_dump('je suis la');
-               // var_dump($objCommentEntity->getId());
 
-               
-               // duhet ti shkuash me dor keto setMovie sepse nuk i hidraton $_POST
+            foreach ($arrComments as $arrDetComment) {
+               $objCommentEntity = new CommentEntity();  
+               $objCommentEntity->hydrate($arrDetComment);
+               $arrCommentToDisplay[] = $objCommentEntity;
+            } 
+            $this->_arrData['arrComments']	= $arrCommentToDisplay;
+            //$this->_arrData['objCommentEntity']	= $objCommentEntity;
+
+            // Transmission des variables dans la vue
+            $this->_arrData['objMovieModel']	= $this->_objMovieModel;
+
+            if(count($_POST) > 0){ 
+
                $objCommentEntity->hydrate($_POST);
                $objCommentEntity->setMovie_id($objMovie->getId());
                $objCommentEntity->setUser_id($_SESSION['user']->getId());
-               // var_dump($objCommentEntity);
                $strTitleCom   = $_POST['title']??"";
                $strContentCom = $_POST['content']??"";
 
-               
                if($strTitleCom == ""){
                   $arrErrors['title'] = "Le titre est obligatoire pour comment!";
                }
                if($strContentCom == ""){
                   $arrErrors['content'] = "Le contenu est obligatoire pour comment!";
                }
-               // var_dump($strComment);
-               // var_dump($strComment);
                if( $objCommentEntity->getContent()!='' && $objCommentEntity->getTitle()!='' ){
                   $objCommentModel->addComment($objCommentEntity);
                }
-               
             }
-            
-            
 
-            
-            $objMovieEntity->hydrate($arrMovieEntity);
+            //$objMovie->hydrate($arrMovieEntity);
             /**
-             *       ATTENTION SAMARCHE PAS
              * Vérifier si l'id du film est dans la base de données
              * Si non, rediriger vers une page d'erreur
              * Si oui, continuer
              */
             
-            if (!isset($_GET['id']) || !($objMovieModel->findMovie($_GET['id']) )){
+            if (!isset($_GET['id']) || !($this->_objMovieModel->findMovie($_GET['id']) )){
                header("Location:error_404.php");
             }
-            // var_dump($_GET['id']);
-            // var_dump($objMovieEntity->getId());
-            // var_dump("je suis la");
-            // var_dump($objMovieModel->findMovie($_GET['id']));
 
-            
-
-            // pour qua comme parameter entre $arrMovieEntity 
-            
-            //var_dump($objMovieEntity->getId());
-
-            $this->_arrData['objMovie']         = $arrMovieEntity;
-            $this->_arrData['objMovie']         = $objMovieEntity;
+            //$this->_arrData['objMovie']         = $arrMovieEntity;
+            $this->_arrData['objMovie']         = $objMovie;
             $this->_arrData['idMovie']          = $idMovie;
             $this->_arrData['strTitleCom']      = $strTitleCom;
             $this->_arrData['strContentCom']    = $strContentCom;
             $this->_arrData['arrErrors']        = $arrErrors;
-            $this->_arrData['arrComments']      = $arrComments;
             $this->_arrData['objCommentModel']  = $objCommentModel;
 
             $this->display('page_dun_film');

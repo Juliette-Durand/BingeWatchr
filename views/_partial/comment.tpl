@@ -9,7 +9,7 @@
 			<p class="mb-auto">{$objCommentEntity->getContent()}</p>			
 		</div>
 		<div class="col-auto d-none d-lg-block">
-			<img class="bd-placeholder-img mx-3" width="50" height="50" alt="User:  {$objCommentEntity->getUser_id()}" 
+			<img class="bd-placeholder-img mx-3" width="50" height="50" alt="User: {$objCommentEntity->getUser_id()}" 
 			src="assets/img/users/profile_pictures/{$objCommentModel->findAvatarUser($objCommentEntity->getUser_id())}">
 		</div>
 	</div>

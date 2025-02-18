@@ -1,5 +1,6 @@
 # Dossier docs
 docs/
 vendor/
+templates_c/
 composer.json
 composer.lock

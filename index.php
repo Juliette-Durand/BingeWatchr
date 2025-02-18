@@ -20,13 +20,35 @@
     $strController  = $_GET['ctrl']??"movie";
     $strAction      = $_GET['action']??"home";
 
+    $boolPb = false;
+
     // Appel du controleur
     require_once("controllers/mother_controller.php");
-    require_once("controllers/".$strController."_controller.php");
+    $strFile = "controllers/".$strController."_controller.php";
+    if (file_exists($strFile)) {
+        require_once($strFile);
+        // Construction du nom du controleur
+        $strCtrlName    = ucfirst($strController)."Ctrl";
+        if (class_exists($strCtrlName)) {
+            // Instanciation du controleur
+            $objController  = new $strCtrlName();
+            if (method_exists($objController, $strAction)) {
+                // Appel de la méthode
+                $objController->$strAction(); 
+            } else {
+                $boolPb = true;
+            }
+        } else {
+            $boolPb = true;
+        }
+    } else {
+        $boolPb = true;
+    }
 
-    // Construction du nom du controleur
-    $strCtrlName    = ucfirst($strController)."Ctrl";
-    // Instanciation du controleur
-    $objController  = new $strCtrlName();
-    // Appel de la méthode
-    $objController->$strAction(); 
+    if ($boolPb) {
+        header("Location:index.php?ctrl=error&action=error404");
+    }
+
+    
+    
+    

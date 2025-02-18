@@ -11,18 +11,16 @@
 									<!-- Partie droite -->
 									<div class="user_item_right d-flex align-items-center">
 										<span class="user_role">
-											<?php
-												switch($objUser->getRole()){
-													case "user":
-														echo("Watchr");
-														break;
-													case "modo":
-														echo("Modérateur");
-														break;
-													case "admin":
-														echo("Administrateur");
-														break;
-												}?>
+											{switch $objUser->getRole()}
+												{case "user"}
+													{"Watchr"}
+													{break}
+												{case "modo"}
+													{Modérateur"}
+													{break}
+												{case "admin"}
+													{Administrateur"}
+													{break}
 										</span>
 										<a class="btn btn-primary ms-2" data-bs-toggle="collapse" href="#collapse{$objUser->getId()}" role="button" aria-expanded="true" aria-controls="collapse{$objUser->getId()}">
 											Gérer l'utilisateur
