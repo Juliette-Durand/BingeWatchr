@@ -270,10 +270,6 @@
             $strKeyword =   $_POST['keyWord']??"";
             $this->_arrData['strKeyword'] =   trim($strKeyword);
 
-             // Recherche d'un utilisateur par son pseudo ou prénom ou nom
-             if((count($_POST)>0) && (isset($_POST['search']))){
-            }
-
             // Modification d'un rôle utilisateur
             if((count($_POST)>0) && (!isset($_POST['search']))){
                 $strUserId    =   $_POST['user']??"";
@@ -281,7 +277,7 @@
                 
                 // Vérifie que l'utilisateur en session a les droits de modifications
                 if($_SESSION['user']->getRole() != 'admin'){
-                    header("Location:future_index.php?ctrl=movie&action=home");
+                    header("Location:future_index.php?ctrl=error&action=error403");
                 } else {
                     $boolQuery = $this->_objUserModel->updateRole($strRole, $strUserId);
                 }

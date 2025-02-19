@@ -40,6 +40,30 @@
             $arrComment = $this->_objCommentModel->findAllComments();
             // var_dump($arrComment);
 
+            $intId = $_POST['id_comm']??0;
+            $strPublishState = $_POST['publish_state']??'Publier';
+
+            if(count($_POST)>0){
+                var_dump($_POST);
+
+                if($intId != 0){
+                    if($strPublishState == "Publier"){
+                        $strNewState = "P";
+                    } else {
+                        $strNewState = "U";
+                    }
+                    var_dump($strNewState);
+                    $boolPublish = $this->_objCommentModel->publishComment($intId, $strNewState);
+
+                    if($boolPublish === true){
+                        var_dump("success");
+                        header("Location:future_index.php?ctrl=comment&action=comment_manage");
+                        exit();
+                    }
+                }
+            }
+
+
             $arrCommentToDisplay = array();
             foreach($arrComment as $arrDetComment){
                 // Commentaire et son contenu
@@ -74,5 +98,32 @@
 
             // AFfichage de la vue
             $this->display('comment_manage');
+        }
+
+        public function delete_comment(){
+
+            // Récupérationd de l'id en URL
+            $intId = $_GET['id']??0;
+            // Récupération de la provenance de l'utilisateur (dernier url)
+            $strServReferer    =   $_SERVER['HTTP_REFERER']??"";
+            
+            // Vérifie que l'utilisateur est passé par la page de gestion des commentaires
+            if(str_contains($strServReferer,'action=comment_manage')){
+
+                // Suppression des photos associées au commentaire
+                $boolDelPic = $this->_objCommentModel->deletePictures($intId);
+                
+                // Si suppression des photos bien réalisée, suppression du commentaire
+                if($boolDelPic === true){
+                    $boolDelComm = $this->_objCommentModel->deleteComment($intId);
+
+                    // Succès de la suppression du commentaire, redirection vers la page de gestion des commentaires
+                    if($boolDelComm === true){
+                        header("Location:future_index.php?ctrl=comment&action=comment_manage");
+                        exit();
+                    }
+                }
+            }
+
         }
     }

@@ -29,7 +29,7 @@
                                     <div class="comment_item_left">
                                         <img src="assets/img/users/profile_pictures/<?php echo($objComment['user']->getAvatar()) ?>" alt=""/>
                                         <span class="user_title ms-2"><?php echo($objComment['user']->getFull_name()) ?></span>
-                                        <span class="infos_comm ms-2"><?php echo($objComment['comment']->getMovie_name()) ?> - <?php echo($objComment['comment']->getDate()) ?></span>
+                                        <span class="infos_comm ms-2"><?php echo($objComment['comment']->getMovie_name()) ?> - <?php echo($objComment['comment']->getDateFormat()) ?></span>
                                     </div>
     
                                     <!-- Partie droite -->
@@ -58,9 +58,9 @@
                                         </div>
                                         
                                         <form method="POST" class="form_right d-flex align-items-start">
-                                            <input type="hidden" name="id_comm" value="1">
-                                            <input type="submit" class="btn btn-secondary me-2" value="<?php echo($objComment['comment']->getState() == "U" ? "Publier" : "Dépublier") ?>">
-                                            <a href="future_index.php?ctrl=user&action=delete_account&id=" class="btn btn-danger">Supprimer</a>
+                                            <input type="hidden" name="id_comm" value="<?php echo($objComment['comment']->getId()) ?>">
+                                            <input type="submit" class="btn btn-secondary me-2" name="publish_state" value="<?php echo($objComment['comment']->getState() == "U" ? "Publier" : "Dépublier") ?>">
+                                            <a href="future_index.php?ctrl=comment&action=delete_comment&id=<?php echo($objComment['comment']->getId()) ?>" class="btn btn-danger">Supprimer</a>
                                         </form>
                                     </div>
                                     <?php if(isset($objComment['picture'])){ ?>

@@ -164,14 +164,7 @@
          * Récupération du tableau de photos associées à un commentaire
          * @return bool True pour publié/dépublié, false si erreur
          */
-        public function publishComment(bool $boolPublish):bool{
-
-            // Variable contenant la valeur à modifier en BDD (P pour Published - U pour Unpublished)
-            if($boolPublish === true){
-                $strStatement = "P";
-            } else {
-                $strStatement = "U";
-            }
+        public function publishComment(int $intComment, string $strStatement):bool{
 
             // Requête
             try{
@@ -207,5 +200,26 @@
             $arrComments = $this->_db->query($strQuery)->fetchAll();
 
             return $arrComments;
+        }
+
+        /**
+         * Suppression de toutes les photos liées à un commentaire
+         * @return bool résultat de la suppression
+         */
+        public function deletePictures(int $intComment):bool{
+            // Requête
+            try{
+                $strQuery   = " DELETE FROM picture
+                                WHERE pic_comment_id = :id;";
+                
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+
+                $prep->execute();
+
+            } catch (PDOException $e){
+                return false;
+            }
+            return true;
         }
     }

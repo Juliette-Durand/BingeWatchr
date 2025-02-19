@@ -57,14 +57,23 @@
         public function getDate(){
             return $this->_date;
         }
+
         /**
-		* Mise à jour date du content
-		* @param string $strDate date du content
-		*/
+         * Mise à jour date du content
+         * @param string $strDate date du content
+         */
         public function setDate(string $strDate){
             $this->_date = $strDate;
         }
-
+        
+        /**
+        * Récupération date du content
+        * @return string date du content
+        */
+        public function getDateFormat(string $strFormat = 'd/m/Y H:i'){
+            $objDate = new DateTimeImmutable($this->getDate());
+			return $objDate->format($strFormat);
+        }
         
         /**
 		* Récupération user id
