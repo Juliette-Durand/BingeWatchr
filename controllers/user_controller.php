@@ -351,10 +351,27 @@
         public function confirm_delete_account(){
             // Récupération du l'url de la page de référence
             $strServReferer    =   $_SERVER['HTTP_REFERER']??"";
+            $strUser = $_SESSION['account_deletion']['user'];
 
             // Vérifie que l'utilisateur est bien passé par la page de confirmation de suppression de compte (booleen + url de référence)
             if ((isset($_SESSION['boolAccountDeletion'])) && (isset($_SESSION['account_deletion']['user'])) && (str_contains($strServReferer,'action=delete_account'))){
-                $boolDeletionQuery  =   $this->_objUserModel->deleteAccount($_SESSION['account_deletion']['user']);
+                
+                // Suppression des commentaires associés à l'utilisateur
+                require_once("models/comment_model.php");
+                $objCommentModel = new CommentModel();
+                require_once("models/picture_model.php");
+                $objPictureModel = new PictureModel();
+                // Récupération des id de tous les commentaires
+                $arrComment = $objCommentModel->getIdComm($strUser);
+                foreach($arrComment as $intId){
+                    // Suppression des potentielles photos associées
+                    $objPictureModel->deletePictures($intId['comm_id']);
+                }
+                // Suppression des commentaires
+                $objCommentModel->deleteComment($strUser, false);
+
+                // Suppression de l'utilisateur
+                $boolDeletionQuery  =   $this->_objUserModel->deleteAccount($strUser);
             } else {
                 $_SESSION['account_deletion']['error']  =   "Echec lors de la suppression du compte";
             }
@@ -365,7 +382,7 @@
                 $_SESSION['account_deletion']['success']  =   "Le compte a bien été supprimé";
                 
                 // Si l'utilisateur supprimé est l'utilisateur en session -> désactivation de la session et redirection vers login
-                if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
+                if($strUser == $_SESSION['user']->getId()){
                     unset($_SESSION['user']);
                     header("Location:future_index.php?ctrl=user&action=login");
                 }
@@ -374,7 +391,7 @@
                 $_SESSION['account_deletion']['error']  =   "Echec lors de la suppression du compte. Veuillez réessayer plus tard";
                 
                 // Si l'utilisateur supprimé est l'utilisateur en session -> redirection vers la page mon compte
-                if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
+                if($strUser == $_SESSION['user']->getId()){
                     header("Location:future_index.php?ctrl=user&action=my_account");
                 }
             }

@@ -340,7 +340,9 @@
 
             // --- Juliette - 13/02/2025 - Requête insertion commentaire + photos
             // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
-            $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
+            require_once("models/picture_model.php");
+            $objPictureModel = new PictureModel();
+            $intNbTotalPic = $objPictureModel->countPictures($objMovie->getId());
 
             // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
             require_once("entities/picture_entity.php");
@@ -363,7 +365,7 @@
                   $intImportedPic = count($_FILES['pictures']['name']);
 
                   // Instancie l'entité Picture
-                  $objPicture = new PictureEntity;
+                  $objPicture = new PictureEntity();
 
                   // Vérifie que le nombre de fichiers importé ne dépasse pas la limite max pour le film
                   if(($intNbTotalPic + $intImportedPic) > 10){
@@ -436,7 +438,7 @@
                            $objPicture->setFile($strFileName);
                            $objPicture->setComment_id($idComment);
                            // Récupère le résultat de la requête d'insertion des photos
-                           $boolPicQuery = $objCommentModel->addPicture($objPicture);
+                           $boolPicQuery = $objPictureModel->addPicture($objPicture);
 
                            if($boolPicQuery===false){
                               $arrErrors['import']= "Erreur lors de l'importation des images";

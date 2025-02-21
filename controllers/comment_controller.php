@@ -26,6 +26,8 @@
          * Page de gestion des commentaires - seuls les modérateurs et admin y ont accès
          */
         public function comment_manage(){
+
+            
             require_once("entities/user_entity.php");
             require_once("models/user_model.php");
             require_once("entities/picture_entity.php");
@@ -100,6 +102,9 @@
             $this->display('comment_manage');
         }
 
+        /**
+         * Page de suppression d'un commentaire selon l'id en URL (Redirection automatique)
+         */
         public function delete_comment(){
 
             // Récupérationd de l'id en URL

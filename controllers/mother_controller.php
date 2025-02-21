@@ -7,7 +7,7 @@
     class MotherCtrl{
         
         protected array $_arrData = array(); /**< Tableau clé/valeur regroupant les données retournées par les controllers et utilisées dans les views */
-        protected string $_strSuccess 	= "";
+        protected string $_strSuccess 	= ""; /**< Variable contenant les messages de succès à afficher en session */
         /**
          * Constructeur de la classe
          */

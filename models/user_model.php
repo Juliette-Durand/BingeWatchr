@@ -222,6 +222,10 @@
 			return true;
 		}
 
+		/**
+		 * Récupération de l'avatar d'un utilisateur selon son id
+		 * @param string $strId nom du fichier de l'avatarstea
+		 */
 		public function displayAvatar(string $strId):array{
 			$strQuery	= "	SELECT user_avatar
 							FROM user

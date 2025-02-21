@@ -3,7 +3,7 @@
 	* Classe de gestion de la base de données pour les utilisateurs
 	* @author Arlind Halimi
     * date : 07/02/2025
-    * Dernière modification le 12/02/2025 par Juliette
+    * Dernière modification le 21/02/2025 par Juliette
 	*/
 
     /**
@@ -99,6 +99,7 @@
             return $arrCount['nbPic'];
         }
 
+        // Juliette - 12/02/2025
         /**
          * Insertion des photos en BDD
          * @return bool insertion
@@ -121,17 +122,29 @@
             return true;
         }
 
+        // Juliette - 18/02/2025 - Modifié le 21/02/2025
         /**
          * Suppression d'un commentaire
-         * @return bool suppression
+         * via l'id du commentaire dans le cadre de la modération
+         * ou via l'id de l'utilisateur dans le cadre de la suppression d'un compte
+         * @return bool suppression effectuée ou non
+         * @param int|string $id transmis
+         * @param bool $boolWhichDelete quelle type de suppression
          */
-        public function deleteComment(int $intComment):bool{
+        public function deleteComment(int|string $id, bool $boolWhichDelete = true):bool{
             try{
-                $strQuery   = " DELETE FROM comment
-                                WHERE comm_id = :id";
+                $strQuery   = " DELETE FROM comment ";
+
+                if($boolWhichDelete === true){
+                    // Suppression via l'id du commentaire
+                    $strQuery .= "WHERE comm_id = :id;";
+                } else {
+                    // Suppression via l'id de l'utilisateur
+                    $strQuery .= "WHERE comm_user_id = :id;";
+                }           
                 
                 $prep = $this->_db->prepare($strQuery);
-                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+                $prep->bindValue(":id", $id, PDO::PARAM_STR);
 
                 $prep->execute();
                 
@@ -141,6 +154,7 @@
             return true;
         }
 
+        // Juliette - 18/02/2025
         /**
          * Récupération du tableau de photos associées à un commentaire
          * @return array|bool Tableau des photos, sinon false
@@ -160,6 +174,7 @@
             }
         }
 
+        // Juliette - 19/02/2025
         /**
          * Récupération du tableau de photos associées à un commentaire
          * @return bool True pour publié/dépublié, false si erreur
@@ -184,6 +199,7 @@
             return true;
         }
 
+        // Juliette - 19/02/2025
         /**
          * Récupération du tableau de tous les commentaires
          * @return array tableau commentaires
@@ -202,6 +218,7 @@
             return $arrComments;
         }
 
+        // Juliette - 19/02/2025
         /**
          * Suppression de toutes les photos liées à un commentaire
          * @return bool résultat de la suppression
@@ -221,5 +238,20 @@
                 return false;
             }
             return true;
+        }
+
+        // Juliette - 21/02/2025
+        /**
+         * Récupération d'un tableau des id des commentaires écrits par un utilisateur
+         * @return array tableau des id
+         */
+        public function getIdComm(string $strId):array{
+            $strQuery   = " SELECT  comm_id
+                            FROM comment
+                            WHERE comm_user_id = '".$strId."';";
+            
+            $arrCommId = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrCommId;
         }
     }
