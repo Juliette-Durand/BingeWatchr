@@ -113,7 +113,7 @@
         }
         /**
 		* Mise à jour du film image
-		* @param string film image
+		* @param string|NULL $strPegi ou NULL
 		*/
         public function setPegi(string|null $strPegi = NULL){
             $this->_pegi = $strPegi;

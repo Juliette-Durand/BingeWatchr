@@ -66,7 +66,7 @@
   
         /** 
         * Récupération des 6 derniers films à afficher 
-        * @param bool Booléen qui indique si le champs movie_display est NULL ou non
+        * @param bool $boolDisplay Booléen qui indique si le champs movie_display est NULL ou non
         * @return array tableau des films 
         */
         public function movieList(bool $boolDisplay = true):array {

@@ -5,13 +5,13 @@
 	*/
     require_once('mother_entity.php');
 
-	class PlatformEntity {
+	class PlatformEntity extends MotherEntity{
 
         /**
 		* Constructeur de la classe
 		*/
 		public function __construct(){
-			parent::__construct();
+		    parent::__construct();
 		}
         
         private $_name;
@@ -34,7 +34,7 @@
             $this->_name = $strName;
         }
 
-          /**
+        /**
 		* Récupération du Link
 		* @return string Link
 		*/
