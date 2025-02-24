@@ -1,4 +1,4 @@
-<?php 
+   <?php 
     /**
 	* Classe d'un comment
 	* @author Arlind Halimi et Juliette Durand
@@ -17,7 +17,8 @@
         private $_date;
         private $_user_id;
         private $_movie_id;
-        private $_state;
+        private string $_movie_name;
+        private string $_state;
 
         /**
 		* Récupération du titre de comment
@@ -56,14 +57,23 @@
         public function getDate(){
             return $this->_date;
         }
+
         /**
-		* Mise à jour date du content
-		* @param string $strDate date du content
-		*/
+         * Mise à jour date du content
+         * @param string $strDate date du content
+         */
         public function setDate(string $strDate){
             $this->_date = $strDate;
         }
-
+        
+        /**
+        * Récupération date du content
+        * @return string date du content
+        */
+        public function getDateFormat(string $strFormat = 'd/m/Y H:i'){
+            $objDate = new DateTimeImmutable($this->getDate());
+			return $objDate->format($strFormat);
+        }
         
         /**
 		* Récupération user id
@@ -108,5 +118,20 @@
 		*/
         public function setState(string $strState){
             $this->_state = $strState;
+        }
+
+        /**
+		* Récupération du nom du film
+		* @return string _movie_id
+		*/
+        public function getMovie_name(){
+            return $this->_movie_name;
+        }
+        /**
+		* Mise à jour du nom du film
+		* @param string $strMovie_name nom du film
+		*/
+        public function setMovie_name(string $strMovie_name){
+            $this->_movie_name = $strMovie_name;
         }
     }

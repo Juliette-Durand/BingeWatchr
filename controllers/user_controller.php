@@ -28,7 +28,7 @@
         public function login(){
             // Redirection si l'utilisateur est déjà connecté
             if(isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=my_account");
+                header("Location:index.php?ctrl=user&action=my_account");
             }
             
             // Variables d'affichage
@@ -71,7 +71,7 @@
                         $objUser    =   new UserEntity();
                         $objUser->hydrate($arrUser);
                         $_SESSION['user']   =   $objUser;
-                        header("Location:future_index.php?ctrl=user&action=my_account");
+                        header("Location:index.php?ctrl=user&action=my_account");
                         //var_dump($_SESSION);
                     }
                 }
@@ -96,7 +96,7 @@
             // Destruction de la session
             session_destroy();
             // Redirection
-            header("Location:future_index.php?ctrl=user&action=login");
+            header("Location:index.php?ctrl=user&action=login");
         }
 
         /**
@@ -105,7 +105,7 @@
         public function my_account(){
             // Redirection si l'utilisateur n'est pas connecté
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             }
             
             // Variables d'affichage
@@ -174,12 +174,12 @@
 
                 $boolPwd = false;
                 if ($strOldPwd != ""){
-                    if ($strOldPwd != $objUser->getPassword()){
+                    if (!password_verify($strOldPwd, $objUser->getPassword())){
                         // Vérifie que le mot de passe renseigné correspond à celui en bdd
                         $arrErrors['old_pwd']  =   "Le mot de passe renseigné ne correspond pas au mot de passe actuel";
                     } else {
                         $boolPwd = true;
-                        if ($objUser->getPassword() != ""){
+                        if ($strNewPwd != ""){
                             // Vérifie que le mot de passe contient au moins 8 caractères
                             if (strlen($strNewPwd)<8){
                                 $arrErrors['new_pwd'][]= "au minimum 8 caractères";
@@ -256,9 +256,9 @@
         public function user_role_manage(){
             // Vérifie que la page est accessible uniquement en session et par un admin/modo
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             } else if ($_SESSION['user']->getRole() == 'user'){
-                header("Location:future_index.php?ctrl=error&action=error403");
+                header("Location:index.php?ctrl=error&action=error403");
             }
 
             // Variables d'affichage
@@ -270,10 +270,6 @@
             $strKeyword =   $_POST['keyWord']??"";
             $this->_arrData['strKeyword'] =   trim($strKeyword);
 
-             // Recherche d'un utilisateur par son pseudo ou prénom ou nom
-             if((count($_POST)>0) && (isset($_POST['search']))){
-            }
-
             // Modification d'un rôle utilisateur
             if((count($_POST)>0) && (!isset($_POST['search']))){
                 $strUserId    =   $_POST['user']??"";
@@ -281,7 +277,7 @@
                 
                 // Vérifie que l'utilisateur en session a les droits de modifications
                 if($_SESSION['user']->getRole() != 'admin'){
-                    header("Location:future_index.php?ctrl=movie&action=home");
+                    header("Location:index.php?ctrl=error&action=error403");
                 } else {
                     $boolQuery = $this->_objUserModel->updateRole($strRole, $strUserId);
                 }
@@ -310,13 +306,13 @@
 
             // Vérifie que l'utilisateur est connecté, sinon redirection
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             }
 
             // Vérification de la valeur de l'id en URL
             if($strId == ""){
                 // L'id est vide
-                header("Location:future_index.php?ctrl=error&action=error404");
+                header("Location:index.php?ctrl=error&action=error404");
             } else {
                 if($strId == $_SESSION['user']->getId()){
                     // L'id dans l'url est celui de l'utilisateur connecté
@@ -324,15 +320,14 @@
                 } else {
                     if($_SESSION['user']->getRole() == "user"){
                         // Le rôle de l'utilisateur n'est pas admin
-                        header("Location:future_index.php?ctrl=error&action=error403");
+                        header("Location:index.php?ctrl=error&action=error403");
                     }
 
                     $arrUserRole = $this->_objUserModel->checkRole($_GET['id']);
-                    var_dump($arrUserRole['role']);
 
                     if (($arrUserRole['role'] == $_SESSION['user']->getRole()) || ($arrUserRole['role'] == 'admin')) {
                         // L'utilisateur est redirigé si il tente de supprimé un utilisateur ayant le même rôle que lui ou supérieur
-                        header("Location:future_index.php?ctrl=error&action=error403");
+                        header("Location:index.php?ctrl=error&action=error403");
                     }
 
                     $this->_arrData['strTitle'] =   "Supprimer le compte d'un utilisateur";
@@ -356,10 +351,27 @@
         public function confirm_delete_account(){
             // Récupération du l'url de la page de référence
             $strServReferer    =   $_SERVER['HTTP_REFERER']??"";
+            $strUser = $_SESSION['account_deletion']['user'];
 
             // Vérifie que l'utilisateur est bien passé par la page de confirmation de suppression de compte (booleen + url de référence)
             if ((isset($_SESSION['boolAccountDeletion'])) && (isset($_SESSION['account_deletion']['user'])) && (str_contains($strServReferer,'action=delete_account'))){
-                $boolDeletionQuery  =   $this->_objUserModel->deleteAccount($_SESSION['account_deletion']['user']);
+                
+                // Suppression des commentaires associés à l'utilisateur
+                require_once("models/comment_model.php");
+                $objCommentModel = new CommentModel();
+                require_once("models/picture_model.php");
+                $objPictureModel = new PictureModel();
+                // Récupération des id de tous les commentaires
+                $arrComment = $objCommentModel->getIdComm($strUser);
+                foreach($arrComment as $intId){
+                    // Suppression des potentielles photos associées
+                    $objPictureModel->deletePictures($intId['comm_id']);
+                }
+                // Suppression des commentaires
+                $objCommentModel->deleteComment($strUser, false);
+
+                // Suppression de l'utilisateur
+                $boolDeletionQuery  =   $this->_objUserModel->deleteAccount($strUser);
             } else {
                 $_SESSION['account_deletion']['error']  =   "Echec lors de la suppression du compte";
             }
@@ -370,24 +382,21 @@
                 $_SESSION['account_deletion']['success']  =   "Le compte a bien été supprimé";
                 
                 // Si l'utilisateur supprimé est l'utilisateur en session -> désactivation de la session et redirection vers login
-                if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
+                if($strUser == $_SESSION['user']->getId()){
                     unset($_SESSION['user']);
-                    header("Location:future_index.php?ctrl=user&action=login");
-                    die;
+                    header("Location:index.php?ctrl=user&action=login");
                 }
             } else {
                 // La requête a rencontré un problème
                 $_SESSION['account_deletion']['error']  =   "Echec lors de la suppression du compte. Veuillez réessayer plus tard";
                 
                 // Si l'utilisateur supprimé est l'utilisateur en session -> redirection vers la page mon compte
-                if($_SESSION['account_deletion']['user'] == $_SESSION['user']->getId()){
-                    header("Location:future_index.php?ctrl=user&action=my_account");
-                    die;
+                if($strUser == $_SESSION['user']->getId()){
+                    header("Location:index.php?ctrl=user&action=my_account");
                 }
             }
-            die;
             // Redirection vers la page de gestion des utilisateurs
-            header("Location:future_index.php?ctrl=user&action=user_role_manage");
+            header("Location:index.php?ctrl=user&action=user_role_manage");
         }
 
         /**
@@ -403,8 +412,7 @@
             $objUser = new UserEntity();
 
             if(isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=my_account");
-                die;
+                header("Location:index.php?ctrl=user&action=my_account");
             }
             
             var_dump($_POST);
@@ -564,7 +572,7 @@
                     $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
                     if ($boolCreation === true){
                         $_SESSION['account_creation']['success'] = "Le compte a bien été créé";
-                        header("Location:future_index.php?ctrl=user&action=login");
+                        header("Location:index.php?ctrl=user&action=login");
                     } else {
                         $_SESSION['account_creation']['error'] = "Erreur lors de la création du compte";
                     }

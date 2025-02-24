@@ -24,7 +24,7 @@
         }
         /**
 		* Mise à jour du nom de fichier
-		* @param string $strTitle nom du fichier
+		* @param string $file nom du fichier
 		*/
         public function setFile(string $file){
             $this->_file = $file;
