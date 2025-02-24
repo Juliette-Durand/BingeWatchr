@@ -47,6 +47,9 @@
 								<a href="index.php?ctrl=user&action=create_account" class="btn btn-secondary">S'inscrire</a>
 								<a href="index.php?ctrl=user&action=login" class="btn btn-primary">Se connecter</a>
 							{/if}
+							<li>
+								<a href="index.php?ctrl=user&action=help" class="btn btn-primary rounded-circle">?</a>
+							</li>
 						</ul>
 					</div>
 				</div>

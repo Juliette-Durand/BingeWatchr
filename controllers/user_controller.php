@@ -577,4 +577,14 @@
 
             $this->display('create_account');
         }
+
+        public function help() {
+            // Variables d'affichage
+            // Ce qui sert de h1 et/ou de nom dans le titre de la page
+            $this->_arrData['strTitle'] =   "Aide aux utilisateurs";
+            // Variables fonctionnelles
+            $this->_arrData['refPage']  =   "help";
+
+            $this->display('help');
+        }
     }
