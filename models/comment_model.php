@@ -51,7 +51,7 @@
         * Récupération de tous les Comments
         * @return array $arrComments tableau des comments
         */
-        public function allComments(){
+        public function allComments() :array|bool{
             $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
                         FROM comment
                         WHERE comm_movie_id= ".$_GET['id']."
@@ -60,8 +60,14 @@
 
             /* Je récupère le résultat de ma requête d'utilisateurs */
             $arrComments  = $this->_db->query($strQuery)->fetchAll();
+            
+            //return $arrComments;
 
-            return $arrComments;
+            if($arrComments==0){
+                return false;
+             }else{
+                return $arrComments;
+            }
         }
 
         /**

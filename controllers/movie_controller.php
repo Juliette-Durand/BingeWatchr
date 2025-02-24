@@ -293,6 +293,19 @@
          $arrErrors = array();
          $arrComments = array();
          $arrComments = $objCommentModel->allComments();
+
+         $arrCommentToDisplay = array();
+
+         if($arrComments !== false){
+           // Récupération des commentaires pour affichage
+           foreach ($arrComments as $arrDetComment) {
+            $objCommentEntity = new CommentEntity();  
+            $objCommentEntity->hydrate($arrDetComment);
+            $arrCommentToDisplay[] = $objCommentEntity;
+         } 
+         $this->_arrData['arrComments']	= $arrCommentToDisplay;
+        }
+
          $arrCommentToDisplay = array();
          $strTitleCom = '';
          $strContentCom = '';
@@ -311,13 +324,7 @@
             header("Location:index.php?ctrl=error&action=error404");
          }
 
-         // Récupération des commentaires pour affichage
-         foreach ($arrComments as $arrDetComment) {
-            $objCommentEntity = new CommentEntity();  
-            $objCommentEntity->hydrate($arrDetComment);
-            $arrCommentToDisplay[] = $objCommentEntity;
-         } 
-         $this->_arrData['arrComments']	= $arrCommentToDisplay;
+       
 
          // --> Fonctionnel pour les commentaires mais par pour les photos - auteur Arlind
          //    if(count($_POST) > 0){
@@ -361,19 +368,21 @@
          // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
          $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
 
+         $objNewCommentEntity = new CommentEntity();
+
          // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
          require_once("entities/picture_entity.php");
          if(count($_POST) > 0){ 
-            $objCommentEntity->hydrate($_POST);
-            $objCommentEntity->setMovie_id($objMovie->getId());
-            $objCommentEntity->setUser_id($_SESSION['user']->getId());
+            $objNewCommentEntity->hydrate($_POST);
+            $objNewCommentEntity->setMovie_id($objMovie->getId());
+            $objNewCommentEntity->setUser_id($_SESSION['user']->getId());
             
             // Vérifie le contenu du titre
-            if($objCommentEntity->getTitle() == ""){
+            if($objNewCommentEntity->getTitle() == ""){
                $arrErrors['title'] = "Le champ Titre est obligatoire";
             }
             // Vérifie le contenu du contenu
-            if($objCommentEntity->getContent() == ""){
+            if($objNewCommentEntity->getContent() == ""){
                $arrErrors['content'] = "Le champ Contenu est obligatoire";
             }
             // Vérifie si un fichier est importé et le nombre de fichiers importés
@@ -402,7 +411,7 @@
             // Pas d'erreur dans le formulaire -> on traite la donnée
             if(count($arrErrors) == 0){
                // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
-               $idComment = $objCommentModel->addComment($objCommentEntity);
+               $idComment = $objCommentModel->addComment($objNewCommentEntity);
 
                // Insertion du commentaire réussie
                if($idComment !== false){
@@ -483,7 +492,7 @@
                }
             }
          }
-         $this->_arrData['objCommentEntity'] = $objCommentEntity;
+         $this->_arrData['objCommentEntity'] = $objNewCommentEntity;
          $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
          // --- Fin Juliette
          
