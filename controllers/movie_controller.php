@@ -171,7 +171,7 @@
          // Initialisation du tableau vide
          // Rederige si l'utilisateur n'est pas conecte
          if( !isset($_SESSION['user']) ){
-            header("Location:future_index.php?ctrl=user&action=login");
+            header("Location:index.php?ctrl=user&action=login");
             exit;
          }
          if(count($_POST) > 0){
@@ -305,10 +305,10 @@
          // Vérification de la valeur de l'id en URL si exist
          if($strId == ""){
             // L'id est vide
-            header("Location:future_index.php?ctrl=error&action=error404");
+            header("Location:index.php?ctrl=error&action=error404");
          }elseif($this->_objMovieModel->findMovie($strId) === false){
             // L'id est vide
-            header("Location:future_index.php?ctrl=error&action=error404");
+            header("Location:index.php?ctrl=error&action=error404");
          }
 
          // Récupération des commentaires pour affichage
@@ -349,7 +349,7 @@
          
 
          // if (!isset($_GET['id']) || !($objMovieModel->findMovie($_GET['id']) )){
-         //    header("Location:future_index.php?ctrl=error&action=error404");
+         //    header("Location:index.php?ctrl=error&action=error404");
          // }          
 
          // pour qua comme parameter entre $arrMovieEntity 
@@ -475,7 +475,7 @@
 
                   // Redirection sur la même page pour vider le $_POST
                   $strUrl = $_SERVER['QUERY_STRING'];
-                  header("Location:future_index.php?".$strUrl);
+                  header("Location:index.php?".$strUrl);
 
                } else {
                   // Erreur lors de l'insertion du commentaire seul
@@ -571,7 +571,7 @@
                   } else {
                      $_SESSION['success'] 	= 'Le message a été envoyé.';
                      // Rediriger vers l'accueil
-                     header("Location:future_index.php");
+                     header("Location:index.php");
                      exit;
                   }
                }

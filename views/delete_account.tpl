@@ -24,7 +24,7 @@
                             <li>la déconnexion de sa session sur tous les appareils</li>
                         </ul>
                         <div>
-                            <a href="future_index.php?ctrl=user&action=confirm_delete_account" class="btn btn-danger">Confirmer la suppression du compte</a>
+                            <a href="index.php?ctrl=user&action=confirm_delete_account" class="btn btn-danger">Confirmer la suppression du compte</a>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                             <li>la déconnexion de votre session sur tous les appareils</li>
                         </ul>
                         <div>
-                            <a href="future_index.php?ctrl=user&action=confirm_delete_account" class="btn btn-danger">Confirmer la suppression du compte</a>
+                            <a href="index.php?ctrl=user&action=confirm_delete_account" class="btn btn-danger">Confirmer la suppression du compte</a>
                         </div>
                     </div>
 

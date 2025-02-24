@@ -36,7 +36,7 @@
             // $arrErrors = array();
               // Rederige si l'utilisateur n'est pas conecte
             if( !isset($_SESSION['user']) ){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
                 exit;
             }
 

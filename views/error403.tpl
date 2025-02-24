@@ -9,7 +9,7 @@
     <div class="row px-5">
         <p class="display-6">Vous ne passerez... paaaaas ! 🧙‍♂️</p>
         <p>Il semblerait que vous n'avez pas les droits pour accéder à cette page...</p>
-        <a href="future_index.php?ctrl=movie&action=home" class="mt-5 btn btn-primary">Retour à l'accueil</a>
+        <a href="index.php?ctrl=movie&action=home" class="mt-5 btn btn-primary">Retour à l'accueil</a>
     </div>
 </section>
 {/block}

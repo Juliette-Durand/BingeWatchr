@@ -48,7 +48,7 @@
 												(($_SESSION['user']->getRole() == 'modo') && ($objUser->getRole() == 'user')) ||
 												(($_SESSION['user']->getId() == $objUser->getId())))}
 											<div class="form_right">
-												<a href="future_index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger">Supprimer l'utilisateur</a>
+												<a href="index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger">Supprimer l'utilisateur</a>
 											</div>
 										{/if}
 									</form>

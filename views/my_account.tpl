@@ -1,12 +1,10 @@
-<?php
-	/**
-	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
-	* @author Juliette Durand
-	*/
-	//var_dump($_POST);
-	
-	
-?>	
+{**
+* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
+* @author Juliette Durand
+*}
+{extends file="views/layout.tpl"}      
+
+{block name="contenu"}
 	<section id="my_account">
 		<div class="container mb-5">
 			<h1>{$strTitle}</h1>
@@ -126,11 +124,12 @@
 						<a class="btn btn-secondary" id="my_account_pwd_btn">Modifier le mot de passe</a>
 					</div>
 					<input type="submit" class="btn btn-primary" value="Enregistrer les modifications">
-					<a href="future_index.php?ctrl=user&action=logout" class="mt-5 btn btn-primary">Déconnexion</a>
+					<a href="index.php?ctrl=user&action=logout" class="mt-5 btn btn-primary">Déconnexion</a>
 				</div>
 			</form>
 			<div>
-				<a href="future_index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger mt-5">Supprimer le compte</a>
+				<a href="index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger mt-5">Supprimer le compte</a>
 			</div>
         </div>
 	</section>
+{/block}

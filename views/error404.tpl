@@ -8,7 +8,7 @@
     <div class="row px-5">
         <p class="display-6">Houston, on a un problème ! 🪐</p>
         <p>La page que vous recherchez n'existe pas...</p>
-        <a href="future_index.php?ctrl=movie&action=home" class="mt-5 btn btn-primary">Retour à l'accueil</a>
+        <a href="index.php?ctrl=movie&action=home" class="mt-5 btn btn-primary">Retour à l'accueil</a>
     </div>
 </section>
 {/block}

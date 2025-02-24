@@ -415,7 +415,6 @@
                 header("Location:index.php?ctrl=user&action=my_account");
             }
             
-            var_dump($_POST);
             $strConfPwd  = $_POST['confirm_pwd']??"";
             $boolAvatar = false;
 
