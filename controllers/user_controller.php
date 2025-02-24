@@ -28,7 +28,7 @@
         public function login(){
             // Redirection si l'utilisateur est déjà connecté
             if(isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=my_account");
+                header("Location:index.php?ctrl=user&action=my_account");
             }
             
             // Variables d'affichage
@@ -71,7 +71,7 @@
                         $objUser    =   new UserEntity();
                         $objUser->hydrate($arrUser);
                         $_SESSION['user']   =   $objUser;
-                        header("Location:future_index.php?ctrl=user&action=my_account");
+                        header("Location:index.php?ctrl=user&action=my_account");
                         //var_dump($_SESSION);
                     }
                 }
@@ -96,7 +96,7 @@
             // Destruction de la session
             session_destroy();
             // Redirection
-            header("Location:future_index.php?ctrl=user&action=login");
+            header("Location:index.php?ctrl=user&action=login");
         }
 
         /**
@@ -105,7 +105,7 @@
         public function my_account(){
             // Redirection si l'utilisateur n'est pas connecté
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             }
             
             // Variables d'affichage
@@ -256,9 +256,9 @@
         public function user_role_manage(){
             // Vérifie que la page est accessible uniquement en session et par un admin/modo
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             } else if ($_SESSION['user']->getRole() == 'user'){
-                header("Location:future_index.php?ctrl=error&action=error403");
+                header("Location:index.php?ctrl=error&action=error403");
             }
 
             // Variables d'affichage
@@ -277,7 +277,7 @@
                 
                 // Vérifie que l'utilisateur en session a les droits de modifications
                 if($_SESSION['user']->getRole() != 'admin'){
-                    header("Location:future_index.php?ctrl=error&action=error403");
+                    header("Location:index.php?ctrl=error&action=error403");
                 } else {
                     $boolQuery = $this->_objUserModel->updateRole($strRole, $strUserId);
                 }
@@ -306,13 +306,13 @@
 
             // Vérifie que l'utilisateur est connecté, sinon redirection
             if(!isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
             }
 
             // Vérification de la valeur de l'id en URL
             if($strId == ""){
                 // L'id est vide
-                header("Location:future_index.php?ctrl=error&action=error404");
+                header("Location:index.php?ctrl=error&action=error404");
             } else {
                 if($strId == $_SESSION['user']->getId()){
                     // L'id dans l'url est celui de l'utilisateur connecté
@@ -320,14 +320,14 @@
                 } else {
                     if($_SESSION['user']->getRole() == "user"){
                         // Le rôle de l'utilisateur n'est pas admin
-                        header("Location:future_index.php?ctrl=error&action=error403");
+                        header("Location:index.php?ctrl=error&action=error403");
                     }
 
                     $arrUserRole = $this->_objUserModel->checkRole($_GET['id']);
 
                     if (($arrUserRole['role'] == $_SESSION['user']->getRole()) || ($arrUserRole['role'] == 'admin')) {
                         // L'utilisateur est redirigé si il tente de supprimé un utilisateur ayant le même rôle que lui ou supérieur
-                        header("Location:future_index.php?ctrl=error&action=error403");
+                        header("Location:index.php?ctrl=error&action=error403");
                     }
 
                     $this->_arrData['strTitle'] =   "Supprimer le compte d'un utilisateur";
@@ -384,7 +384,7 @@
                 // Si l'utilisateur supprimé est l'utilisateur en session -> désactivation de la session et redirection vers login
                 if($strUser == $_SESSION['user']->getId()){
                     unset($_SESSION['user']);
-                    header("Location:future_index.php?ctrl=user&action=login");
+                    header("Location:index.php?ctrl=user&action=login");
                 }
             } else {
                 // La requête a rencontré un problème
@@ -392,11 +392,11 @@
                 
                 // Si l'utilisateur supprimé est l'utilisateur en session -> redirection vers la page mon compte
                 if($strUser == $_SESSION['user']->getId()){
-                    header("Location:future_index.php?ctrl=user&action=my_account");
+                    header("Location:index.php?ctrl=user&action=my_account");
                 }
             }
             // Redirection vers la page de gestion des utilisateurs
-            header("Location:future_index.php?ctrl=user&action=user_role_manage");
+            header("Location:index.php?ctrl=user&action=user_role_manage");
         }
 
         /**
@@ -412,7 +412,7 @@
             $objUser = new UserEntity();
 
             if(isset($_SESSION['user'])){
-                header("Location:future_index.php?ctrl=user&action=my_account");
+                header("Location:index.php?ctrl=user&action=my_account");
             }
             
             var_dump($_POST);
@@ -572,7 +572,7 @@
                     $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
                     if ($boolCreation === true){
                         $_SESSION['account_creation']['success'] = "Le compte a bien été créé";
-                        header("Location:future_index.php?ctrl=user&action=login");
+                        header("Location:index.php?ctrl=user&action=login");
                     } else {
                         $_SESSION['account_creation']['error'] = "Erreur lors de la création du compte";
                     }

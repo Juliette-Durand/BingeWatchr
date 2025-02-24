@@ -59,7 +59,7 @@
 
                     if($boolPublish === true){
                         var_dump("success");
-                        header("Location:future_index.php?ctrl=comment&action=comment_manage");
+                        header("Location:index.php?ctrl=comment&action=comment_manage");
                         exit();
                     }
                 }
@@ -124,7 +124,7 @@
 
                     // Succès de la suppression du commentaire, redirection vers la page de gestion des commentaires
                     if($boolDelComm === true){
-                        header("Location:future_index.php?ctrl=comment&action=comment_manage");
+                        header("Location:index.php?ctrl=comment&action=comment_manage");
                         exit();
                     }
                 }
