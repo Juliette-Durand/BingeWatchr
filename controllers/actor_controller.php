@@ -36,7 +36,7 @@
             // $arrErrors = array();
               // Rederige si l'utilisateur n'est pas conecte
             if( !isset($_SESSION['user']) ){
-                header("Location:future_index.php?ctrl=user&action=login");
+                header("Location:index.php?ctrl=user&action=login");
                 exit;
             }
 
@@ -95,7 +95,7 @@
                     }else{
                         $this->_arrErrors[]="l'insertion s'est mal passée";
                     }
-                    header( "Location:future_index.php?ctrl=movie&action=form_movie", true);
+                    header( "Location:index.php?ctrl=movie&action=form_movie", true);
                 }
             }
             // $this->_arrData['arrErrors'] = $arrErrors;

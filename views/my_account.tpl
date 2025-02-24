@@ -1,12 +1,7 @@
-<?php
-	/**
+	{*
 	* Page affichant les informations de l'utilisateur en session et lui permettant de mofifier ses informations personnelles
 	* @author Juliette Durand
-	*/
-	//var_dump($_POST);
-	
-	
-?>	
+	*}
 	<section id="my_account">
 		<div class="container mb-5">
 			<h1>{$strTitle}</h1>
