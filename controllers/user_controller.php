@@ -577,7 +577,9 @@
 
             $this->display('create_account');
         }
-
+        /*
+        * Page d'aide aux utilisateurs
+        */
         public function help() {
             // Variables d'affichage
             // Ce qui sert de h1 et/ou de nom dans le titre de la page

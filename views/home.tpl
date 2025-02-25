@@ -14,6 +14,9 @@
                 {foreach from=$arrMovies item=objMovie}
                     {include file="views/_partial/movie_card.tpl"}
                 {/foreach}
+                <div>
+                    <a href="index.php?ctrl=movie&action=allmovies&bool=1" class="btn btn-primary mt-3">Tous les films à l'affiche</a>
+                </div>
         </div>
         {/if}
         

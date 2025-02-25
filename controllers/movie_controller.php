@@ -81,7 +81,12 @@
 
          //Utilisation
          $arrCat           = $this->_objCatModel->findCategory();
-         $arrAdvMovie      = $this->_objMovieModel->advSearchMovie();
+         if (isset($_GET['bool']) && $_GET['bool'] == 1){
+            $boolDisplay      = true;
+         }else{
+            $boolDisplay      = false;
+         }
+         $arrAdvMovie     = $this->_objMovieModel->advSearchMovie($boolDisplay);
 
          $arrAdvMoviesToDisplay 	      = array();
          foreach ($arrAdvMovie as $arrDetMovies) {
@@ -104,6 +109,7 @@
          // Transmission des variables dans la vue
          $this->_arrData['objMovieModel']	= $this->_objMovieModel;
          $this->_arrData['strTitle']      = "Tous les films";
+         $this->_arrData['boolDisplay']   = $boolDisplay;
 
          $this->display('all_movies');
       }

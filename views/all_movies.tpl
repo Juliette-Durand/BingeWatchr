@@ -71,7 +71,7 @@
     <div class="container">
     {if count($arrAdvMovie) > 0}
             <div class="row">
-                <h2>Tous les films</h2>
+                <h2>Tous les films {if $boolDisplay == 1}à l'affiche {/if}</h2>
                     {foreach $arrAdvMovie as $objMovie}
                         {include file="views/_partial/movie_card.tpl"}
                     {/foreach}
