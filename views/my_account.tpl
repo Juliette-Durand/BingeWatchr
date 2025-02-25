@@ -11,20 +11,6 @@
 		</div>
 		
         <div class="container">
-			{if $this->_arrData['boolChange']|isset}
-				{* Vérifie la présence de la variable contenant le résultat de la requête PDO *}
-				{if $this->_arrData['boolChange'] === true}
-					{* Si la requête s'est bien déroulée -> affichage d'une alerte de succès *}
-					<div class="alert alert-success">
-						Les modifications ont bien été prises en compte
-					</div>
-				{else}
-					{* Si une erreur est retournée -> affichage d'une alerte d'erreur *}
-					<div class="alert alert-danger">
-						Erreur lors de la prise en compte des modifications
-					</div>
-				{/if}
-			{/if}
 
 			<form method="POST" class="row" enctype="multipart/form-data" id="my_account_form">
                 <div class="col-5 d-flex flex-column align-items-center">
@@ -33,12 +19,6 @@
                     </div>
 					<h2 class="mb-5">{$objUser->getId()}</h2>
 
-					<!-- Affichage de l'erreur si le fichier importé ne respecte pas les critères -->
-					{if $arrErrors['avatar']|isset}
-						<div class="alert alert-danger">
-							{$arrErrors['avatar']}
-						</div>
-					{/if}
 					<!-- Champ d'import de l'avatar -->
 					<div id="my_account_file">
 						<input type="file" name="avatar" id="avatar" >
@@ -50,52 +30,32 @@
                     <div>
                         <label for="first_name">Prénom</label>
                         <input type="text" name="first_name" id="first_name" value="{$objUser->getFirst_name()}">
-						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="last_name">Nom</label>
                         <input type="text" name="last_name" id="last_name" value="{$objUser->getLast_name()}">
-						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
-						<!-- Affichage de l'erreur si l'adresse email ne respecte pas les critères -->
-						{if $arrErrors['email']|isset}
-							<div class="alert alert-danger">
-								{$arrErrors['email']}
-							</div>
-						{/if}
                         <label for="mail">Email</label>
                         <input type="email" name="mail" id="mail" value="{$objUser->getMail()}">
-						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
         
                     <div>
                         <label for="bio">Bio</label>
                         <textarea name="bio" id="bio" rows="4">{$objUser->getBio()}</textarea>
-						<!-- <button class="btn btn-primary">Modifier</button> -->
                     </div>
 					
 					<div>
-						{if $arrErrors['old_pwd']|isset}
-							<div class="alert alert-danger">
-								{$arrErrors['old_pwd']}
-							</div>
-						{/if}
-						{if $arrErrors['new_pwd']|isset}
+						{if ($arrErrorsPwd|isset) && (count($arrErrorsPwd)>0)}
 							<div class="alert alert-danger">
 								<ul>
 								Le mot de passe renseigné ne répond pas aux critères suivants :
-								{foreach $arrErrors['new_pwd'] as $strError}
+								{foreach $arrErrorsPwd as $strError}
 									<li>{$strError}</li>
 								{/foreach}
 								</ul>
-							</div>
-						{/if}
-						{if $arrErrors['conf_pwd']|isset}
-							<div class="alert alert-danger">
-								{$arrErrors['conf_pwd']}
 							</div>
 						{/if}
 						<div id="my_account_pwd">

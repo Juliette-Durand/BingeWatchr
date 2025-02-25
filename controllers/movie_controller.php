@@ -466,7 +466,7 @@
                      // Si erreur dans le traitement des données, on supprime le commentaire qui vient d'être inséré
                      if(count($arrErrors) != 0){
                         $objCommentModel->deleteComment($idComment);
-                        $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
+                        $_SESSION['error']= "Erreur lors de l'enregistrement du commentaire";
                      }
                   }
 
@@ -476,10 +476,11 @@
                   // Redirection sur la même page pour vider le $_POST
                   $strUrl = $_SERVER['QUERY_STRING'];
                   header("Location:index.php?".$strUrl);
+                  exit();
 
                } else {
                   // Erreur lors de l'insertion du commentaire seul
-                  $arrErrors['comment']= "Erreur lors de l'enregistrement du commentaire";
+                  $_SESSION['error']= "Erreur lors de l'enregistrement du commentaire";
                }
             }
          }

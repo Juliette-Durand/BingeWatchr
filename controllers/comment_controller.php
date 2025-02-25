@@ -135,9 +135,12 @@
 
                     // Succès de la suppression du commentaire, redirection vers la page de gestion des commentaires
                     if($boolDelComm === true){
-                        header("Location:index.php?ctrl=comment&action=comment_manage");
-                        exit();
+                        $_SESSION['success']	=	"Le commentaire a bien été supprimé";
+                    } else {
+                        $_SESSION['error']	=	"Erreur lors de la suppression du commentaire, veuillez réessayer plus tard";
                     }
+                    header("Location:index.php?ctrl=comment&action=comment_manage");
+                    exit();
                 }
             }
 

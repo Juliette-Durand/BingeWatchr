@@ -14,26 +14,11 @@
         <div class="container">
             <div class="row">
                 <form class="col-6 offset-3" method="post">
-                    {if $arrErrors['connect']|isset}
-                        <div class="alert alert-danger">
-                            {$arrErrors['connect']}
-                        </div>
-                    {/if}
                     <div>
-                        {if $arrErrors['email']|isset}
-                            <div class="alert alert-danger">
-                                {$arrErrors['email']}
-                            </div>
-                        {/if}
                         <label for="mail">Adresse-email :</label>
                         <input type="email" name="mail" id="mail" value="{$strMail}">
                     </div>
                     <div>
-                        {if $arrErrors['password']|isset}
-                            <div class="alert alert-danger">
-                                {$arrErrors['password']}
-                            </div>
-                        {/if}
                         <label for="password">Mot de passe :</label>
                         <input type="password" name="password" id="password">
                     </div>

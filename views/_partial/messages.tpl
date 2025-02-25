@@ -9,4 +9,8 @@
 <div class="alert alert-success">
     <p>{$strSuccess}</p>
 </div>
+{elseif ($strError != "")}
+<div class="alert alert-danger">
+    <p>{$strError}</p>
+</div>
 {/if}	

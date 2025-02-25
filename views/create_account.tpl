@@ -11,13 +11,6 @@
                 <input type="file" name="profile_picture" id="profile_picture">
             </div>
             <div class="col-7">
-                {if count($arrErrors)>0}
-                    <div class="alert alert-danger">
-                    {foreach $arrErrors as $strError}
-                        <p>{$strError}</p>
-                    {/foreach}
-                    </div>
-                {/if}
                 <div class="mb-3">
                     <label for="id">Pseudo</label>
                     <input type="text" name="id" value="{$objUser->getId()}">
@@ -55,7 +48,7 @@
                         </ul>
                     </div>
                     <div class="col-6">
-                        {if $arrErrorsPwd|isset}
+                        {if count($arrErrorsPwd)>0}
                             <ul class="alert alert-danger">
                                 Le mot de passe doit contenir :
                                 {foreach $arrErrorsPwd as $strErrorPwd}

@@ -14,7 +14,7 @@
 
         <div class="container">
             
-            {if ($_GET['id'] != $_SESSION['user']->getId())}
+            {if ($smarty.get.id != $smarty.session.user->getId())}
                 <div class="row">
                     <div class="col-5 offset-2">
                         <span class="display-6">Vous êtes sur le point de supprimer le compte d'un utilisateur</span>
@@ -50,7 +50,7 @@
 
                     <div class="col-3">
                         <div class="picture_container mb-4 text-end">
-                            <img class="profile_pic" src="assets/img/users/profile_pictures/{$_SESSION['user']->getAvatar()}" alt="">
+                            <img class="profile_pic" src="assets/img/users/profile_pictures/{$smarty.session.user->getAvatar()}" alt="">
                         </div>
                     </div>
                 </div>
