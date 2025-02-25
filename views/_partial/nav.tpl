@@ -14,9 +14,9 @@
 							<li class="nav-item">
 								<a class="nav-link" href="index.php?ctrl=movie&action=home">Accueil</a>
 							</li>
-							<li class="nav-item">
+							{* <li class="nav-item">
 								<a class="nav-link" href="collection.php">Ma collection</a>
-							</li>
+							</li> *}
 							<li class="nav-item">
 								<a class="nav-link" href="index.php?ctrl=movie&action=allmovies">Tous les films</a>
 							</li>
@@ -27,7 +27,7 @@
 									</a>
 	
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
+										{* <li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li> *}
 										<li><a class="dropdown-item" href="index.php?ctrl=comment&action=comment_manage">Gestion des commentaires</a></li>
 										<li><a class="dropdown-item" href="index.php?ctrl=user&action=user_role_manage">Gestion des utilisateurs</a></li>
 									</ul>
