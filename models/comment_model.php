@@ -3,7 +3,7 @@
 	* Classe de gestion de la base de données pour les utilisateurs
 	* @author Arlind Halimi
     * date : 07/02/2025
-    * Dernière modification le 12/02/2025 par Juliette
+    * Dernière modification le 21/02/2025 par Juliette
 	*/
 
     /**
@@ -105,6 +105,7 @@
             return $arrCount['nbPic'];
         }
 
+        // Juliette - 12/02/2025
         /**
          * Insertion des photos en BDD
          * @return bool insertion
@@ -127,17 +128,29 @@
             return true;
         }
 
+        // Juliette - 18/02/2025 - Modifié le 21/02/2025
         /**
          * Suppression d'un commentaire
-         * @return bool suppression
+         * via l'id du commentaire dans le cadre de la modération
+         * ou via l'id de l'utilisateur dans le cadre de la suppression d'un compte
+         * @return bool suppression effectuée ou non
+         * @param int|string $id transmis
+         * @param bool $boolWhichDelete quelle type de suppression
          */
-        public function deleteComment(int $intComment):bool{
+        public function deleteComment(int|string $id, bool $boolWhichDelete = true):bool{
             try{
-                $strQuery   = " DELETE FROM comment
-                                WHERE comm_id = :id";
+                $strQuery   = " DELETE FROM comment ";
+
+                if($boolWhichDelete === true){
+                    // Suppression via l'id du commentaire
+                    $strQuery .= "WHERE comm_id = :id;";
+                } else {
+                    // Suppression via l'id de l'utilisateur
+                    $strQuery .= "WHERE comm_user_id = :id;";
+                }           
                 
                 $prep = $this->_db->prepare($strQuery);
-                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+                $prep->bindValue(":id", $id, PDO::PARAM_STR);
 
                 $prep->execute();
                 
@@ -145,5 +158,106 @@
                 return false;
             }
             return true;
+        }
+
+        // Juliette - 18/02/2025
+        /**
+         * Récupération du tableau de photos associées à un commentaire
+         * @return array|bool Tableau des photos, sinon false
+         */
+        public function findPictures(int $intComment):array|bool{
+            $strQuery   = " SELECT pic_file
+                            FROM picture
+                            WHERE pic_comment_id = ".$intComment.";";
+
+            /* Récupération du tableau des photos associées au commentaire */
+            $arrPictures = $this->_db->query($strQuery)->fetchAll();
+
+            if(count($arrPictures)>0){
+                return $arrPictures;
+            } else {
+                return false;
+            }
+        }
+
+        // Juliette - 19/02/2025
+        /**
+         * Récupération du tableau de photos associées à un commentaire
+         * @return bool True pour publié/dépublié, false si erreur
+         */
+        public function publishComment(int $intComment, string $strStatement):bool{
+
+            // Requête
+            try{
+                $strQuery   = " UPDATE comment
+                                SET comm_state = :state
+                                WHERE comm_id = :id;";
+                
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":state", $strStatement, PDO::PARAM_STR);
+                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+
+                $prep->execute();
+
+            } catch (PDOException $e){
+                return false;
+            }
+            return true;
+        }
+
+        // Juliette - 19/02/2025
+        /**
+         * Récupération du tableau de tous les commentaires
+         * @return array tableau commentaires
+         */
+        public function findAllComments():array{
+
+            $strQuery   = " SELECT comm_id, comm_title, comm_content, comm_state, comm_date, movie_name, user_id
+                            FROM comment
+                                INNER JOIN movie ON comm_movie_id = movie_id
+                                INNER JOIN user ON comm_user_id = user_id
+                            ORDER BY comm_state DESC, comm_date DESC;";
+
+            /* Récupération du tableau des photos associées au commentaire */
+            $arrComments = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrComments;
+        }
+
+        // Juliette - 19/02/2025
+        /**
+         * Suppression de toutes les photos liées à un commentaire
+         * @return bool résultat de la suppression
+         */
+        public function deletePictures(int $intComment):bool{
+            // Requête
+            try{
+                $strQuery   = " DELETE FROM picture
+                                WHERE pic_comment_id = :id;";
+                
+                $prep = $this->_db->prepare($strQuery);
+                $prep->bindValue(":id", $intComment, PDO::PARAM_INT);
+
+                $prep->execute();
+
+            } catch (PDOException $e){
+                return false;
+            }
+            return true;
+        }
+
+        // Juliette - 21/02/2025
+        /**
+         * Récupération d'un tableau des id des commentaires écrits par un utilisateur
+         * @return array tableau des id
+         */
+        public function getIdComm(string $strId):array{
+            $strQuery   = " SELECT  comm_id
+                            FROM comment
+                            WHERE comm_user_id = '".$strId."';";
+            
+            $arrCommId = $this->_db->query($strQuery)->fetchAll();
+
+            return $arrCommId;
         }
     }

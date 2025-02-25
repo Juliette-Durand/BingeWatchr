@@ -8,9 +8,9 @@
 
     class MotherCtrl{
         
-        protected array $_arrData = array(); /**< Tableau clé/valeur regroupant les données retournées par les controllers et utilisées dans les views */
+        protected array     $_arrData = array(); /**< Tableau clé/valeur regroupant les données retournées par les controllers et utilisées dans les views */
         protected array 	$_arrErrors 	= array();
-		protected string 	$_strSuccess 	= "";
+	    protected string 	$_strSuccess 	= "";
 
         /**
          * Constructeur de la classe

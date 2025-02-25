@@ -132,7 +132,7 @@
 				$prep->bindValue(':bio', $objUser->getBio(), PDO::PARAM_STR);
 				$prep->bindValue(':avatar', $objUser->getAvatar(), PDO::PARAM_STR);
 				if ($boolPwd === true){
-					$prep->bindValue(':password', $objUser->getPassword(), PDO::PARAM_STR);
+					$prep->bindValue(':password', $objUser->getPwdHash(), PDO::PARAM_STR);
 				}
 				
 				//var_dump($prep->execute());
@@ -222,6 +222,10 @@
 			return true;
 		}
 
+		/**
+		 * Récupération de l'avatar d'un utilisateur selon son id
+		 * @param string $strId nom du fichier de l'avatarstea
+		 */
 		public function displayAvatar(string $strId):array{
 			$strQuery	= "	SELECT user_avatar
 							FROM user
