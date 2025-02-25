@@ -214,6 +214,19 @@
 
 
         /**
+         * Requête pour dernier ID d'un film
+         * @return $intOneMovie Tableau des movies de la bdd
+         */
+        public function lastMovieId(){
+            $strQueryOneMovie = "SELECT movie_id FROM movie 
+                                    ORDER BY movie_id DESC
+                                    LIMIT 1";
+            
+            $intOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
+            return $intOneMovie;
+        }
+        
+        /**
          * Function pour edit movie
          * OPTIONEL
          */

@@ -3,6 +3,7 @@
      * Controleur enfant de MotherController pour la gestion des films
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
+     * Modification par : Arlind Halimi
      * Dernière modification par Juliette le 14/02/2025
      */
 
@@ -109,7 +110,7 @@
       }
          
       /**
-      * Page "form movie"
+      * Page form movie pour l'ajout d'un film
       * @author Arlind Halimi
       * @date 04/02/2025 
       */
@@ -134,7 +135,7 @@
          //$objActorEntity      = new ActorEntity();
          $objActorModel 	   = new ActorModel();
          
-            
+
          // selectionner les acteurs et les categories
          $arrActor      = $objActorModel->NameSurnameActors();
          $arrCategory   = $objMovie->infoCategory();
@@ -224,7 +225,7 @@
                $objMovieEntity->setPoster($strFileName);
             }
             
-
+            
             // Si aucune erreur, traitement 	
             if (count($this->_arrErrors) === 0){
                // => Formulaire OK
@@ -237,7 +238,8 @@
                //Informer l'utilisateur si einsertion ok/pas ok
                if($boolOK){
                   $_SESSION['success'] 	= "L'insertion est passée avac succes.";
-                  header( "Location:index.php", true);
+                  $lastIdMovie = $objMovie->lastMovieId()["movie_id"];
+                  header( "Location:index.php?ctrl=movie&action=page_dun_film&id=".$lastIdMovie."", true);
                   exit();
                }else{
                   $this->_arrErrors[]="L'insertion s'est mal passée";
@@ -265,9 +267,9 @@
       }
 
       /**
-       * Page d'un film
+       * Page d'un film pour afficher les détails d'un film
          * @author Arlind Halimi
-         * 05/02/2025 par Arlind Halimi
+         * @date 05/02/2025 par Arlind Halimi
          */
       public function page_dun_film(){
          require_once("entities/acteur_entity.php");
@@ -510,9 +512,9 @@
 
       
       /**
-       * Page "contact"
+       * Page contact
        * @author Arlind Halimi
-       * @date
+       * @date 14/02/2025
        */      
       public function contact(){
          // Variables d'affichage

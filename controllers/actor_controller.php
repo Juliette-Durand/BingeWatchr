@@ -14,6 +14,11 @@
             
         }
 
+        /**
+        * Page form actor pour l'ajout d'un acteur
+        * @author Arlind Halimi
+        * @date 10/02/2025 
+        */
         public function form_actor(){
             // Inclusion du ficher model et entity
             require_once("models/actor_model.php");
@@ -90,7 +95,7 @@
                     //Informer l'utilisateur si einsertion ok/pas ok
                     if($boolOK){
                         $_SESSION['success'] 	= "L'insertion est passée avac succes.";
-                        header( "Location:index.php", true);
+                        header( "Location:index.php?ctrl=movie&action=form_movie", true);
                         exit();
                     }else{
                         $this->_arrErrors[]="l'insertion s'est mal passée";

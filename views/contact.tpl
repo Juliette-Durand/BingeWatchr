@@ -26,7 +26,7 @@
 		</div>
 		<div class="my-3">
 			<label class="form-label" for="message">Message</label>
-			<textarea class="form-control" name="message" id="message">{$strName} Hey, je viens de tomber sur ce film et je pense qu'il pourrait te plaire ! 
+			<textarea class="form-control" name="message" id="message">Hey, je viens de tomber sur ce film et je pense qu'il pourrait te plaire ! 
 Link: {assign var="previous_page" value=$smarty.server.HTTP_REFERER|default:''}
 {$previous_page}
 			</textarea>
