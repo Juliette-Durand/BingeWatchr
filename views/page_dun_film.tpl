@@ -26,13 +26,6 @@
                     
                 {if isset($smarty.session.user)}
                     <form class="col-10 form-control" method="post" id="movie_form" enctype="multipart/form-data">
-                        {if count($arrErrors) > 0}
-                            <div class="alert alert-danger">
-                                {foreach $arrErrors as $strError}
-                                    <p>{$strError}</p>
-                                {/foreach}
-                            </div>
-                        {/if}
                         <label class="col-12" for="title">Title comment</label>
                         <input class="col-12 form-control my-3 {if $arrErrors['title']|isset} is-invalid {/if}" type="text" name="title" id="title" value="{$strTitleCom}">
                         <textarea class="col-12 form-control {if $arrErrors['content']|isset} is-invalid {/if}" name="content" id="content" value="">{$strContentCom}</textarea>

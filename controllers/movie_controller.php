@@ -360,6 +360,7 @@
          // --- Juliette - 13/02/2025 - Requête insertion commentaire + photos
          // Exécute la requête une première fois pour savoir si la limite de photos est déjà atteinte ou non
          $intNbTotalPic = $objCommentModel->countPictures($objMovie->getId());
+         $objCommentEntity = new CommentEntity(); 
 
          // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
          require_once("entities/picture_entity.php");
@@ -370,11 +371,11 @@
             
             // Vérifie le contenu du titre
             if($objCommentEntity->getTitle() == ""){
-               $arrErrors['title'] = "Le champ Titre est obligatoire";
+               $this->_arrErrors['title'] = "Le champ Titre est obligatoire";
             }
             // Vérifie le contenu du contenu
             if($objCommentEntity->getContent() == ""){
-               $arrErrors['content'] = "Le champ Contenu est obligatoire";
+               $this->_arrErrors['content'] = "Le champ Contenu est obligatoire";
             }
             // Vérifie si un fichier est importé et le nombre de fichiers importés
             if($_FILES['pictures']['error'][0] != 4){
@@ -387,11 +388,11 @@
                // Vérifie que le nombre de fichiers importé ne dépasse pas la limite max pour le film
                if(($intNbTotalPic + $intImportedPic) > 10){
                   $intRestPic = 10 - $intNbTotalPic;
-                  $arrErrors['picture'] = "Vous dépassez la limite de photos accordées à ce film. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
+                  $this->_arrErrors['picture'] = "Vous dépassez la limite de photos accordées à ce film. Vous ne pouvez en ajouter que ".$intRestPic." maximum.";
                } else {
                   for ($i = 0; $i < $intImportedPic; $i++){
                      if ($_FILES['pictures']['error'][$i] == 1){
-                        $arrErrors['import'] = $_FILES['pictures']['name'][$i]." est trop lourde.";
+                        $this->_arrErrors['import'] = $_FILES['pictures']['name'][$i]." est trop lourde.";
                         break;
                      }
                   }
@@ -400,7 +401,7 @@
             }
             
             // Pas d'erreur dans le formulaire -> on traite la donnée
-            if(count($arrErrors) == 0){
+            if(count($this->_arrErrors) == 0){
                // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
                $idComment = $objCommentModel->addComment($objCommentEntity);
 
@@ -458,13 +459,13 @@
                         $boolPicQuery = $objCommentModel->addPicture($objPicture);
 
                         if($boolPicQuery===false){
-                           $arrErrors['import']= "Erreur lors de l'importation des images";
+                           $this->_arrErrors['import']= "Erreur lors de l'importation des images";
                            break;
                         }
                      }
 
                      // Si erreur dans le traitement des données, on supprime le commentaire qui vient d'être inséré
-                     if(count($arrErrors) != 0){
+                     if(count($this->_arrErrors) != 0){
                         $objCommentModel->deleteComment($idComment);
                         $_SESSION['error']= "Erreur lors de l'enregistrement du commentaire";
                      }

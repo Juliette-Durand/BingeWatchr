@@ -6,6 +6,9 @@
 
 {block name="contenu"}
     <section class="container" id="create_account">
+        <div class="container mb-5">
+            <h1>{$strTitle}</h1>
+        </div>
         <form method="post" class="row" enctype="multipart/form-data" >
             <div class="col-5">
                 <input type="file" name="profile_picture" id="profile_picture">

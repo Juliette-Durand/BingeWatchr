@@ -127,10 +127,20 @@
             if(str_contains($strServReferer,'action=comment_manage')){
 
                 // Suppression des photos associées au commentaire
-                $boolDelPic = $this->_objCommentModel->deletePictures($intId);
+                require_once("models/picture_model.php");
+                $objPictureModel = new PictureModel();
+
+                $arrPictures = $objPictureModel->findPictures($intId);
+                $boolDelPic = $objPictureModel->deletePictures($intId);
                 
                 // Si suppression des photos bien réalisée, suppression du commentaire
                 if($boolDelPic === true){
+                    if(is_array($arrPictures)){
+                        foreach($arrPictures as $strFile){
+                            var_dump($strFile['pic_file']);
+                            unlink("assets/img/movies/movie_pictures/".$strFile['pic_file']);
+                        }
+                    }
                     $boolDelComm = $this->_objCommentModel->deleteComment($intId);
 
                     // Succès de la suppression du commentaire, redirection vers la page de gestion des commentaires

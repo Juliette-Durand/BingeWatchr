@@ -389,7 +389,11 @@
                 $arrComment = $objCommentModel->getIdComm($strUser);
                 foreach($arrComment as $intId){
                     // Suppression des potentielles photos associées
+                    $arrPictures = $objPictureModel->findPictures($intId['comm_id']);
                     $objPictureModel->deletePictures($intId['comm_id']);
+                    foreach($arrPictures as $strFile){
+                        unlink("assets/img/movies/movie_pictures/".$strFile);
+                    }
                 }
                 // Suppression des commentaires
                 $objCommentModel->deleteComment($strUser, false);
@@ -454,7 +458,9 @@
                 // Vérification de l'ID
                 if($objUser->getId() == ""){
                     $this->_arrErrors['pseudo']    =   'Le champ "Pseudo" est obligatoire';
-                } else {
+                } else if (preg_match("/ /", $objUser->getId())){
+                    $this->_arrErrors['pseudo']    =   "Le Pseudo ne peut pas contenir d'espaces";
+                }else {
                     $boolId   =   $this->_objUserModel->verifId($objUser->getId());
                     if ($boolId === true){
                         $this->_arrErrors['pseudo'] =   "Ce pseudo est déjà utilisé";
