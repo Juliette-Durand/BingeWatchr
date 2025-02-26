@@ -2,14 +2,14 @@
     /**
      * Controleur enfant de MotherController pour la gestion des commentaires
      * @author Juliette Durand
-     * Créé le 17/02/2025 - Dernière modification le 18/02/2025 par Juliette Durand
+     * Créé le 17/02/2025 - Dernière modification le 25/02/2025 par Juliette Durand
      */
 
     require_once("mother_controller.php");
     
     class CommentCtrl extends MotherCtrl{
 
-        private object $_objCommentModel; /**< Object Comment utilisé dans tous les controllers, instancié en CommentModel et qui sert à l'exécution des requêtes */
+        private object $_objCommentModel; /**< Object Comment utilisé dans tous le controller, instancié en CommentModel et qui sert à l'exécution des requêtes */
 
         /**
          * Constructeur de la classe
@@ -27,7 +27,12 @@
          */
         public function comment_manage(){
 
-            
+            // Vérification des droits
+            if((!isset($_SESSION['user'])) || ($_SESSION['user']->getRole() == "user")){
+                header("Location:index.php?ctrl=error&action=error403");
+                exit();
+            }
+
             require_once("entities/user_entity.php");
             require_once("models/user_model.php");
             require_once("entities/picture_entity.php");
@@ -107,7 +112,13 @@
          */
         public function delete_comment(){
 
-            // Récupérationd de l'id en URL
+            // Vérification des droits
+            if((!isset($_SESSION['user'])) || ($_SESSION['user']->getRole() == "user")){
+                header("Location:index.php?ctrl=error&action=error403");
+                exit();
+            }
+
+            // Récupération de l'id en URL
             $intId = $_GET['id']??0;
             // Récupération de la provenance de l'utilisateur (dernier url)
             $strServReferer    =   $_SERVER['HTTP_REFERER']??"";
@@ -116,17 +127,30 @@
             if(str_contains($strServReferer,'action=comment_manage')){
 
                 // Suppression des photos associées au commentaire
-                $boolDelPic = $this->_objCommentModel->deletePictures($intId);
+                require_once("models/picture_model.php");
+                $objPictureModel = new PictureModel();
+
+                $arrPictures = $objPictureModel->findPictures($intId);
+                $boolDelPic = $objPictureModel->deletePictures($intId);
                 
                 // Si suppression des photos bien réalisée, suppression du commentaire
                 if($boolDelPic === true){
+                    if(is_array($arrPictures)){
+                        foreach($arrPictures as $strFile){
+                            var_dump($strFile['pic_file']);
+                            unlink("assets/img/movies/movie_pictures/".$strFile['pic_file']);
+                        }
+                    }
                     $boolDelComm = $this->_objCommentModel->deleteComment($intId);
 
                     // Succès de la suppression du commentaire, redirection vers la page de gestion des commentaires
                     if($boolDelComm === true){
-                        header("Location:index.php?ctrl=comment&action=comment_manage");
-                        exit();
+                        $_SESSION['success']	=	"Le commentaire a bien été supprimé";
+                    } else {
+                        $_SESSION['error']	=	"Erreur lors de la suppression du commentaire, veuillez réessayer plus tard";
                     }
+                    header("Location:index.php?ctrl=comment&action=comment_manage");
+                    exit();
                 }
             }
 

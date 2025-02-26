@@ -14,29 +14,29 @@
 							<li class="nav-item">
 								<a class="nav-link" href="index.php?ctrl=movie&action=home">Accueil</a>
 							</li>
-							<li class="nav-item">
+							{* <li class="nav-item">
 								<a class="nav-link" href="collection.php">Ma collection</a>
-							</li>
+							</li> *}
 							<li class="nav-item">
 								<a class="nav-link" href="index.php?ctrl=movie&action=allmovies">Tous les films</a>
 							</li>
-							{if ((isset($_SESSION['user'])) && ($_SESSION['user']->getRole() != "user"))}
+							{if ((isset($smarty.session.user)) && ($smarty.session.user->getRole() != "user"))}
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 										Modération
 									</a>
 	
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li>
+										{* <li><a class="dropdown-item" href="#">Demandes d'ajout de film</a></li> *}
 										<li><a class="dropdown-item" href="index.php?ctrl=comment&action=comment_manage">Gestion des commentaires</a></li>
 										<li><a class="dropdown-item" href="index.php?ctrl=user&action=user_role_manage">Gestion des utilisateurs</a></li>
 									</ul>
 								</li>
 							{/if}
-							{if $_SESSION['user']|isset}
+							{if $smarty.session.user|isset}
 									<li class="nav-item dropdown profile_picture">
 										<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<div class="pic_container"><img src="assets/img/users/profile_pictures/{$_SESSION['user']->getAvatar()}" alt=""></div>
+											<div class="pic_container"><img src="assets/img/users/profile_pictures/{$smarty.session.user->getAvatar()}" alt=""></div>
 										</a>
 										<ul class="dropdown-menu">
 											<li><a class="dropdown-item" href="index.php?ctrl=user&action=my_account">Mon compte</a></li>

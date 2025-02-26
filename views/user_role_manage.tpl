@@ -2,6 +2,9 @@
 	* Page de gestion des rôles des utilisateurs
 	* @author Juliette Durand
 	*}
+{extends file="views/layout.tpl"}
+
+{block name="contenu"}
 		<div class="container mb-5">
 			<h1>{$strTitle}</h1>
 		</div>
@@ -17,11 +20,10 @@
 					</form>
 				</div>
 				<div class="accordion" id="accordionListUsers">
-					{foreach $arrUser as $arrDetUser}
-						$objUser = new UserEntity();
-						$objUser->hydrate($arrDetUser);
-						{include file="views/_partial/user_item.php"}
+				{foreach $arrUser as $objUser}
+					{include file="views/_partial/user_item.tpl"}
 					{/foreach}
 				</div>
 			</div>
         </section>
+{/block}

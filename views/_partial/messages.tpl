@@ -6,7 +6,11 @@
     </div>
 {/if}
 {if ($strSuccess != "")}
-    <div class="container alert alert-success">
-        <p>{$strSuccess}</p>
-    </div>
+<div class="container alert alert-success">
+    <p>{$strSuccess}</p>
+</div>
+{elseif ($strError != "")}
+<div class="container alert alert-danger">
+    <p>{$strError}</p>
+</div>
 {/if}	

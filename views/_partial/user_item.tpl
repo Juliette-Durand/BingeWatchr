@@ -11,16 +11,13 @@
 									<!-- Partie droite -->
 									<div class="user_item_right d-flex align-items-center">
 										<span class="user_role">
-											{switch $objUser->getRole()}
-												{case "user"}
-													{"Watchr"}
-													{break}
-												{case "modo"}
-													{Modérateur"}
-													{break}
-												{case "admin"}
-													{Administrateur"}
-													{break}
+											{if $objUser->getRole() == "user" }
+												{"Watchr"}
+											{elseif $objUser->getRole() == "modo" }
+												{"Modérateur"}
+											{elseif $objUser->getRole() == "admin" }
+												{"Administrateur"}
+											{/if}
 										</span>
 										<a class="btn btn-primary ms-2" data-bs-toggle="collapse" href="#collapse{$objUser->getId()}" role="button" aria-expanded="true" aria-controls="collapse{$objUser->getId()}">
 											Gérer l'utilisateur
@@ -31,7 +28,7 @@
 							<div id="collapse{$objUser->getId()}" class="accordion-collapse collapse" data-bs-parent="#accordionListUsers">
 								<div class="accordion-body mt-3">
 									<form method="POST" class="user_list_form d-flex justify-content-between align-items-end">
-										{if (($_SESSION['user']->getRole() == 'admin') && ($objUser->getRole() != 'admin'))}
+										{if (($smarty.session.user->getRole() == 'admin') && ($objUser->getRole() != 'admin'))}
 										<div class="form_left">
 											<input type="hidden" name="user" value="{$objUser->getId()}">
 											<select name="role">
@@ -44,11 +41,11 @@
 										</div>
 										{/if}
 
-										{if ((($_SESSION['user']->getRole() == 'admin') && ($objUser->getRole() != 'admin')) ||
-												(($_SESSION['user']->getRole() == 'modo') && ($objUser->getRole() == 'user')) ||
-												(($_SESSION['user']->getId() == $objUser->getId())))}
+										{if ((($smarty.session.user->getRole() == 'admin') && ($objUser->getRole() != 'admin')) ||
+												(($smarty.session.user->getRole() == 'modo') && ($objUser->getRole() == 'user')) ||
+												(($smarty.session.user->getId() == $objUser->getId())))}
 											<div class="form_right">
-												<a href="future_index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger">Supprimer l'utilisateur</a>
+												<a href="index.php?ctrl=user&action=delete_account&id={$objUser->getId()}" class="btn btn-danger">Supprimer l'utilisateur</a>
 											</div>
 										{/if}
 									</form>
