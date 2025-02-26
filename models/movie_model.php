@@ -87,7 +87,7 @@
         * Méthode pour la recherche de films par filtre avancé 
         * @return array tableau des films après exécution de la requête
         */
-        public function advSearchMovie():array {
+        public function advSearchMovie(bool $boolDisplay = false):array {
             $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id
                         FROM movie
                             INNER JOIN belong ON bel_movie_id = movie_id 
@@ -117,6 +117,13 @@
             if($this->intStartTime != 0 || $this->intEndTime != 0) {
                 $strQuery .= $strWhere." TIME_TO_SEC(movie_duration)/60 BETWEEN ".$this->intStartTime." AND ".$this->intEndTime;
             }
+
+            // Vérifier si le bool est false -> Afficher tous les films à l'affiche
+            if($boolDisplay == true) {
+                $strQuery		.= " WHERE movie_display IS NOT NULL";
+            }
+
+            $strQuery .= " ORDER BY movie_creation_date DESC";
 
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
