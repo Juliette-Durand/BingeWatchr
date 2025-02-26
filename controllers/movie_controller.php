@@ -374,9 +374,9 @@
          // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
          require_once("entities/picture_entity.php");
          if(count($_POST) > 0){ 
-            $objNewCommentEntity->hydrate($_POST);
-            $objNewCommentEntity->setMovie_id($objMovie->getId());
-            $objNewCommentEntity->setUser_id($_SESSION['user']->getId());
+            $objCommentEntity->hydrate($_POST);
+            $objCommentEntity->setMovie_id($objMovie->getId());
+            $objCommentEntity->setUser_id($_SESSION['user']->getId());
             
             // Vérifie le contenu du titre
             if($objCommentEntity->getTitle() == ""){
@@ -412,7 +412,7 @@
             // Pas d'erreur dans le formulaire -> on traite la donnée
             if(count($this->_arrErrors) == 0){
                // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
-               $idComment = $objCommentModel->addComment($objNewCommentEntity);
+               $idComment = $objCommentModel->addComment($objCommentEntity);
 
                // Insertion du commentaire réussie
                if($idComment !== false){
@@ -494,7 +494,7 @@
                }
             }
          }
-         $this->_arrData['objCommentEntity'] = $objNewCommentEntity;
+         $this->_arrData['objCommentEntity'] = $objCommentEntity;
          $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
          // --- Fin Juliette
          
