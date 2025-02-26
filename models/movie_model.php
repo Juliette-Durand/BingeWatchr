@@ -66,7 +66,7 @@
   
         /** 
         * Récupération des 6 derniers films à afficher 
-        * @param bool Booléen qui indique si le champs movie_display est NULL ou non
+        * @param bool $boolDisplay Booléen qui indique si le champs movie_display est NULL ou non
         * @return array tableau des films 
         */
         public function movieList(bool $boolDisplay = true):array {
@@ -213,6 +213,19 @@
         }
 
 
+        /**
+         * Requête pour dernier ID d'un film
+         * @return $intOneMovie Tableau des movies de la bdd
+         */
+        public function lastMovieId(){
+            $strQueryOneMovie = "SELECT movie_id FROM movie 
+                                    ORDER BY movie_id DESC
+                                    LIMIT 1";
+            
+            $intOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
+            return $intOneMovie;
+        }
+        
         /**
          * Function pour edit movie
          * OPTIONEL

@@ -32,14 +32,14 @@
 
         /**
 		* Récupération du Name
-		* @return int Id
+		* @return string|int _id
 		*/
         public function getId():string|int{
             return $this->_id;
         }
         /**
 		* Mise à jour du Name
-		* @param int Id
+		* @param int|string $mixId
 		*/ 
         public function setId(int|string $mixId){
             $this->_id = $mixId;

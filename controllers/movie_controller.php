@@ -3,6 +3,7 @@
      * Controleur enfant de MotherController pour la gestion des films
      * @author Hugo Gomes
      * Créé le 31/01/2025 par Hugo Gomes
+     * Modification par : Arlind Halimi
      * Dernière modification par Juliette le 14/02/2025
      */
 
@@ -109,7 +110,7 @@
       }
          
       /**
-      * Page "form movie"
+      * Page form movie pour l'ajout d'un film
       * @author Arlind Halimi
       * @date 04/02/2025 
       */
@@ -134,7 +135,7 @@
          //$objActorEntity      = new ActorEntity();
          $objActorModel 	   = new ActorModel();
          
-            
+
          // selectionner les acteurs et les categories
          $arrActor      = $objActorModel->NameSurnameActors();
          $arrCategory   = $objMovie->infoCategory();
@@ -224,7 +225,7 @@
                $objMovieEntity->setPoster($strFileName);
             }
             
-
+            
             // Si aucune erreur, traitement 	
             if (count($this->_arrErrors) === 0){
                // => Formulaire OK
@@ -237,7 +238,8 @@
                //Informer l'utilisateur si einsertion ok/pas ok
                if($boolOK){
                   $_SESSION['success'] 	= "L'insertion est passée avac succes.";
-                  header( "Location:index.php", true);
+                  $lastIdMovie = $objMovie->lastMovieId()["movie_id"];
+                  header( "Location:index.php?ctrl=movie&action=page_dun_film&id=".$lastIdMovie."", true);
                   exit();
                }else{
                   $this->_arrErrors[]="L'insertion s'est mal passée";
@@ -265,9 +267,9 @@
       }
 
       /**
-       * Page d'un film
+       * Page d'un film pour afficher les détails d'un film
          * @author Arlind Halimi
-         * 05/02/2025 par Arlind Halimi
+         * @date 05/02/2025 par Arlind Halimi
          */
       public function page_dun_film(){
          require_once("entities/acteur_entity.php");
@@ -293,6 +295,19 @@
          $arrErrors = array();
          $arrComments = array();
          $arrComments = $objCommentModel->allComments();
+
+         $arrCommentToDisplay = array();
+
+         if($arrComments !== false){
+           // Récupération des commentaires pour affichage
+           foreach ($arrComments as $arrDetComment) {
+            $objCommentEntity = new CommentEntity();  
+            $objCommentEntity->hydrate($arrDetComment);
+            $arrCommentToDisplay[] = $objCommentEntity;
+         } 
+         $this->_arrData['arrComments']	= $arrCommentToDisplay;
+        }
+
          $arrCommentToDisplay = array();
          $strTitleCom = '';
          $strContentCom = '';
@@ -311,13 +326,7 @@
             header("Location:index.php?ctrl=error&action=error404");
          }
 
-         // Récupération des commentaires pour affichage
-         foreach ($arrComments as $arrDetComment) {
-            $objCommentEntity = new CommentEntity();  
-            $objCommentEntity->hydrate($arrDetComment);
-            $arrCommentToDisplay[] = $objCommentEntity;
-         } 
-         $this->_arrData['arrComments']	= $arrCommentToDisplay;
+       
 
          // --> Fonctionnel pour les commentaires mais par pour les photos - auteur Arlind
          //    if(count($_POST) > 0){
@@ -365,9 +374,9 @@
          // À l'envoi du formulaire, je vérifie si un fichier a été importé ou non
          require_once("entities/picture_entity.php");
          if(count($_POST) > 0){ 
-            $objCommentEntity->hydrate($_POST);
-            $objCommentEntity->setMovie_id($objMovie->getId());
-            $objCommentEntity->setUser_id($_SESSION['user']->getId());
+            $objNewCommentEntity->hydrate($_POST);
+            $objNewCommentEntity->setMovie_id($objMovie->getId());
+            $objNewCommentEntity->setUser_id($_SESSION['user']->getId());
             
             // Vérifie le contenu du titre
             if($objCommentEntity->getTitle() == ""){
@@ -403,7 +412,7 @@
             // Pas d'erreur dans le formulaire -> on traite la donnée
             if(count($this->_arrErrors) == 0){
                // Récupère le résultat de la requête d'ajout du commentaire (soit id du commentaire, sinon false)
-               $idComment = $objCommentModel->addComment($objCommentEntity);
+               $idComment = $objCommentModel->addComment($objNewCommentEntity);
 
                // Insertion du commentaire réussie
                if($idComment !== false){
@@ -485,7 +494,7 @@
                }
             }
          }
-         $this->_arrData['objCommentEntity'] = $objCommentEntity;
+         $this->_arrData['objCommentEntity'] = $objNewCommentEntity;
          $this->_arrData['intNbTotalPic'] = $intNbTotalPic;
          // --- Fin Juliette
          
@@ -503,9 +512,9 @@
 
       
       /**
-       * Page "contact"
+       * Page contact
        * @author Arlind Halimi
-       * @date
+       * @date 14/02/2025
        */      
       public function contact(){
          // Variables d'affichage
