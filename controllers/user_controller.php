@@ -586,7 +586,7 @@
             $this->_arrData['strTitle'] =   "Aide aux utilisateurs";
             // Variables fonctionnelles
             $this->_arrData['refPage']  =   "help";
-
+  
             $this->display('help');
         }
     }

@@ -44,11 +44,11 @@
                                         <h4>Durée du film (en minutes)</h4>
                                         <div class="col-5">
                                             <p><label>Min</label></p> 
-                                            <p><input type="number" name="minduration" class="form-control w-30" value="{$objMovieModel->intStartTime}"></p> 
+                                            <p><input type="number" name="minduration" class="form-control w-30" value="{$objMovieModel->intStartTime}" min="0"></p> 
                                         </div>
                                         <div class="col-5">
                                         <p><label>Max</label></p> 
-                                        <p><input type="number" name="maxduration" class="form-control w-30" value="{$objMovieModel->intEndTime}"></p> 
+                                        <p><input type="number" name="maxduration" class="form-control w-30" value="{$objMovieModel->intEndTime}" max="500"></p> 
                                         </div>
                                     </div>
                                 </div>
