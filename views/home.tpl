@@ -25,10 +25,11 @@
                 {/foreach}
         </div>
         {/if}
-
-        <div class="row">
-            <span>Vous ne trouvez pas le film que vous cherchez ?</span>
-            <a href="index.php?ctrl=movie&action=form_movie"><button type="button" class="btn btn-primary btn-sm">Ajoutez le ici</button></a>
-        </div>
+        {if isset($smarty.session.user)&&($smarty.session.user->getRole()=="admin" || $smarty.session.user->getRole()=="modo")}
+                <div class="row">
+                <span>Modérateur et Admin peuvent ajouter des films</span>
+                <a href="index.php?ctrl=movie&action=form_movie"><button type="button" class="btn btn-primary btn-sm">Ajoutez le ici</button></a>
+            </div>
+        {/if}
     </div>
     {/block}
