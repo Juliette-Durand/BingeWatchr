@@ -120,11 +120,11 @@
 
             // Vérifier si le bool est false -> Afficher tous les films à l'affiche
             if($boolDisplay == true) {
-                $strQuery		.= " WHERE movie_display IS NOT NULL";
+                $strQuery		.= $strWhere." movie_display IS NOT NULL";
             }
 
             $strQuery .= " ORDER BY movie_creation_date DESC";
-
+            //var_dump($strQuery);die;
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
         } 
