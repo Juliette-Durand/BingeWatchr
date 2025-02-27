@@ -15,7 +15,7 @@
                 <h2 class="mt-3 fw-bold">Compte</h2>
                     <h3 class="mt-3 fs-4">Créer un compte</h3>
                         <ul>
-                            <li>Se rendre sur l'onglet "S'inscire" dans la barre de navigation</li>            
+                            <li>Se rendre sur l'onglet "S'inscrire" dans la barre de navigation</li>            
                             <li>Inscrire une adresse mail valide</li>            
                             <li>Créer un mot de passe qui respecte les règles de sécurité</li>            
                             <li>Confirmer son mot de passe en écrivant exactement le même que dans l'onglet au dessus</li>            

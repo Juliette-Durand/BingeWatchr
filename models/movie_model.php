@@ -74,6 +74,7 @@
                             FROM movie";  
             if ($boolDisplay){
                 $strQuery		.= " WHERE movie_display IS NOT NULL
+                                        AND movie_display < DATE_ADD(movie_display, INTERVAL 4 WEEK)
                                         ORDER BY movie_display DESC";
             } else {
             $strQuery		.= " ORDER BY movie_creation_date DESC";
@@ -124,7 +125,6 @@
             }
 
             $strQuery .= " ORDER BY movie_creation_date DESC";
-            //var_dump($strQuery);die;
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
         } 
