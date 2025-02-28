@@ -91,8 +91,9 @@
         public function advSearchMovie(bool $boolDisplay = false):array {
             $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id
                         FROM movie
-                            INNER JOIN belong ON bel_movie_id = movie_id 
-                            INNER JOIN category ON cat_id = bel_cat_id";
+                            LEFT OUTER JOIN belong ON bel_movie_id = movie_id 
+                            LEFT OUTER JOIN category ON cat_id = bel_cat_id";
+
             $strWhere = " WHERE";
             $arrCat = $_POST['cat']??[];  
 
