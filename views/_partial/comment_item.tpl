@@ -5,16 +5,20 @@
                                 <div class="comment_item_left">
                                     <img src="assets/img/users/profile_pictures/{$objComment['user']->getAvatar()}" alt=""/>
                                     <span class="user_title ms-2">{$objComment['user']->getFull_name()}</span>
-                                    <span class="infos_comm ms-2">{$objComment['comment']->getMovie_name()} - {$objComment['comment']->getDateFormat()}</span>
+                                    <span class="infos_comm ms-2">{$objComment['comment']->getMovie_name()} - {$objComment['comment']->getDateFormat()}
+                                        {if $objComment['picture']|isset}
+                                            <i class="fa-solid fa-image ms-2"></i>
+                                        {/if}
+                                    </span>
                                 </div>
 
                                 <!-- Partie droite -->
                                 <div class="comment_item_right d-flex align-items-center">
-                                    <span class="user_role">
+                                    <span class="comment_status">
                                         {if $objComment['comment']->getState() == "U"}
-                                            Non publié
+                                            <span class="status_xmark me-2"><i class="fa-solid fa-circle-xmark"></i></span>Non publié
                                         {else}
-                                            Publié
+                                            <span class="status_check me-2"><i class="fa-solid fa-circle-check"></i></span>Publié
                                         {/if}
                                     </span>
                                     <a class="btn btn-primary ms-2" data-bs-toggle="collapse" href="#collapse{$objComment['comment']->getId()}" role="button" aria-expanded="true" aria-controls="collapse{$objComment['comment']->getId()}">
