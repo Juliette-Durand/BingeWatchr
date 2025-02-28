@@ -54,12 +54,12 @@
  
         /**
          * Function pour select firstname et lastname de actor
-         * @return array $arrActors
+         * @return array des information de actor id, firstname et lastname
          */
-        public function NameSurnameActors(){
+        public function NameSurnameActors():array{
             $strQuery      = "SELECT actor_id, actor_first_name, actor_last_name 
                                 FROM actor
-                                ORDER BY actor_last_name ASC;";
+                                ORDER BY actor_first_name ASC;";
 
             $arrActors = $this->_db->query($strQuery)->fetchAll();
 

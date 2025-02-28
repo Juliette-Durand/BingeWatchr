@@ -132,7 +132,6 @@
          // Instanciation
          $objMovie		      = new MovieModel();
          $objMovieEntity	   = new MovieEntity();
-         //$objActorEntity      = new ActorEntity();
          $objActorModel 	   = new ActorModel();
          
 
@@ -148,7 +147,6 @@
          $strDate 		= $_POST['release']??"";
          $strSynopsis	= $_POST['desc']??"";
          $strDuration	= $_POST['duration']??"";
-         $strMovieDisplay = $_POST['display']??"";
          $idActor 		= $_POST["actor"]??"";
          $idCategory    = $_POST['category'] ?? "";
 
@@ -250,7 +248,6 @@
          // besoin de déclarer toutes les variables utilisées dans le formulaire
          $this->_arrData['strPhoto']         = $strPhoto;
          $this->_arrData['strDate']          = $strDate;
-         $this->_arrData['strMovieDisplay']  = $strMovieDisplay;
          $this->_arrData['strDuration']      = $strDuration;
          $this->_arrData["idActor"]          = $idActor;
          $this->_arrData["strSynopsis"]      = $strSynopsis ;

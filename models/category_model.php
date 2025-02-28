@@ -14,7 +14,8 @@ class CategoryModel extends MotherModel{
     
     public function findCategory() {
         $strQuery   = "SELECT cat_id, cat_name
-                    FROM category;";
+                            FROM category
+                            ORDER BY cat_name ASC;";
         $arrCat     = $this->_db->query($strQuery)->fetchAll();
         return $arrCat;
     }
