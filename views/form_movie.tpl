@@ -23,10 +23,6 @@
 						<input type="date" name="release" id="release" class="form-control {if $arrErrors['release']|isset} is-invalid {/if}" value="{$strDate}">
 					</div>
 					<div>
-						<label for="display">Date mise a l'affiche</label>
-						<input type="date" name="display" id="display" class="form-control {if $arrErrors['date']|isset} is-invalid {/if}" value="{$strMovieDisplay}">
-					</div>
-					<div>
 						<label for="duration">Duration</label>
 						<input type="time" name="duration" id="duration" class="form-control {if $arrErrors['duration']|isset} is-invalid {/if}" value="{$strDuration}">
 					</div>
