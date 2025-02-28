@@ -296,6 +296,19 @@
          // Variables fonctionnelles
          $this->_arrData['refPage']  =  "page_dun_film";
 
+         // --- Juliette - 27/02/2025 - Tableau d'objets d'acteurs suite au passage en Smarty
+         $objActorsModel = new ActorModel();
+         $arrActors = $objActorsModel->findActor($idMovie);
+
+         $arrActorToDisplay = array();
+         foreach($arrActors as $actor){
+            $objOneActor = new ActorEntity();
+            $objOneActor->hydrate($actor);
+            $strActor = $objOneActor->getFirst_name()." ". $objOneActor->getLast_name();
+            $arrActorToDisplay[] = $strActor;
+         }
+         $this->_arrData['arrActors'] = $arrActorToDisplay;
+         // --- Fin Juliette
 
          
          $arrErrors = array();

@@ -86,6 +86,25 @@ nav .btn{
     margin-left:1rem;
 }
 
+/* Footer */
+footer.container-fluid{
+    background-color: var(--secund-color);
+}
+footer .row{
+    background: none;
+}
+footer a.logo{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+footer .socials a{
+    font-size: 1.6rem;
+}
+
+/* Movie card */
+div.card h3{
+    font-size: 1.2rem;
+}
 
 
 /* Page mon compte - PROFILE */
