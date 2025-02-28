@@ -47,16 +47,41 @@
             return $this->_db->lastInsertId();
         }
 
+        // Requête Arlind pour récupération des commentaires sous les films
+        // /**
+        // * Récupération de tous les Comments
+        // * @return array $arrComments tableau des comments
+        // */
+        // public function allComments() :array|bool{
+        //     $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
+        //                 FROM comment
+        //                 WHERE comm_movie_id= ".$_GET['id']."
+        //                 ORDER BY comm_date DESC
+        //                 LIMIT 3;";
+
+        //     /* Je récupère le résultat de ma requête d'utilisateurs */
+        //     $arrComments  = $this->_db->query($strQuery)->fetchAll();
+            
+        //     //return $arrComments;
+
+        //     if($arrComments==0){
+        //         return false;
+        //      }else{
+        //         return $arrComments;
+        //     }
+        // }
+
+        /* Modifiée par Juliette le 27/02/25 pour avoir que les commentaires publiés*/
         /**
-        * Récupération de tous les Comments
+        * Récupération de tous les commentaires
         * @return array $arrComments tableau des comments
         */
         public function allComments() :array|bool{
             $strQuery = "SELECT comm_id, comm_title, comm_content, comm_date, comm_user_id 
                         FROM comment
                         WHERE comm_movie_id= ".$_GET['id']."
-                        ORDER BY comm_date DESC
-                        LIMIT 3;";
+                        AND comm_state = 'P'
+                        ORDER BY comm_date DESC;";
 
             /* Je récupère le résultat de ma requête d'utilisateurs */
             $arrComments  = $this->_db->query($strQuery)->fetchAll();

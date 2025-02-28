@@ -2,7 +2,7 @@
     /**
      * Controleur enfant de MotherController pour la gestion utilisateur
      * @author Juliette Durand
-     * Créé le 28/01/2025 - Dernière modification le 21/02/2025 par Juliette Durand
+     * Créé le 28/01/2025 - Dernière modification le 26/02/2025 par Hugo Gomes
      */
 
     require_once("mother_controller.php");
@@ -152,21 +152,74 @@
                 // Modification de l'avatar
                 if($_FILES['avatar']['error']!=4){
                     $boolAvatar   =   true;
-                    // Vérifie les caractéristiques du fichier importé
-                    if(($_FILES['avatar']['size']<1000000)&&($_FILES['avatar']['type']=='image/jpeg')){
-                        // Récupération de la source
-                        $strSource      =   $_FILES['avatar']['tmp_name'];
-                        // Définition de la destination
-                        $strDestination = 'assets/img/users/profile_pictures/'.$_FILES['avatar']['name'];
-                        // Déplacement du fichier dans le dossier prévu à cet effet
-                        move_uploaded_file($strSource, $strDestination);
-
-                    // Génération de l'erreur si l'image ne respecte pas les caractéristiques
-                    } else if ($_FILES['avatar']['type']!='image/jpeg'){
-                            $this->_arrErrors['avatar']    =   "L'image importée doit être au format JPG";
+                    if (($_FILES['avatar']['type']!='image/jpeg') && ($_FILES['avatar']['type']!='image/webp') && ($_FILES['avatar']['type']!='image/png')){
+                        $this->_arrErrors['avatar']    =   "L'image de profil ne peut avoir un format différent de JPG, WEBP ou PNG";
                     } else if ($_FILES['avatar']['size']>1000000){
                         $this->_arrErrors['avatar']    =   "L'image importée doit être inférieure à 1Mo";
-                    }
+                    } else {
+                        $arrImage = $_FILES['avatar'];
+                        if($arrImage['error']==0){
+    
+                            $boolAvatar = true;
+                            $strSource = $arrImage['tmp_name']; // Récupération de l'image
+    
+                            // Traitement de l'image importée
+                            // Création d'une imageGD
+                            switch($arrImage['type']){
+                                case "image/webp":
+                                    $image = imagecreatefromwebp($strSource);
+                                    break;
+                                case "image/jpeg":
+                                    $image = imagecreatefromjpeg($strSource);
+                                    break;
+                                case "image/png":
+                                    $image = imagecreatefrompng($strSource);
+                                    break;
+                            }
+                            
+                            $intVarChar = 40; // Nb de caractères maximum en BDD
+
+                            $arrFileExplode	= explode(".", $arrImage['name']);
+                            $strFileExt = $arrFileExplode[count($arrFileExplode)-1]; // Récupération de l'extension
+                            $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random
+                            $strFileName = substr($strFileName, -$intVarChar); // Troncage du nom de fichier pour rentrer en BDD
+                            $strDest = "assets/img/users/profile_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+    
+                            list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
+    
+                            $intShortSize   = 300; // Largeur de l'image finale
+    
+                            // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
+                            if ($intWidth < $intHeight){
+                                // Format portrait
+                                $boolPortrait = true;
+                                $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
+                                $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
+                                imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                            } else {
+                                // Format paysage
+                                $boolPortrait = false;
+                                $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
+                                $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
+                                imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
+                            }
+    
+                            // Calcul du delta entre les dimensions des côtés
+                            $intDelta = round(($intLongSize-$intShortSize)/2);
+    
+                            // Création d'un nouveau conteneur d'image carré
+                            $objNewMask     = imagecreatetruecolor($intShortSize,$intShortSize);
+    
+                            if ($boolPortrait){
+                                // Format portrait
+                                $imageResized   = imagecrop($objMask, ['x' => 0, 'y' => $intDelta, 'width' => $intShortSize, 'height' => $intShortSize]);
+                            } else {
+                                // Format paysage
+                                $imageResized   = imagecrop($objMask, ['x' => $intDelta, 'y' => 0, 'width' => $intShortSize, 'height' => $intShortSize]);
+                            }
+                            imagewebp($imageResized,$strDest);
+                        }
+                    }                    
                 }
                 
                 $strOldPwd  =   $_POST['old_pwd']??"";
@@ -227,7 +280,7 @@
                     $objUser->hydrate($_POST);
                     $objUser->setId($_SESSION['user']->getId());
                     if ($boolAvatar){
-                        $objUser->setAvatar($_FILES['avatar']['name']);
+                        $objUser->setAvatar($strFileName);
                     }
                     if ($boolPwd){
                         $objUser->setPassword($_POST['new_pwd']);
@@ -241,6 +294,9 @@
                         $_SESSION['user']   =   $objUser;
                     } else {
                         $_SESSION['error']	=	"Erreur lors de la prise en compte des modifications, veuillez réessayer plus tard";
+                        if(isset($strFileName)){
+                            unlink("assets/img/users/profile_pictures/".$strFileName);
+                        }
                     }
                     header("Location:index.php?ctrl=user&action=my_account");
                     exit();
@@ -539,66 +595,75 @@
                 // Vérifie qu'une photo de profil a été importée
                 if(count($_FILES)>0){
                     $arrImage = $_FILES['profile_picture'];
-                    if($arrImage['error']==0){
-                        $boolAvatar = true;
-                        $strSource = $arrImage['tmp_name']; // Récupération de l'image
+                    if(($arrImage['type']!="image/webp") && ($arrImage['type']!="image/jpeg") && ($arrImage['type']!="image/png")){
+                        $this->_arrErrors['picture']	= "L'image de profil ne peut avoir un format différent de JPEG, WEBP ou PNG";
+                    } else {
+                        if($arrImage['error']==0){
+    
+                            $boolAvatar = true;
+                            $strSource = $arrImage['tmp_name']; // Récupération de l'image
+    
+                            // Traitement de l'image importée
+                            // Création d'une imageGD
+                            switch($arrImage['type']){
+                                case "image/webp":
+                                    $image = imagecreatefromwebp($strSource);
+                                    break;
+                                case "image/jpeg":
+                                    $image = imagecreatefromjpeg($strSource);
+                                    break;
+                                case "image/png":
+                                    $image = imagecreatefrompng($strSource);
+                                    break;
+                            }
+                            
+                            $intVarChar = 40; // Nb de caractères maximum en BDD
 
-                        // Traitement de l'image importée
-                        // Création d'une imageGD
-                        switch($arrImage['type']){
-                            case "image/webp":
-                                $image = imagecreatefromwebp($strSource);
-                                break;
-                            case "image/jpeg":
-                                $image = imagecreatefromjpeg($strSource);
-                                break;
-                            case "image/png":
-                                $image = imagecreatefrompng($strSource);
-                                break;
+                            $arrFileExplode	= explode(".", $arrImage['name']);
+                            $strFileExt = $arrFileExplode[count($arrFileExplode)-1]; // Récupération de l'extension
+                            $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random
+                            $strFileName = substr($strFileName, -$intVarChar); // Troncage du nom de fichier pour rentrer en BDD
+                            $strDest = "assets/img/users/profile_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+    
+                            list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
+    
+                            $intShortSize   = 300; // Largeur de l'image finale
+    
+                            // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
+                            if ($intWidth < $intHeight){
+                                // Format portrait
+                                $boolPortrait = true;
+                                $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
+                                $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
+                                imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                            } else {
+                                // Format paysage
+                                $boolPortrait = false;
+                                $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
+                                $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
+                                imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
+                            }
+    
+                            // Calcul du delta entre les dimensions des côtés
+                            $intDelta = round(($intLongSize-$intShortSize)/2);
+    
+                            // Création d'un nouveau conteneur d'image carré
+                            $objNewMask     = imagecreatetruecolor($intShortSize,$intShortSize);
+    
+                            if ($boolPortrait){
+                                // Format portrait
+                                $imageResized   = imagecrop($objMask, ['x' => 0, 'y' => $intDelta, 'width' => $intShortSize, 'height' => $intShortSize]);
+                            } else {
+                                // Format paysage
+                                $imageResized   = imagecrop($objMask, ['x' => $intDelta, 'y' => 0, 'width' => $intShortSize, 'height' => $intShortSize]);
+                            }
+                            imagewebp($imageResized,$strDest);
+    
+                            
+                            $objUser->setAvatar($strFileName);
                         }
-
-                        $arrFileExplode	= explode(".", $arrImage['name']);
-                        $strFileExt = $arrFileExplode[count($arrFileExplode)-1]; // Récupération de l'extension
-                        $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random
-                        $strDest = "assets/img/users/profile_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
-
-                        list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
-
-                        $intShortSize   = 300; // Largeur de l'image finale
-
-                        // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
-                        if ($intWidth < $intHeight){
-                            // Format portrait
-                            $boolPortrait = true;
-                            $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
-                            $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
-                            imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
-                        } else {
-                            // Format paysage
-                            $boolPortrait = false;
-                            $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
-                            $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
-                            imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
-                        }
-
-                        // Calcul du delta entre les dimensions des côtés
-                        $intDelta = round(($intLongSize-$intShortSize)/2);
-
-                        // Création d'un nouveau conteneur d'image carré
-                        $objNewMask     = imagecreatetruecolor($intShortSize,$intShortSize);
-
-                        if ($boolPortrait){
-                            // Format portrait
-                            $imageResized   = imagecrop($objMask, ['x' => 0, 'y' => $intDelta, 'width' => $intShortSize, 'height' => $intShortSize]);
-                        } else {
-                            // Format paysage
-                            $imageResized   = imagecrop($objMask, ['x' => $intDelta, 'y' => 0, 'width' => $intShortSize, 'height' => $intShortSize]);
-                        }
-                        imagewebp($imageResized,$strDest);
-
-                        
-                        $objUser->setAvatar($strFileName);
                     }
+
                 }
 
                 if(count($this->_arrErrors) == 0){        
@@ -609,6 +674,9 @@
                         exit();
                     } else {
                         $_SESSION['account_creation']['error'] = "Erreur lors de la création du compte";
+                        if(isset($strFileName)){
+                            unlink("assets/img/users/profile_pictures/".$strFileName);
+                        }
                     }
                 }
             }
@@ -617,5 +685,18 @@
             $this->_arrData['objUser']		=  $objUser;
 
             $this->display('create_account');
+        }
+        /*
+        * Page d'aide aux utilisateurs
+        * Auteur Hugo
+        */
+        public function help() {
+            // Variables d'affichage
+            // Ce qui sert de h1 et/ou de nom dans le titre de la page
+            $this->_arrData['strTitle'] =   "Aide aux utilisateurs";
+            // Variables fonctionnelles
+            $this->_arrData['refPage']  =   "help";
+  
+            $this->display('help');
         }
     }

@@ -86,6 +86,25 @@ nav .btn{
     margin-left:1rem;
 }
 
+/* Footer */
+footer.container-fluid{
+    background-color: var(--secund-color);
+}
+footer .row{
+    background: none;
+}
+footer a.logo{
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+footer .socials a{
+    font-size: 1.6rem;
+}
+
+/* Movie card */
+div.card h3{
+    font-size: 1.2rem;
+}
 
 
 /* Page mon compte - PROFILE */
@@ -186,6 +205,11 @@ nav .btn{
     font-size: 1rem;
 }
 
+/* Page de tous les films */
+#adv_search_movie .accordion-header input[type=search]{
+    width:20rem;
+}
+
 /* Page de connexion (login) */
 #login input{
     margin-bottom: 1rem;
@@ -244,9 +268,15 @@ nav .btn{
     font-size: 1rem;
     opacity:0.5;
 }
-#comment_manage .user_role{
+#comment_manage .comment_status{
     font-size: 1rem;
 }
 #comment_manage .pic_comm_container img{
     height:15rem;
+}
+#comment_manage .comment_status .status_xmark{
+    color:rgb(211, 0, 56) !important;
+}
+#comment_manage .comment_status .status_check{
+    color:rgb(0, 186, 0) !important;
 }

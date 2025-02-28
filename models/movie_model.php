@@ -74,6 +74,7 @@
                             FROM movie";  
             if ($boolDisplay){
                 $strQuery		.= " WHERE movie_display IS NOT NULL
+                                        AND movie_display < DATE_ADD(movie_display, INTERVAL 4 WEEK)
                                         ORDER BY movie_display DESC";
             } else {
             $strQuery		.= " ORDER BY movie_creation_date DESC";
@@ -87,11 +88,12 @@
         * Méthode pour la recherche de films par filtre avancé 
         * @return array tableau des films après exécution de la requête
         */
-        public function advSearchMovie():array {
+        public function advSearchMovie(bool $boolDisplay = false):array {
             $strQuery = "SELECT DISTINCT movie_name, movie_poster, movie_id
                         FROM movie
-                            INNER JOIN belong ON bel_movie_id = movie_id 
-                            INNER JOIN category ON cat_id = bel_cat_id";
+                            LEFT OUTER JOIN belong ON bel_movie_id = movie_id 
+                            LEFT OUTER JOIN category ON cat_id = bel_cat_id";
+
             $strWhere = " WHERE";
             $arrCat = $_POST['cat']??[];  
 
@@ -118,6 +120,12 @@
                 $strQuery .= $strWhere." TIME_TO_SEC(movie_duration)/60 BETWEEN ".$this->intStartTime." AND ".$this->intEndTime;
             }
 
+            // Vérifier si le bool est false -> Afficher tous les films à l'affiche
+            if($boolDisplay == true) {
+                $strQuery		.= $strWhere." movie_display IS NOT NULL";
+            }
+
+            $strQuery .= " ORDER BY movie_creation_date DESC";
             $arrAdvMovie = $this->_db->query($strQuery)->fetchAll();
             return $arrAdvMovie;
         } 

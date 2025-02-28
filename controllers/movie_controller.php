@@ -82,7 +82,12 @@
 
          //Utilisation
          $arrCat           = $this->_objCatModel->findCategory();
-         $arrAdvMovie      = $this->_objMovieModel->advSearchMovie();
+         if (isset($_GET['bool']) && $_GET['bool'] == 1){
+            $boolDisplay      = true;
+         }else{
+            $boolDisplay      = false;
+         }
+         $arrAdvMovie     = $this->_objMovieModel->advSearchMovie($boolDisplay);
 
          $arrAdvMoviesToDisplay 	      = array();
          foreach ($arrAdvMovie as $arrDetMovies) {
@@ -105,6 +110,7 @@
          // Transmission des variables dans la vue
          $this->_arrData['objMovieModel']	= $this->_objMovieModel;
          $this->_arrData['strTitle']      = "Tous les films";
+         $this->_arrData['boolDisplay']   = $boolDisplay;
 
          $this->display('all_movies');
       }
@@ -287,6 +293,19 @@
          // Variables fonctionnelles
          $this->_arrData['refPage']  =  "page_dun_film";
 
+         // --- Juliette - 27/02/2025 - Tableau d'objets d'acteurs suite au passage en Smarty
+         $objActorsModel = new ActorModel();
+         $arrActors = $objActorsModel->findActor($idMovie);
+
+         $arrActorToDisplay = array();
+         foreach($arrActors as $actor){
+            $objOneActor = new ActorEntity();
+            $objOneActor->hydrate($actor);
+            $strActor = $objOneActor->getFirst_name()." ". $objOneActor->getLast_name();
+            $arrActorToDisplay[] = $strActor;
+         }
+         $this->_arrData['arrActors'] = $arrActorToDisplay;
+         // --- Fin Juliette
 
          
          $arrErrors = array();

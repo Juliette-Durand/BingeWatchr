@@ -47,6 +47,23 @@
 								<a href="index.php?ctrl=user&action=create_account" class="btn btn-secondary">S'inscrire</a>
 								<a href="index.php?ctrl=user&action=login" class="btn btn-primary">Se connecter</a>
 							{/if}
+							<li>
+								<a href="index.php?ctrl=user&action=help" class="btn btn-secondary rounded-circle"><i class="fa-solid fa-question"></i></a>
+							</li>
+							{if $smarty.session.user|isset}
+								<li class="ms-3">
+									Connecté en tant que<br>
+									<b>
+										{if $smarty.session.user->getRole() == "user" }
+											{"Watchr"}
+										{elseif $smarty.session.user->getRole() == "modo" }
+											{"Modérateur"}
+										{elseif $smarty.session.user->getRole() == "admin" }
+											{"Administrateur"}
+										{/if}
+									</b>
+								</li>
+							{/if}
 						</ul>
 					</div>
 				</div>
