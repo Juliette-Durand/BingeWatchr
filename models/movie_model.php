@@ -132,7 +132,7 @@
 
         /**
          * Public function addMovie (string $strTitle, string $strTitle, string $strDate, string $strPhoto, string $strDuration)
-         * @return boole
+         * @return boole ajoute un movie avec les informations fournies
          */
         public function addMovie($objMovieEntity) : bool{
             try{
@@ -157,8 +157,8 @@
             return true;
         } 
         /**
-        *   Public function playActor ()
-        * @return boole
+        * Public function playActor Insert un actor et movie dans tableau play
+        * @return boole 
         */
         
         public function playActor($intActor) : bool{
@@ -183,11 +183,12 @@
 
         /**
          * Function pour select id de category
-         * @return int 
+         * @return array des id de category avec le nom de la category
         */
-        public function infoCategory(){
+        public function infoCategory() : array{
             $strQuery      = "SELECT cat_id, cat_name 
-                                FROM category;";
+                                FROM category
+                                ORDER BY cat_name ASC;";
 
             $arrActors = $this->_db->query($strQuery)->fetchAll();
 
@@ -195,7 +196,7 @@
         }
         
         /**
-        *   Public function categoryMovie ()
+        * Function categoryMovie insert dan table belong quel film dans quel categoy
         * @return boole
         */
         public function categoryMovie($idCategory) : bool{
@@ -223,30 +224,14 @@
 
         /**
          * Requête pour dernier ID d'un film
-         * @return $intOneMovie Tableau des movies de la bdd
+         * @return array $intOneMovie Tableau des movies de la bdd
          */
-        public function lastMovieId(){
+        public function lastMovieId() : array{
             $strQueryOneMovie = "SELECT movie_id FROM movie 
                                     ORDER BY movie_id DESC
                                     LIMIT 1";
             
             $intOneMovie = $this->_db->query($strQueryOneMovie)->fetch();
             return $intOneMovie;
-        }
-        
-        /**
-         * Function pour edit movie
-         * OPTIONEL
-         */
-        public function editMovie(){
-            /* $strQuery = "UPDATE movie
-                        SET movie_poster='les_tuches.jpg', movie_name='Juan', movie_desc='Juan is one of the best', movie_release='2025-01-01'
-                        WHERE movie_id=51;";
-
-            $prep = $this->_db->prepare($$strQuery);
-
-            $prep->execute();
-            */
-        }
-            
+        }            
     }

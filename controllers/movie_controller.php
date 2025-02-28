@@ -138,7 +138,6 @@
          // Instanciation
          $objMovie		      = new MovieModel();
          $objMovieEntity	   = new MovieEntity();
-         //$objActorEntity      = new ActorEntity();
          $objActorModel 	   = new ActorModel();
          
 
@@ -154,7 +153,6 @@
          $strDate 		= $_POST['release']??"";
          $strSynopsis	= $_POST['desc']??"";
          $strDuration	= $_POST['duration']??"";
-         $strMovieDisplay = $_POST['display']??"";
          $idActor 		= $_POST["actor"]??"";
          $idCategory    = $_POST['category'] ?? "";
 
@@ -256,7 +254,6 @@
          // besoin de déclarer toutes les variables utilisées dans le formulaire
          $this->_arrData['strPhoto']         = $strPhoto;
          $this->_arrData['strDate']          = $strDate;
-         $this->_arrData['strMovieDisplay']  = $strMovieDisplay;
          $this->_arrData['strDuration']      = $strDuration;
          $this->_arrData["idActor"]          = $idActor;
          $this->_arrData["strSynopsis"]      = $strSynopsis ;
@@ -442,70 +439,75 @@
 
                         // Traitement de l'image importée
                         // Création d'une imageGD
-                        switch($_FILES['pictures']['type'][$i]){
-                           case "image/webp":
-                              $image = imagecreatefromwebp($strSource);
-                              break;
-                           case "image/jpeg":
-                              $image = imagecreatefromjpeg($strSource);
-                              break;
-                           case "image/png":
-                              $image = imagecreatefrompng($strSource);
-                              break;
-                        }
-
-                        // -- TRAITEMENT DE L'IMAGE
-                        $arrFileExplode	= explode(".", $_FILES['pictures']['name'][$i]);
-                        $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random en webp
-                        $strDest = "assets/img/movies/movie_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
-                        
-                        list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
-
-                        $intShortSize   = 600; // Valeur du plus petit côté
-
-                        // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
-                        if ($intWidth < $intHeight){
-                           // Format portrait
-                           $boolPortrait = true;
-                           $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
-                           $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
-                           imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                        if(($_FILES['pictures']['type'][$i] != "image/webp") && ($_FILES['pictures']['type'][$i] != "image/jpeg") && ($_FILES['pictures']['type'][$i] != "image/png")){
+                           var_dump("hey");
+                           $this->_arrErrors['import'] = "Seules les images au format jpg/png/webp sont acceptées";
                         } else {
-                           // Format paysage
-                           $boolPortrait = false;
-                           $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
-                           $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
-                           imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
-                        }
-                        // Génération de l'image traitée dans le dossier
-                        imagewebp($objMask,$strDest);
+                           switch($_FILES['pictures']['type'][$i]){
+                              case "image/webp":
+                                 $image = imagecreatefromwebp($strSource);
+                                 break;
+                              case "image/jpeg":
+                                 $image = imagecreatefromjpeg($strSource);
+                                 break;
+                              case "image/png":
+                                 $image = imagecreatefrompng($strSource);
+                                 break;
+                           }
+                           // -- TRAITEMENT DE L'IMAGE
+                           $arrFileExplode	= explode(".", $_FILES['pictures']['name'][$i]);
+                           $strFileName = bin2hex(random_bytes(10)).".webp"; // Génération d'un nom de fichier random en webp
+                           $strDest = "assets/img/movies/movie_pictures/".$strFileName; // Définition de la destination du fichier et de son nom
+                           
+                           list($intWidth, $intHeight) = getimagesize($strSource); // Récupération des dimensions de l'image
 
-                        // Remplissage des données
-                        $objPicture->setFile($strFileName);
-                        $objPicture->setComment_id($idComment);
-                        // Récupère le résultat de la requête d'insertion des photos
-                        $boolPicQuery = $objCommentModel->addPicture($objPicture);
+                           $intShortSize   = 600; // Valeur du plus petit côté
 
-                        if($boolPicQuery===false){
-                           $this->_arrErrors['import']= "Erreur lors de l'importation des images";
-                           break;
+                           // Calcul et redimensionnement proportionnel des dimensions de l'image selon l'orientation
+                           if ($intWidth < $intHeight){
+                              // Format portrait
+                              $boolPortrait = true;
+                              $intLongSize = round(($intShortSize*$intHeight)/$intWidth); // Produit en croix
+                              $objMask = imagecreatetruecolor($intShortSize, $intLongSize); // Conteneur vide portrait;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intShortSize, $intLongSize, $intWidth, $intHeight); // Redimensionnement
+                           } else {
+                              // Format paysage
+                              $boolPortrait = false;
+                              $intLongSize = round(($intShortSize*$intWidth)/$intHeight); // Produit en croix
+                              $objMask = imagecreatetruecolor($intLongSize, $intShortSize); // Conteneur vide paysage;
+                              imagecopyresized($objMask, $image, 0, 0, 0, 0, $intLongSize, $intShortSize, $intWidth, $intHeight); // Redimensionnement
+                           }
+                           // Génération de l'image traitée dans le dossier
+                           imagewebp($objMask,$strDest);
+
+                           // Remplissage des données
+                           $objPicture->setFile($strFileName);
+                           $objPicture->setComment_id($idComment);
+                           // Récupère le résultat de la requête d'insertion des photos
+                           $boolPicQuery = $objCommentModel->addPicture($objPicture);
+
+                           if($boolPicQuery===false){
+                              $this->_arrErrors['import']= "Erreur lors de l'importation des images";
+                              break;
+                           }
                         }
                      }
 
                      // Si erreur dans le traitement des données, on supprime le commentaire qui vient d'être inséré
                      if(count($this->_arrErrors) != 0){
                         $objCommentModel->deleteComment($idComment);
-                        $_SESSION['error']= "Erreur lors de l'enregistrement du commentaire";
                      }
                   }
 
-                  // Pas d'erreur -> On renvoie un message de validation
-                  $_SESSION['success'] = "Commentaire enregistré. Il sera soumis à la modération avant publication.";
-
-                  // Redirection sur la même page pour vider le $_POST
-                  $strUrl = $_SERVER['QUERY_STRING'];
-                  header("Location:index.php?".$strUrl);
-                  exit();
+                  if(count($this->_arrErrors) == 0){
+                     // Pas d'erreur -> On renvoie un message de validation
+                     $_SESSION['success'] = "Commentaire enregistré. Il sera soumis à la modération avant publication.";
+   
+                     // Redirection sur la même page pour vider le $_POST
+                     $strUrl = $_SERVER['QUERY_STRING'];
+                     header("Location:index.php?".$strUrl);
+                     exit();
+                  }
 
                } else {
                   // Erreur lors de l'insertion du commentaire seul
