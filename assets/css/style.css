@@ -205,6 +205,11 @@ div.card h3{
     font-size: 1rem;
 }
 
+/* Page de tous les films */
+#adv_search_movie .accordion-header input[type=search]{
+    width:20rem;
+}
+
 /* Page de connexion (login) */
 #login input{
     margin-bottom: 1rem;

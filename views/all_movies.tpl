@@ -10,17 +10,21 @@
         <h1>{$strTitle}{if $boolDisplay == 1} à l'affiche {/if}</h1>
     </div>
     
-    <div class="container">
+    <section class="container" id="adv_search_movie">
+    <form action="#" method="post" class="mb-3">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                <h2 class="accordion-header d-flex">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <div class="d-flex me-3">
+                        <input class="form-control me-2" type="search" aria-label="Search" name="keywords" value="{$objMovieModel->strKeyword}" placeholder="Rechercher un film">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Rechercher">
+                    </div>
                     Recherche par filtres avancés
                 </button>
                 </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <form action="#" method="post">
                         <div class="container">
                             <div class="row">
                                 <div class="col-6">
@@ -61,14 +65,10 @@
                                     <input type="submit" class="btn btn-primary btn-sm" value="filtrer mes recherches"> <input type="reset" class="btn btn-primary btn-sm mx-2" value="Réinitialiser">
                                 </div>
                             </div>
-                        </div>    
-                    </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <form class="d-flex my-2" role="search" method="post">
-            <input class="form-control w-50 me-2" type="search" aria-label="Search" name="keywords" value="{$objMovieModel->strKeyword}">
-            <input type="submit" class="btn btn-primary btn-sm" value="Rechercher">
         </form>
     </div>
     
