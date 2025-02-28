@@ -113,6 +113,11 @@
             if($this->strStartDate != "" && $this->strEndDate != "") {
                 $strQuery .= $strWhere." movie_release BETWEEN '".$this->strStartDate."' AND '".$this->strEndDate."'";
                 $strWhere = " AND";
+            } else {
+                if($this->strStartDate != "") {
+                    $strQuery .= $strWhere." movie_release >= '".$this->strStartDate."'";
+                } else if ($this->strEndDate != "")
+                    $strQuery .= $strWhere." movie_release <= '".$this->strEndDate."'";
             }
 
             // Vérifier si la durée est renseignée 

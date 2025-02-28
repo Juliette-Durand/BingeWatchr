@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <input type="submit" class="btn btn-primary btn-sm" value="filtrer mes recherches"> <input type="reset" class="btn btn-primary btn-sm mx-2" value="Réinitialiser">
+                                    <input type="submit" class="btn btn-primary" value="Filtrer mes recherches"> <a href="index.php?ctrl=movie&action=allmovies" class="btn btn-primary ms-2">Réinitialiser</a>
                                 </div>
                             </div>
                         </div>
