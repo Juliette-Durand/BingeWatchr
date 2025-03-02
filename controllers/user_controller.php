@@ -595,12 +595,12 @@
                 // Vérifie qu'une photo de profil a été importée
                 if(count($_FILES)>0){
                     $arrImage = $_FILES['profile_picture'];
-                    if(($arrImage['type']!="image/webp") && ($arrImage['type']!="image/jpeg") && ($arrImage['type']!="image/png")){
-                        $this->_arrErrors['picture']	= "L'image de profil ne peut avoir un format différent de JPEG, WEBP ou PNG";
-                    } else {
-                        if($arrImage['error']==0){
-    
-                            $boolAvatar = true;
+                    if($arrImage['error']==0){
+                        $boolAvatar = true;
+                        
+                        if(($arrImage['type']!="image/webp") && ($arrImage['type']!="image/jpeg") && ($arrImage['type']!="image/png")){
+                            $this->_arrErrors['picture']	= "L'image de profil ne peut avoir un format différent de JPEG, WEBP ou PNG";
+                        } else {
                             $strSource = $arrImage['tmp_name']; // Récupération de l'image
     
                             // Traitement de l'image importée
@@ -657,10 +657,6 @@
                                 // Format paysage
                                 $imageResized   = imagecrop($objMask, ['x' => $intDelta, 'y' => 0, 'width' => $intShortSize, 'height' => $intShortSize]);
                             }
-                            imagewebp($imageResized,$strDest);
-    
-                            
-                            $objUser->setAvatar($strFileName);
                         }
                     }
 
@@ -668,6 +664,10 @@
 
                 if(count($this->_arrErrors) == 0){        
                     $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
+                    if($boolAvatar === true){
+                        imagewebp($imageResized,$strDest);
+                        $objUser->setAvatar($strFileName);
+                    }
                     if ($boolCreation === true){
                         $_SESSION['account_creation']['success'] = "Le compte a bien été créé";
                         header("Location:index.php?ctrl=user&action=login");

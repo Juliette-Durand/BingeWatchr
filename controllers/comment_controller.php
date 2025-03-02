@@ -84,8 +84,7 @@
 
                 // Photos associées au commentaire
                 $picturesComment = $this->_objCommentModel->findPictures($objComment->getId());
-                // var_dump($picturesComment);
-
+                $arrPictures = array();
                 // Vérifie si des photos sont associées au commentaire
                 if($picturesComment !== false){
                     foreach($picturesComment as $picDet){
