@@ -1,0 +1,5 @@
+# Composer
+vendor/
+templates_c/
+composer.json
+composer.lock
