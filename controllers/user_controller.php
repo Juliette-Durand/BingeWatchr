@@ -663,11 +663,11 @@
                 }
 
                 if(count($this->_arrErrors) == 0){        
-                    $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
                     if($boolAvatar === true){
                         imagewebp($imageResized,$strDest);
                         $objUser->setAvatar($strFileName);
                     }
+                    $boolCreation   =   $this->_objUserModel->newUser($objUser, $boolAvatar);
                     if ($boolCreation === true){
                         $_SESSION['account_creation']['success'] = "Le compte a bien été créé";
                         header("Location:index.php?ctrl=user&action=login");
